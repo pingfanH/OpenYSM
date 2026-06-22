@@ -973,7 +973,7 @@ public final class ServerModelManager {
             } else {
                 try {
                     if (obj instanceof net.minecraft.network.protocol.common.custom.CustomPacketPayload payload) {
-                        connection.send(new net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket(payload), new PacketSendListener() {
+                        connection.send(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(payload), new PacketSendListener() {
                             public void onSuccess() {
                                 atomicInteger.set(1);
                                 PacketSendListener.super.onSuccess();

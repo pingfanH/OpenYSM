@@ -165,7 +165,7 @@ public final class NetworkHandler {
         if (obj instanceof CustomPacketPayload payload) {
             net.minecraft.server.MinecraftServer server = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
-                server.getPlayerList().broadcastAll(payload);
+                server.getPlayerList().broadcastAll(new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(payload));
             }
         }
     }

@@ -388,7 +388,7 @@ public class YSMBinding extends ContextBinding {
             return null;
         }
         for (MobEffectInstance mobEffectInstance : activeEffects) {
-            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(ForgeRegistries.MOB_EFFECTS.getKey(mobEffectInstance.getEffect()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
+            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(BuiltInRegistries.MOB_EFFECT.getKey(mobEffectInstance.getEffect()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
         }
         return null;
     }

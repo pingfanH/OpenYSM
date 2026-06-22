@@ -494,7 +494,7 @@ public class ClientModelManager {
     }
 
     public static SyncStatus getSyncStatus() {
-        RenderSystem.assertOnGameThread();
+        com.mojang.blaze3d.systems.RenderSystem.assertOnRenderThread();
         return syncState;
     }
 
@@ -584,7 +584,7 @@ public class ClientModelManager {
             return;
         }
         try {
-            connection.send(new C2SModelSyncPayload(byteBuffer));
+            connection.send(new net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket(new C2SModelSyncPayload(byteBuffer)));
         } catch (Exception e2) {
             e2.printStackTrace();
         }
