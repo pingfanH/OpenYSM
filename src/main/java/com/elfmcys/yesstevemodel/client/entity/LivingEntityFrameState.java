@@ -13,7 +13,6 @@ public class LivingEntityFrameState<T extends LivingEntity> extends EntityFrameS
 
     public LivingEntityFrameState(T t) {
         super(t);
-        this.imData = new ImmersiveMelodiesCompat.ImmersiveMelodiesData();
         this.mainHandItem = ItemStack.EMPTY;
         this.offHandItem = ItemStack.EMPTY;
     }
@@ -28,8 +27,6 @@ public class LivingEntityFrameState<T extends LivingEntity> extends EntityFrameS
     @Override
     public void onTimeUpdate(float currentTick, float deltaTick, float partialTick) {
         super.onTimeUpdate(currentTick, deltaTick, partialTick);
-        // 更新沉浸式奏乐数据
-        ImmersiveMelodiesCompat.updateMelodyProgress(this.entity, this.imData);
     }
 
     public ItemStack getHandItemsForAnimation(InteractionHand interactionHand) {

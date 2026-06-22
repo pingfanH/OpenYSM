@@ -92,20 +92,21 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         return this.currentTexture == null ? Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation()) : this.currentTexture;
     }
 
-    public void renderNameTag(Player player, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+    @Override
+    public void renderNameTag(Player player, Component component, net.minecraft.client.gui.GuiGraphics guiGraphics, MultiBufferSource multiBufferSource, int i) {
         Scoreboard scoreboard;
         Objective displayObjective;
         if (PlayerPreviewEntity.isPreviewPlayer(player)) {
             return;
         }
         double dDistanceToSqr = this.entityRenderDispatcher.distanceToSqr(player);
-        poseStack.pushPose();
-        if (dDistanceToSqr < 100.0d && (displayObjective = (scoreboard = player.getScoreboard()).getDisplayObjective(2)) != null) {
-            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), displayObjective).getScore())).append(" ").append(displayObjective.getDisplayName()), poseStack, multiBufferSource, i);
-            poseStack.translate(0.0d, 0.25875d, 0.0d);
+        guiGraphics.pose().pushPose();
+        if (dDistanceToSqr < 100.0d && (displayObjective = (scoreboard = player.getScoreboard()).getDisplayObjective(net.minecraft.world.scores.DisplaySlot.SIDEBAR)) != null) {
+            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), guiGraphics, multiBufferSource, i);
+            guiGraphics.pose().translate(0.0d, 0.25875d, 0.0d);
         }
-        super.renderNameTag(player, component, poseStack, multiBufferSource, i);
-        poseStack.popPose();
+        super.renderNameTag(player, component, guiGraphics, multiBufferSource, i);
+        guiGraphics.pose().popPose();
     }
 
     @Override

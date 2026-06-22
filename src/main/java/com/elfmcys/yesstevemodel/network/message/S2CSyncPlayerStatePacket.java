@@ -194,7 +194,7 @@ public class S2CSyncPlayerStatePacket implements CustomPacketPayload {
         if ((flags & 4) != 0) {
             buffer.writeVarInt(this.effectAmplifiers.size());
             Object2ByteMaps.fastForEach(this.effectAmplifiers, entry -> {
-                buffer.writeId(BuiltInRegistries.MOB_EFFECT, entry.getKey());
+                buffer.writeVarInt(BuiltInRegistries.MOB_EFFECT.getId(entry.getKey()));
                 buffer.writeByte(entry.getByteValue());
             });
         }
@@ -248,12 +248,12 @@ public class S2CSyncPlayerStatePacket implements CustomPacketPayload {
             if (effectCount == 0) {
                 message.effectAmplifiers = Object2ByteMaps.emptyMap();
             } else if (effectCount == 1) {
-                message.effectAmplifiers = Object2ByteMaps.singleton(buffer.readById(BuiltInRegistries.MOB_EFFECT), buffer.readByte());
+                message.effectAmplifiers = Object2ByteMaps.singleton(BuiltInRegistries.MOB_EFFECT.byId(buffer.readVarInt()), buffer.readByte());
             } else {
                 MobEffect[] effects = new MobEffect[effectCount];
                 byte[] amplifiers = new byte[effectCount];
                 for (int i = 0; i < effectCount; i++) {
-                    effects[i] = buffer.readById(BuiltInRegistries.MOB_EFFECT);
+                    effects[i] = BuiltInRegistries.MOB_EFFECT.byId(buffer.readVarInt());
                     amplifiers[i] = buffer.readByte();
                 }
                 message.effectAmplifiers = new Object2ByteArrayMap<>(effects, amplifiers);

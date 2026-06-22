@@ -143,7 +143,7 @@ public abstract class GeoReplacedEntityRenderer<TEntity extends LivingEntity, T 
     public void preRenderCallback(TEntity entity, PoseStack poseStack, float partialTick) {
     }
 
-    public void setupRotations(TEntity tentity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
+    public void setupRotations(TEntity tentity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, boolean shouldSit) {
         int t = tentity.deathTime;
         boolean zIsAutoSpinAttack = tentity.isAutoSpinAttack();
         if (t > 0) {
@@ -161,7 +161,7 @@ public abstract class GeoReplacedEntityRenderer<TEntity extends LivingEntity, T 
                 }
             }
         }
-        super.setupRotations(tentity, poseStack, ageInTicks, rotationYaw, partialTicks);
+        super.setupRotations(tentity, poseStack, ageInTicks, rotationYaw, partialTicks, shouldSit);
         if (t > 0) {
             tentity.deathTime = t;
         }

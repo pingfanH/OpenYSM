@@ -4,4 +4,5 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 public class CuriosItemGetter {
     public static List<ItemStack> getCuriosItems(LivingEntity entity) { return List.of(); }
+    public static boolean hasCuriosItem(LivingEntity entity, String type) { return false; }
 }
