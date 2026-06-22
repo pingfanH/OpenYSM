@@ -328,11 +328,11 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         this.searchBox.setValue(value);
         this.searchBox.setTextColor(15986656);
         this.searchBox.setFocused(zIsFocused);
-        this.searchBox.moveCursorToEnd();
+        this.searchBox.moveCursorToEnd(false);
         addWidget(this.searchBox);
         addRenderableWidget(new IconButton(this.guiLeft + 5, this.guiTop + 5, 20, 20, 80, 16, button -> {
             if (Minecraft.getInstance().player != null) {
-                Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     ModelAssembly modelAssembly = cap.getModelAssembly();
                     if (modelAssembly.getModelData().getExtraInfo() != null) {
                         Minecraft.getInstance().setScreen(createModelInfoScreen(this, modelAssembly));
@@ -342,7 +342,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         })).setTooltipText("gui.yes_steve_model.model.info");
         addRenderableWidget(new IconButton(this.guiLeft + 28, this.guiTop + 5, 79, 20, 32, 16, button2 -> {
             if (Minecraft.getInstance().player != null) {
-                Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     Minecraft.getInstance().setScreen(createTextureScreen(this, cap.getModelId(), cap.getModelAssembly()));
                 });
             }
@@ -531,7 +531,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             RenderSystem.enableScissor((int) ((this.guiLeft + 5) * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - ((this.guiTop + 200) * guiScale)), (int) (125.0d * guiScale), (int) (171.0d * guiScale));
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0.0f, 0.0f, 100.0f);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.guiLeft + 67, this.guiTop + 190, 70, (this.guiLeft + 67) - mouseX, ((this.guiTop + 180) - 95) - mouseY, localPlayer);
+            InventoryScreen.renderEntityInInventory(guiGraphics, this.guiLeft + 67, this.guiTop + 190, 70, (this.guiLeft + 67) - mouseX, ((this.guiTop + 180) - 95) - mouseY, localPlayer);
             guiGraphics.pose().popPose();
             RenderSystem.disableScissor();
             Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {

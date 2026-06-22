@@ -87,7 +87,7 @@ public final class ModelPreviewRenderer {
                 poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0f - bodyRotation));
                 RenderUtils.prepMatrixForLocator(poseStack, list);
                 poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(180.0f - bodyRotation));
-                double myRidingOffset = (-vehicle.getPassengersRidingOffset()) - entity.getMyRidingOffset();
+                double myRidingOffset = 0.0;
                 if (((entity instanceof Player) && Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).isPresent()) || TouhouLittleMaidCompat.isMaidRideable(entity)) {
                     myRidingOffset -= 0.5d;
                 }
@@ -100,11 +100,11 @@ public final class ModelPreviewRenderer {
     public static void renderEntityPreview(float x, float y, float scale, float pitch, float yaw, float partialTick, AnimatableEntity animatableEntity, GeoReplacedEntityRenderer renderer, boolean renderGround) {
         setPreviewMode(true);
         LivingEntity livingEntity = (LivingEntity) animatableEntity.getEntity();
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
+        PoseStack modelViewStack = new PoseStack();
         modelViewStack.pushPose();
         modelViewStack.translate(x, y, 1250.0d);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
 
         PoseStack poseStack = new PoseStack();
         poseStack.translate(0.0d, 0.0d, 1000.0d);
@@ -194,7 +194,7 @@ public final class ModelPreviewRenderer {
         livingEntity.setPose(oldPose);
 
         modelViewStack.popPose();
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setPreviewMode(false);
     }
@@ -253,7 +253,7 @@ public final class ModelPreviewRenderer {
     private static void renderVehicleEntity(float yaw, Entity riderEntity, PoseStack poseStack, EntityRenderDispatcher entityRenderDispatcher, MultiBufferSource.BufferSource bufferSource, Entity vehicleEntity, float partialTick) {
         poseStack.pushPose();
         poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(yaw));
-        entityRenderDispatcher.render(vehicleEntity, 0.0d, (-vehicleEntity.getPassengersRidingOffset()) - riderEntity.getMyRidingOffset(), 0.0d, 0.0f, partialTick, poseStack, bufferSource, 15728880);
+        entityRenderDispatcher.render(vehicleEntity, 0.0d, 0.0, 0.0d, 0.0f, partialTick, poseStack, bufferSource, 15728880);
         poseStack.popPose();
     }
 
@@ -262,11 +262,11 @@ public final class ModelPreviewRenderer {
         ItemStack[] savedEquipment;
         setPreviewMode(true);
         LivingEntity livingEntity = animatable.getEntity();
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
+        PoseStack modelViewStack = new PoseStack();
         modelViewStack.pushPose();
         modelViewStack.translate(x, y, 1050.0d);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
 
         PoseStack poseStack = new PoseStack();
         poseStack.translate(0.0d, disablePreviewRotation ? 5.5d : 0.0d, 1000.0d);
@@ -364,7 +364,7 @@ public final class ModelPreviewRenderer {
         }
 
         modelViewStack.popPose();
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setPreviewMode(false);
     }
@@ -372,11 +372,11 @@ public final class ModelPreviewRenderer {
     // 纸娃娃
     public static void renderPlayerOverlay(GuiGraphics guiGraphics, LocalPlayer localPlayer, double x, double y, float scale, float yawOffset, int zDepth, float partialTick) {
         setExtraPlayerMode(true);
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
+        PoseStack modelViewStack = new PoseStack();
         modelViewStack.pushPose();
         modelViewStack.translate(x + (scale * 0.5d), y + (scale * 2.0f), 0.0d);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0.0f, 0.0f, -zDepth);
@@ -401,7 +401,7 @@ public final class ModelPreviewRenderer {
         entityRenderDispatcher.setRenderShadow(true);
         guiGraphics.pose().popPose();
         modelViewStack.popPose();
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setExtraPlayerMode(false);
     }
