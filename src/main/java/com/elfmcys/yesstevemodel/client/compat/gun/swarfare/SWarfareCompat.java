@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.jetbrains.annotations.Nullable;
 
@@ -83,7 +83,7 @@ public class SWarfareCompat {
     @Nullable
     public static ResourceLocation getGunTexture(ItemStack stack) {
         if (IS_LOADED) {
-            return ForgeRegistries.ITEMS.getKey(stack.getItem());
+            return BuiltInRegistries.ITEM.getKey(stack.getItem());
         }
         return null;
     }

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.capability;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.client.animation.molang.struct.RoamingStruct;

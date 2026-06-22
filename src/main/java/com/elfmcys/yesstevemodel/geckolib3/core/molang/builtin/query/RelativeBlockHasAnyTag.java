@@ -7,7 +7,7 @@ import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class RelativeBlockHasAnyTag extends EntityFunction {
     @Override
@@ -21,7 +21,7 @@ public class RelativeBlockHasAnyTag extends EntityFunction {
             if (key == null) {
                 return null;
             }
-            if (block.is(ForgeRegistries.BLOCKS.tags().createTagKey(key))) {
+            if (block.is(TagKey.create(Registries.BLOCK, key))) {
                 return true;
             }
         }

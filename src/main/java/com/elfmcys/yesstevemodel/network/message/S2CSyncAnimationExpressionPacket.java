@@ -1,7 +1,7 @@
 package com.elfmcys.yesstevemodel.network.message;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

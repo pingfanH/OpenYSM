@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;

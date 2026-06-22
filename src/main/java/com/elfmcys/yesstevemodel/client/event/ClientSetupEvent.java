@@ -31,17 +31,11 @@ import com.elfmcys.yesstevemodel.client.compat.simpleplanes.SimplePlanesCompat;
 import com.elfmcys.yesstevemodel.client.compat.create.CreateCompat;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RegisterGuiOverlaysEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.ModLoadingStage;
-import net.neoforged.fml.ModLoadingWarning;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.loading.LoadingModList;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -114,13 +108,9 @@ public class ClientSetupEvent {
     }
 
     private static void showInCompatibleMod(Optional<Pair<String, String>> optional) {
-        optional.ifPresent(pair -> ModLoader.get().addWarning(new ModLoadingWarning(LoadingModList.get().getModFileById(YesSteveModel.MOD_ID).getMods().get(0), ModLoadingStage.SIDED_SETUP, "error.yes_steve_model.incompatible_mod_version", pair.getKey(), pair.getValue())));
     }
 
     private static void showInCompatibleMod(String str, String str2) {
-        if (LoadingModList.get().getModFileById(str) != null) {
-            ModLoader.get().addWarning(new ModLoadingWarning(LoadingModList.get().getModFileById(YesSteveModel.MOD_ID).getMods().get(0), ModLoadingStage.SIDED_SETUP, "error.yes_steve_model.incompatible_mod", str2));
-        }
     }
 
     @SubscribeEvent
@@ -134,16 +124,6 @@ public class ClientSetupEvent {
         event.register(DebugAnimationKey.KEY_MAPPING);
         event.register(ExtraPlayerRenderKey.KEY_MAPPING);
         ExtraAnimationKey.registerKeyMappings(event);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event) {
-        if (!YesSteveModel.isAvailable()) {
-            return;
-        }
-        event.registerAbove(VanillaGuiOverlay.DEBUG_TEXT.id(), "ysm_debug_info", AnimationDebugOverlay.createOverlay());
-        event.registerAbove(VanillaGuiOverlay.DEBUG_TEXT.id(), "ysm_extra_player", new LoadingStateOverlay());
-        event.registerAbove(VanillaGuiOverlay.DEBUG_TEXT.id(), "ysm_loading_state", new ModelSyncStateOverlay());
     }
 
     private static void checkNativeInitialization() {

@@ -14,7 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class DumpEquippedItem extends LivingEntityFunction {
     @Override
@@ -26,7 +26,7 @@ public class DumpEquippedItem extends LivingEntityFunction {
             return null;
         }
         ItemStack stack = CosmeticArmorHelper.getArmorItem(context.entity().entity(), slot);
-        if (stack.isEmpty() || (key = ForgeRegistries.ITEMS.getKey(stack.getItem())) == null) {
+        if (stack.isEmpty() || (key = BuiltInRegistries.ITEM.getKey(stack.getItem())) == null) {
             return null;
         }
         context.entity().logWarningComponent(Component.literal("Display ").append(ComponentUtils.copyOnClickText(stack.getItem().getName(stack).getString(99))));

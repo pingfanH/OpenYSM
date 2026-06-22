@@ -10,8 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
@@ -24,19 +24,13 @@ public class ConditionUse {
     private static final String EMPTY = "";
 
     private final int preSize;
-
     private final String idPre;
-
     private final String tagPre;
-
     private final String extraPre;
 
     private final ObjectOpenHashSet<ResourceLocation> idTest = new ObjectOpenHashSet<>();
-
     private final ReferenceArrayList<TagKey<Item>> tagTest = new ReferenceArrayList<>();
-
     private final ObjectOpenHashSet<UseAnim> extraTes = new ObjectOpenHashSet<>();
-
     private final ObjectOpenHashSet<String> innerTest = new ObjectOpenHashSet<>();
 
     public ConditionUse(InteractionHand hand) {
@@ -45,12 +39,12 @@ public class ConditionUse {
             this.tagPre = "use_mainhand#";
             this.extraPre = "use_mainhand:";
             this.preSize = 13;
-            return;
+        } else {
+            this.idPre = "use_offhand$";
+            this.tagPre = "use_offhand#";
+            this.extraPre = "use_offhand:";
+            this.preSize = 12;
         }
-        this.idPre = "use_offhand$";
-        this.tagPre = "use_offhand#";
-        this.extraPre = "use_offhand:";
-        this.preSize = 12;
     }
 
     public void addTest(String name) {
@@ -58,15 +52,11 @@ public class ConditionUse {
             return;
         }
         String strSubstring = name.substring(this.preSize);
-        if (name.startsWith(this.idPre) && ResourceLocation.isValidResourceLocation(strSubstring)) {
+        if (name.startsWith(this.idPre) && ResourceLocation.isValidPath(strSubstring)) {
             this.idTest.add(ResourceLocation.parse(strSubstring));
         }
-        if (name.startsWith(this.tagPre) && ResourceLocation.isValidResourceLocation(strSubstring)) {
-            ITagManager<Item> iTagManagerTags = ForgeRegistries.ITEMS.tags();
-            if (iTagManagerTags == null) {
-                return;
-            }
-            this.tagTest.add(iTagManagerTags.createTagKey(ResourceLocation.parse(strSubstring)));
+        if (name.startsWith(this.tagPre) && ResourceLocation.isValidPath(strSubstring)) {
+            this.tagTest.add(TagKey.create(Registries.ITEM, ResourceLocation.parse(strSubstring)));
         }
         if (!name.startsWith(this.extraPre) || strSubstring.equals(UseAnim.NONE.name().toLowerCase(Locale.US))) {
             return;
@@ -96,7 +86,7 @@ public class ConditionUse {
         if (this.idTest.isEmpty()) {
             return EMPTY;
         }
-        ResourceLocation key = ForgeRegistries.ITEMS.getKey(livingEntity.getItemInHand(interactionHand).getItem());
+        ResourceLocation key = BuiltInRegistries.ITEM.getKey(livingEntity.getItemInHand(interactionHand).getItem());
         if (key != null && this.idTest.contains(key)) {
             return this.idPre + key;
         }
@@ -108,9 +98,6 @@ public class ConditionUse {
             return EMPTY;
         }
         ItemStack itemInHand = livingEntity.getItemInHand(interactionHand);
-        if (ForgeRegistries.ITEMS.tags() == null) {
-            return EMPTY;
-        }
         Stream<TagKey<Item>> stream = this.tagTest.stream();
         Objects.requireNonNull(itemInHand);
         return stream.filter(itemInHand::is).findFirst().map(tagKey -> this.tagPre + tagKey.location()).orElse(EMPTY);

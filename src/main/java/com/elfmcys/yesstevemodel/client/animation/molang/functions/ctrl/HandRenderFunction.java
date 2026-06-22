@@ -6,13 +6,13 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.LivingEnt
 import com.elfmcys.yesstevemodel.client.animation.condition.InnerClassify;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
@@ -73,18 +73,15 @@ public class HandRenderFunction extends LivingEntityFunction {
         }
         String strSubstring = id.substring(1);
         if (id.startsWith(PREFIX_ITEM_ID)) {
-            ResourceLocation key = ForgeRegistries.ITEMS.getKey(itemBySlot.getItem());
+            ResourceLocation key = BuiltInRegistries.ITEM.getKey(itemBySlot.getItem());
             if (key == null) {
                 return 0;
             }
             return strSubstring.equals(key.toString()) ? 1 : 0;
         }
         if (id.startsWith(PREFIX_ITEM_TAG)) {
-            ITagManager<Item> iTagManagerTags = ForgeRegistries.ITEMS.tags();
-            if (iTagManagerTags == null) {
-                return 0;
-            }
-            return itemBySlot.is(iTagManagerTags.createTagKey(ResourceLocation.parse(strSubstring))) ? 1 : 0;
+            TagKey<Item> tagKey = TagKey.create(Registries.ITEM, ResourceLocation.parse(strSubstring));
+            return itemBySlot.is(tagKey) ? 1 : 0;
         }
         if (id.startsWith(TYPE_PREFIX)) {
             String itemType = InnerClassify.getItemType(itemBySlot);

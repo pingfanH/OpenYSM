@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouMaidCompat;
 import net.minecraft.network.FriendlyByteBuf;

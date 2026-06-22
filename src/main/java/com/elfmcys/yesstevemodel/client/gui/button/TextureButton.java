@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.gui.button;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.client.gui.ModelMetadataPresenter;

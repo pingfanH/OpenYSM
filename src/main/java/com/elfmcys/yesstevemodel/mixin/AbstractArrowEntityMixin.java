@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,7 +48,7 @@ public class AbstractArrowEntityMixin implements ProjectileStateAccessor {
     @Inject(at = {@At("RETURN")}, method = {"setOwner(Lnet/minecraft/world/entity/Entity;)V"})
     private void onSetOwner(Entity entity, CallbackInfo callbackInfo) {
         ResourceLocation key;
-        if (YesSteveModel.isAvailable() && (entity instanceof LivingEntity) && (key = ForgeRegistries.ITEMS.getKey(((LivingEntity) entity).getMainHandItem().getItem())) != null) {
+        if (YesSteveModel.isAvailable() && (entity instanceof LivingEntity) && (key = BuiltInRegistries.ITEM.getKey(((LivingEntity) entity).getMainHandItem().getItem())) != null) {
             this.ownerMainHandItem = key.toString();
         }
     }

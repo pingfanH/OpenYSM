@@ -7,8 +7,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 
 public class ConditionPassenger {
 
@@ -27,19 +27,17 @@ public class ConditionPassenger {
     }
 
     public void doTest(String name) {
-        ITagManager<EntityType<?>> iTagManagerTags;
         int preSize = this.idPre.length();
         if (name.length() <= preSize) {
             return;
         }
         String strSubstring = name.substring(preSize);
-        if (name.startsWith(this.idPre) && ResourceLocation.isValidResourceLocation(strSubstring)) {
+        if (name.startsWith(this.idPre) && ResourceLocation.isValidPath(strSubstring)) {
             this.idTest.add(ResourceLocation.parse(strSubstring));
         }
-        if (!name.startsWith(this.tagPre) || !ResourceLocation.isValidResourceLocation(strSubstring) || (iTagManagerTags = ForgeRegistries.ENTITY_TYPES.tags()) == null) {
-            return;
+        if (name.startsWith(this.tagPre) && ResourceLocation.isValidPath(strSubstring)) {
+            this.tagTest.add(TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(strSubstring)));
         }
-        this.tagTest.add(iTagManagerTags.createTagKey(ResourceLocation.parse(strSubstring)));
     }
 
     public String doTest(LivingEntity entity) {
@@ -56,14 +54,14 @@ public class ConditionPassenger {
 
     private String doIdTest(Entity entity) {
         ResourceLocation key;
-        if (!this.idTest.isEmpty() && (key = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType())) != null && this.idTest.contains(key)) {
+        if (!this.idTest.isEmpty() && (key = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType())) != null && this.idTest.contains(key)) {
             return this.idPre + key;
         }
         return EMPTY;
     }
 
     private String doTagTest(Entity entity) {
-        if (this.tagTest.isEmpty() || ForgeRegistries.ENTITY_TYPES.tags() == null) {
+        if (this.tagTest.isEmpty()) {
             return EMPTY;
         }
         return this.tagTest.stream().filter(tagKey -> entity.getType().is(tagKey)).findFirst().map(tagKey2 -> this.tagPre + tagKey2.location()).orElse(EMPTY);

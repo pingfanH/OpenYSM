@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.command;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.animation.molang.struct.RoamingStruct;
 import com.elfmcys.yesstevemodel.client.entity.GeoEntity;

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.compat.gun.swarfare.event;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.atsuishio.superbwarfare.api.event.RenderPlayerArmEvent;

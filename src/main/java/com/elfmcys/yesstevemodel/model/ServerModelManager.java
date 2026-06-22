@@ -1,7 +1,7 @@
 package com.elfmcys.yesstevemodel.model;
 
 import com.elfmcys.yesstevemodel.capability.ModelInfoCapability;
-import com.elfmcys.yesstevemodel.capabilities.Capabilities;
+import com.elfmcys.yesstevemodel.capability.Capabilities;
 import com.elfmcys.yesstevemodel.client.ExportResult;
 import com.elfmcys.yesstevemodel.model.format.*;
 import com.elfmcys.yesstevemodel.resource.YSMBinaryDeserializer;
@@ -935,7 +935,7 @@ public final class ServerModelManager {
         if (!serverGamePacketListenerImpl.isAcceptingMessages() || !serverGamePacketListenerImpl.getClass().equals(ServerGamePacketListenerImpl.class)) {
             return null;
         }
-        return serverGamePacketListenerImpl.connection;
+        return serverGamePacketListenerImpl.getConnection();
     }
 
     private static boolean sendModelData(UUID uuid, ByteBuffer byteBuffer, PendingTransfer pendingTransfer) {
@@ -972,13 +972,12 @@ public final class ServerModelManager {
                 }
             } else {
                 try {
-                    if (obj instanceof CustomPacketPayload payload) {
-                        connection.send(payload, new PacketSendListener() {
+                    if (obj instanceof net.minecraft.network.protocol.common.custom.CustomPacketPayload payload) {
+                        connection.send(new net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket(payload), new PacketSendListener() {
                             public void onSuccess() {
                                 atomicInteger.set(1);
                                 PacketSendListener.super.onSuccess();
                             }
-
                             @Nullable
                             public Packet<?> onFailure() {
                                 atomicInteger.set(-1);
@@ -991,7 +990,6 @@ public final class ServerModelManager {
                                 atomicInteger.set(1);
                                 PacketSendListener.super.onSuccess();
                             }
-
                             @Nullable
                             public Packet<?> onFailure() {
                                 atomicInteger.set(-1);

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.event.EntityJoinCallbackEvent;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.util.StringPool;

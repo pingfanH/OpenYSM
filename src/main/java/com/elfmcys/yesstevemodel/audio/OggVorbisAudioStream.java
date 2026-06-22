@@ -1,6 +1,6 @@
 package com.elfmcys.yesstevemodel.audio;
 
-import com.mojang.blaze3d.audio.OggAudioStream;
+// OggAudioStream removed in MC 1.21.1
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public class OggVorbisAudioStream implements IAudioStreamSupport {
 
     private static final ByteBuffer EMPTY_BUFFER = BufferUtils.createByteBuffer(0);
 
-    private final OggAudioStream oggStream;
+    private final java.lang.Object oggStream;
 
     private final AudioFormat audioFormat;
 

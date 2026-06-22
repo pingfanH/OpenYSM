@@ -1,5 +1,9 @@
 package com.elfmcys.yesstevemodel.client.gui.button;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.resource.models.Metadata;
 import com.elfmcys.yesstevemodel.client.animation.AnimationTracker;

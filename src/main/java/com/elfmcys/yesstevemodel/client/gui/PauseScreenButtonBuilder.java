@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.gui;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.config.GeneralConfig;

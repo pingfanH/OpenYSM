@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
@@ -27,7 +29,7 @@ public class AnimationLockEvent {
     }
 
     @SubscribeEvent
-    public static void onClientTick(net.neoforged.neoforge.event.tick.ClientTickEvent.Post event) {
+    public static void onClientTick(net.neoforged.neoforge.client.event.ClientTickEvent.Post event) {
         LocalPlayer localPlayer;
         if (YesSteveModel.isAvailable() && !animationLocked && (localPlayer = Minecraft.getInstance().player) != null && isPlayerMoving(localPlayer)) {
             Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {

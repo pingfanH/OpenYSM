@@ -170,7 +170,7 @@ public class QueryBinding extends ContextBinding {
         if (useItem.isEmpty()) {
             return 0;
         }
-        return useItem.getUseDuration();
+        return useItem.getUseDuration(0);
     }
 
     private static float getYawSpeed(IContext<Entity> context) {

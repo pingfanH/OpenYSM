@@ -51,7 +51,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -202,14 +202,14 @@ public class YSMBinding extends ContextBinding {
             if (blockHitResult.getType() == HitResult.Type.MISS || (clientLevel = Minecraft.getInstance().level) == null) {
                 return StringPool.EMPTY;
             }
-            ResourceLocation key = ForgeRegistries.BLOCKS.getKey(clientLevel.getBlockState(blockHitResult.getBlockPos()).getBlock());
+            ResourceLocation key = BuiltInRegistries.BLOCK.getKey(clientLevel.getBlockState(blockHitResult.getBlockPos()).getBlock());
             if (key != null) {
                 return key.toString();
             }
             return StringPool.EMPTY;
         }
         if (hitResult instanceof EntityHitResult) {
-            ResourceLocation key2 = ForgeRegistries.ENTITY_TYPES.getKey(((EntityHitResult) hitResult).getEntity().getType());
+            ResourceLocation key2 = BuiltInRegistries.ENTITY_TYPE.getKey(((EntityHitResult) hitResult).getEntity().getType());
             if (key2 != null) {
                 return key2.toString();
             }
@@ -235,7 +235,7 @@ public class YSMBinding extends ContextBinding {
     private static String getHookedEntityType(IContext<FishingHook> context) {
         ResourceLocation key;
         Entity entity = ((FishingHookAccessor) context.entity()).getHookedIn();
-        if (entity != null && (key = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType())) != null) {
+        if (entity != null && (key = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType())) != null) {
             return key.toString();
         }
         return StringPool.EMPTY;
@@ -244,7 +244,7 @@ public class YSMBinding extends ContextBinding {
     private static String getThrowableItemId(IContext<ThrowableItemProjectile> context) {
         ThrowableItemProjectile throwableItemProjectile = context.entity();
         if (throwableItemProjectile instanceof ThrowableItemProjectileAccessor) {
-            ResourceLocation key = ForgeRegistries.ITEMS.getKey(((ThrowableItemProjectileAccessor) throwableItemProjectile).invokeGetDefaultItem());
+            ResourceLocation key = BuiltInRegistries.ITEM.getKey(((ThrowableItemProjectileAccessor) throwableItemProjectile).invokeGetDefaultItem());
             if (key != null) {
                 return key.toString();
             }
@@ -315,7 +315,7 @@ public class YSMBinding extends ContextBinding {
         if (livingEntityMo327xaffeef43 instanceof Player) {
             return "player";
         }
-        ResourceLocation key = ForgeRegistries.ENTITY_TYPES.getKey(livingEntityMo327xaffeef43.getType());
+        ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(livingEntityMo327xaffeef43.getType());
         if (key == null) {
             return StringPool.EMPTY;
         }

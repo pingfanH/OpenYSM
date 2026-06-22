@@ -9,7 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 public class RelativeBlockHasAllTags extends EntityFunction {
     @Override
@@ -24,7 +24,7 @@ public class RelativeBlockHasAllTags extends EntityFunction {
                 return null;
             }
 
-            TagKey<Block> tag = ForgeRegistries.BLOCKS.tags().createTagKey(tagId);
+            TagKey<Block> tag = TagKey.create(Registries.BLOCK, tagId);
             if (!block.is(tag)) {
                 return false;
             }

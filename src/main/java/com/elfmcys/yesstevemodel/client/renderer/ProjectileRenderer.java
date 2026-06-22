@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.client.entity.GeckoProjectileEntity;

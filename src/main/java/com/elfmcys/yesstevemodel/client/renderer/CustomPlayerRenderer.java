@@ -3,7 +3,7 @@ package com.elfmcys.yesstevemodel.client.renderer;
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.capability.PlayerCapability;
-import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
 import com.elfmcys.yesstevemodel.client.compat.gun.swarfare.SWarfareCompat;
 import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;

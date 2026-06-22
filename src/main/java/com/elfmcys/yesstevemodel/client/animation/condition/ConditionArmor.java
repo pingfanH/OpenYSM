@@ -11,8 +11,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,12 +29,9 @@ public class ConditionArmor {
     private static final String EMPTY = "";
 
     private final Reference2ReferenceOpenHashMap<EquipmentSlot, ObjectOpenHashSet<ResourceLocation>> idTest = new Reference2ReferenceOpenHashMap<>();
-
     private final Reference2ReferenceOpenHashMap<EquipmentSlot, ReferenceArrayList<TagKey<Item>>> tagTest = new Reference2ReferenceOpenHashMap<>();
 
     public void addTest(String str) {
-        EquipmentSlot slot;
-        ITagManager<Item> iTagManagerTags;
         Matcher matcher = ID_PRE_REG.matcher(str);
         if (matcher.find()) {
             EquipmentSlot slot2 = getType(matcher.group(1));
@@ -42,21 +39,24 @@ public class ConditionArmor {
                 return;
             }
             String strGroup = matcher.group(2);
-            if (!ResourceLocation.isValidResourceLocation(strGroup)) {
+            if (!ResourceLocation.isValidPath(strGroup)) {
                 return;
-            } else {
-                this.idTest.computeIfAbsent(slot2, obj -> new ObjectOpenHashSet<>()).add(ResourceLocation.parse(strGroup));
             }
+            this.idTest.computeIfAbsent(slot2, obj -> new ObjectOpenHashSet<>()).add(ResourceLocation.parse(strGroup));
         }
         Matcher matcher2 = TAG_PRE_REG.matcher(str);
-        if (!matcher2.find() || (slot = getType(matcher2.group(1))) == null) {
+        if (!matcher2.find()) {
+            return;
+        }
+        EquipmentSlot slot = getType(matcher2.group(1));
+        if (slot == null) {
             return;
         }
         String strGroup2 = matcher2.group(2);
-        if (!ResourceLocation.isValidResourceLocation(strGroup2) || (iTagManagerTags = ForgeRegistries.ITEMS.tags()) == null) {
+        if (!ResourceLocation.isValidPath(strGroup2)) {
             return;
         }
-        this.tagTest.computeIfAbsent(slot, obj2 -> new ReferenceArrayList<>()).add(iTagManagerTags.createTagKey(ResourceLocation.parse(strGroup2)));
+        this.tagTest.computeIfAbsent(slot, obj2 -> new ReferenceArrayList<>()).add(TagKey.create(Registries.ITEM, ResourceLocation.parse(strGroup2)));
     }
 
     public String doTest(LivingEntity entity, EquipmentSlot slot) {
@@ -75,7 +75,7 @@ public class ConditionArmor {
             return EMPTY;
         }
         Set<ResourceLocation> set = this.idTest.get(equipmentSlot);
-        ResourceLocation key = ForgeRegistries.ITEMS.getKey(CosmeticArmorHelper.getArmorItem(livingEntity, equipmentSlot).getItem());
+        ResourceLocation key = BuiltInRegistries.ITEM.getKey(CosmeticArmorHelper.getArmorItem(livingEntity, equipmentSlot).getItem());
         if (key != null && set.contains(key)) {
             return equipmentSlot.getName() + "$" + key;
         }
@@ -88,9 +88,6 @@ public class ConditionArmor {
         }
         List<TagKey<Item>> list = this.tagTest.get(equipmentSlot);
         ItemStack stack = CosmeticArmorHelper.getArmorItem(livingEntity, equipmentSlot);
-        if (ForgeRegistries.ITEMS.tags() == null) {
-            return EMPTY;
-        }
         Stream<TagKey<Item>> stream = list.stream();
         Objects.requireNonNull(stack);
         return stream.filter(stack::is).findFirst().map(tagKey -> equipmentSlot.getName() + "#" + tagKey.location()).orElse("");

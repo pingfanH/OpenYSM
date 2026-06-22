@@ -104,7 +104,7 @@ dependencies {
     }
 
     // MixinExtras (NeoForge bundles MixinExtras, but we need the annotation processor)
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.2"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 }
 
 tasks.register('compileNative') {

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.geckolib3.geo;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.entity.LivingAnimatable;
 import com.elfmcys.yesstevemodel.geckolib3.extended.LivingEntityRendererAccessor;
 import com.elfmcys.yesstevemodel.geckolib3.core.event.predicate.AnimationEvent;

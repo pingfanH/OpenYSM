@@ -6,8 +6,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringUtil;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.ModLoadingStage;
-import net.neoforged.fml.ModLoadingWarning;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -235,8 +233,8 @@ public final class NativeLibLoader {
         return lastError != null ? lastError.logMsg : null;
     }
 
-    public static ModLoadingWarning createLoadingWarning() {
+    public static net.minecraft.network.chat.Component createLoadingWarning() {
         if (lastError == null) return null;
-        return new ModLoadingWarning(ModList.get().getModFileById(YesSteveModel.MOD_ID).getFile().getModInfos().get(0), ModLoadingStage.SIDED_SETUP, lastError.key, lastError.args);
+        return net.minecraft.network.chat.Component.translatable(lastError.key, lastError.args);
     }
 }

@@ -16,9 +16,9 @@ import java.util.function.Supplier;
 public final class MaidCapabilities {
 
     public static final DeferredRegister<AttachmentType<?>> MAID_ATTACHMENT_TYPES =
-            DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, YesSteveModel.MOD_ID);
+            DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, YesSteveModel.MOD_ID);
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static final Supplier<AttachmentType<MaidCapability>> MAID_CAP =
-            MAID_ATTACHMENT_TYPES.register("maid_cap", () -> AttachmentType.builder(() -> null).build());
+            MAID_ATTACHMENT_TYPES.register("maid_cap", () -> (AttachmentType<MaidCapability>) (Object) AttachmentType.builder(() -> (MaidCapability) null).build());
 }

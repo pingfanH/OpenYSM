@@ -1,8 +1,8 @@
 package com.elfmcys.yesstevemodel.event;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capabilities.Capabilities;
-import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import com.elfmcys.yesstevemodel.capability.*;
 import com.elfmcys.yesstevemodel.config.ServerConfig;
 import com.elfmcys.yesstevemodel.model.ServerModelManager;

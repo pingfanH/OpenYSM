@@ -165,20 +165,20 @@ public final class NetworkHandler {
         if (obj instanceof CustomPacketPayload payload) {
             net.minecraft.server.MinecraftServer server = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
-                server.getPlayerList().broadcastAll(payload, (net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>) null);
+                server.getPlayerList().broadcastAll(payload);
             }
         }
     }
 
     public static void sendToTrackingEntity(Object obj, Entity entity) {
         if (obj instanceof CustomPacketPayload payload) {
-            net.neoforged.neoforge.network.PacketDistributor.TRACKING_ENTITY.with(() -> entity).send(payload);
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntity(entity, payload);
         }
     }
 
     public static void sendToTrackingEntityAndSelf(Object obj, Player player) {
         if (obj instanceof CustomPacketPayload payload) {
-            net.neoforged.neoforge.network.PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player).send(payload);
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, payload);
         }
     }
 }

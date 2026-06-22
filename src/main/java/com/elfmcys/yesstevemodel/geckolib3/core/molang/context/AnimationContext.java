@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.geckolib3.core.molang.context;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.audio.AudioPlayerManager;
 import com.elfmcys.yesstevemodel.geckolib3.core.controller.AnimationControllerContext;
 import com.elfmcys.yesstevemodel.audio.PlaybackFlags;

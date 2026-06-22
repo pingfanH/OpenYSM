@@ -5,9 +5,11 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.util.StringPool;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -77,10 +79,14 @@ public final class FileTypeUtil {
             if (str.startsWith("#")) {
                 ResourceLocation resourceLocation = ResourceLocation.tryParse(str.substring(1));
                 if (resourceLocation != null) {
-                    ITagManager<EntityType<?>> iTagManagerTags = ForgeRegistries.ENTITY_TYPES.tags();
-                    iTagManagerTags.getTag(iTagManagerTags.createTagKey(resourceLocation)).forEach(entityType -> {
-                        hashSet.add(entityType.builtInRegistryHolder().key().location());
-                    });
+                    TagKey<EntityType<?>> tagKey = TagKey.create(Registries.ENTITY_TYPE, resourceLocation);
+                    BuiltInRegistries.ENTITY_TYPE.getTag(tagKey).ifPresent(tag ->
+                        tag.forEach(holder ->
+                            holder.unwrapKey().ifPresent(key ->
+                                hashSet.add(key.location())
+                            )
+                        )
+                    );
                 }
             } else {
                 ResourceLocation resourceLocation = ResourceLocation.tryParse(str);

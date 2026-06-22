@@ -1,7 +1,7 @@
 package com.elfmcys.yesstevemodel.network.message;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouMaidCompat;
 import com.elfmcys.yesstevemodel.geckolib3.resource.GeckoLibCache;
 import com.elfmcys.yesstevemodel.molang.parser.ParseException;

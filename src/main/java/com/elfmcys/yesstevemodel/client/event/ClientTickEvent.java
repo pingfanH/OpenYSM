@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.client.ClientModelManager;
@@ -20,7 +22,7 @@ public class ClientTickEvent {
     private static int refreshRate = 60;
 
     @SubscribeEvent
-    public static void onClientTick(net.neoforged.neoforge.event.tick.ClientTickEvent.Pre event) {
+    public static void onClientTick(net.neoforged.neoforge.client.event.ClientTickEvent.Pre event) {
         if (!YesSteveModel.isAvailable()) {
             return;
         }

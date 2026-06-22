@@ -4,11 +4,12 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.context.IContext;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.LivingEntityFunction;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.apache.commons.lang3.StringUtils;
 
 public class Ride extends LivingEntityFunction {
@@ -32,7 +33,6 @@ public class Ride extends LivingEntityFunction {
     @Override
     public Object eval(ExecutionContext<IContext<LivingEntity>> context, ArgumentCollection arguments) {
         Entity firstPassenger;
-        ITagManager iTagManagerTags;
         String type = arguments.getAsString(context, 0);
         String id = arguments.getAsString(context, 1);
         LivingEntity entity = context.entity().entity();
@@ -52,14 +52,15 @@ public class Ride extends LivingEntityFunction {
         String strSubstring = id.substring(1);
         EntityType<?> entityType = firstPassenger.getType();
         if (id.startsWith(PREFIX_ITEM_ID)) {
-            ResourceLocation key = ForgeRegistries.ENTITY_TYPES.getKey(entityType);
+            ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
             if (key == null) {
                 return 0;
             }
             return strSubstring.equals(key.toString()) ? 1 : 0;
         }
-        if (id.startsWith(PREFIX_ITEM_TAG) && (iTagManagerTags = ForgeRegistries.ENTITY_TYPES.tags()) != null) {
-            return entityType.is(iTagManagerTags.createTagKey(ResourceLocation.parse(strSubstring))) ? 1 : 0;
+        if (id.startsWith(PREFIX_ITEM_TAG)) {
+            TagKey<EntityType<?>> tagKey = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.parse(strSubstring));
+            return entityType.is(tagKey) ? 1 : 0;
         }
         return 0;
     }

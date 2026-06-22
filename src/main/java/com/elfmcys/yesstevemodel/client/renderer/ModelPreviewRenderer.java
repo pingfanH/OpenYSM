@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.compat.firstperson.FirstPersonCompat;
 import com.elfmcys.yesstevemodel.client.compat.oculus.OculusCompat;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;

@@ -23,7 +23,7 @@ public class ConditionTAC {
             return;
         }
         String str2 = strArrSplit[1];
-        if (ResourceLocation.isValidResourceLocation(str2)) {
+        if (ResourceLocation.isValidPath(str2)) {
             this.nameTest.add(name);
             this.idTest.add(ResourceLocation.parse(str2));
         }

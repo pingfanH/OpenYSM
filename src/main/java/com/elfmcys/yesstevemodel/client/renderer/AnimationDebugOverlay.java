@@ -1,7 +1,8 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.animation.molang.MolangWatchRegistry;
-import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
 import com.elfmcys.yesstevemodel.geckolib3.core.controller.IAnimationController;
@@ -18,8 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.client.gui.overlay.ForgeGui;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
@@ -32,10 +31,7 @@ public class AnimationDebugOverlay {
     private static final ReferenceArrayList<String> DEBUG_LINES = new ReferenceArrayList<>();
     private static WeakReference<GeoEntity<?>> activeModel = null;
 
-    public static IGuiOverlay createOverlay() {
-        return (forgeGui, guiGraphics, partialTick, screenWidth, screenHeight) -> {
-            renderOverlay(forgeGui, guiGraphics, screenWidth, screenHeight);
-        };
+    public static void createOverlay() {
     }
 
     public static MolangWatchRegistry getMolangWatch() {
@@ -133,23 +129,23 @@ public class AnimationDebugOverlay {
         return null;
     }
 
-    public static void renderOverlay(ForgeGui forgeGui, GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
+    public static void renderOverlay(GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         GeoEntity<?> geoEntity = getActiveModel();
         if (geoEntity == null) {
             return;
         }
         int[] currentY = {5};
         MOLANG_WATCH.forEachEntry((molangKey, molangValue) -> {
-            renderDebugOverlay(forgeGui, guiGraphics, currentY, molangKey, molangValue, screenWidth, screenHeight);
+            renderDebugOverlay(guiGraphics, currentY, molangKey, molangValue, screenWidth, screenHeight);
         });
         DEBUG_LINES.forEach(str3 -> {
             IAnimationController controller = geoEntity.getAnimationData().getAnimationControllerByName(str3);
-            renderDebugOverlay(forgeGui, guiGraphics, currentY, str3, controller != null ? controller.getCurrentAnimation() : "(N/A)", screenWidth, screenHeight);
+            renderDebugOverlay(guiGraphics, currentY, str3, controller != null ? controller.getCurrentAnimation() : "(N/A)", screenWidth, screenHeight);
         });
     }
 
-    public static void renderDebugOverlay(ForgeGui forgeGui, GuiGraphics guiGraphics, int[] currentY, String key, String value, int screenWidth, int screenHeight) {
-        Font font = forgeGui.getFont();
+    public static void renderDebugOverlay(GuiGraphics guiGraphics, int[] currentY, String key, String value, int screenWidth, int screenHeight) {
+        Font font = Minecraft.getInstance().font;
         if ((currentY[0] - 5) % 20 == 0) {
             guiGraphics.fill(2, currentY[0] - 1, screenWidth, currentY[0] + 9, -1068478384);
         } else {

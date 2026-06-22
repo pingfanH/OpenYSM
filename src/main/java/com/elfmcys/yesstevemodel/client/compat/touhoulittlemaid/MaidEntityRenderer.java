@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapability;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;

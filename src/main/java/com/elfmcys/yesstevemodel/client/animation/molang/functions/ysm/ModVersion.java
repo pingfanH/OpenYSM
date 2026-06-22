@@ -2,7 +2,6 @@ package com.elfmcys.yesstevemodel.client.animation.molang.functions.ysm;
 
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import com.elfmcys.yesstevemodel.molang.runtime.Function;
-import net.neoforged.neoforge.common.util.MavenVersionStringHelper;
 import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +14,7 @@ public class ModVersion implements Function {
         if (modid == null) {
             return null;
         }
-        return ModList.get().getModContainerById(modid).map(modContainer -> MavenVersionStringHelper.artifactVersionToString(modContainer.getModInfo().getVersion())).orElse(null);
+        return ModList.get().getModContainerById(modid).map(modContainer -> modContainer.getModInfo().getVersion().toString()).orElse(null);
     }
 
     @Override

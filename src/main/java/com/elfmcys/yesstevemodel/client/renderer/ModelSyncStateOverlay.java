@@ -3,14 +3,14 @@ package com.elfmcys.yesstevemodel.client.renderer;
 import com.elfmcys.yesstevemodel.client.ClientModelManager;
 import com.elfmcys.yesstevemodel.config.LoadingStateConfig;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.neoforged.neoforge.client.gui.overlay.ForgeGui;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 
-public class ModelSyncStateOverlay implements IGuiOverlay {
-    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
+public class ModelSyncStateOverlay {
+    public void render(GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         int textX;
         int textY;
         int barX;
@@ -73,7 +73,7 @@ public class ModelSyncStateOverlay implements IGuiOverlay {
                 int loadedModelCount = ClientModelManager.getModelAssemblyMap().size();
                 int totalModelCount = loadedModelCount + pendingModelCount;
                 MutableComponent loadingText = Component.translatable("gui.yes_steve_model.sync_hint.title").append(Component.translatable("gui.yes_steve_model.sync_hint.loading_models", pendingModelCount, totalModelCount).withStyle(ChatFormatting.YELLOW));
-                renderSyncText(gui, guiGraphics, loadingText, textX, textY, screenWidth);
+                renderSyncText(guiGraphics, loadingText, textX, textY, screenWidth);
                 guiGraphics.fill(barX, barY, barX + 150, barY + 10, -11184811);
                 guiGraphics.fill(barX, barY, barX + (150 * (loadedModelCount / totalModelCount)), barY + 10, -256);
             }
@@ -103,18 +103,19 @@ public class ModelSyncStateOverlay implements IGuiOverlay {
                 }
                 break;
         }
-        renderSyncText(gui, guiGraphics, prefixText, textX, textY, screenWidth);
+        renderSyncText(guiGraphics, prefixText, textX, textY, screenWidth);
     }
 
-    private void renderSyncText(ForgeGui gui, GuiGraphics guiGraphics, MutableComponent textComponent, int baseX, int textY, int screenWidth) {
+    private void renderSyncText(GuiGraphics guiGraphics, MutableComponent textComponent, int baseX, int textY, int screenWidth) {
+        Font font = Minecraft.getInstance().font;
         int drawX;
-        int textWidth = gui.getFont().width(textComponent);
+        int textWidth = font.width(textComponent);
 
         drawX = switch (LoadingStateConfig.LOADING_STATE_POSITION.get()) {
             case TOP_LEFT, BOTTOM_LEFT -> baseX;
             case TOP_CENTER, BOTTOM_CENTER -> (screenWidth - textWidth) / 2;
             case TOP_RIGHT, BOTTOM_RIGHT -> baseX - textWidth;
         };
-        guiGraphics.drawString(gui.getFont(), textComponent, drawX, textY, 16777215);
+        guiGraphics.drawString(font, textComponent, drawX, textY, 16777215);
     }
 }

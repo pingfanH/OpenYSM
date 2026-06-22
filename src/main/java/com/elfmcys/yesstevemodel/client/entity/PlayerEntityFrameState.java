@@ -132,7 +132,7 @@ public class PlayerEntityFrameState extends LivingEntityFrameState<Player> {
 
     public byte getEffectAmplifier(MobEffect mobEffect) {
         if (this.isLocalPlayer) {
-            MobEffectInstance effect = this.entity.getEffect(mobEffect);
+            MobEffectInstance effect = this.entity.getEffect(mobEffect.builtInRegistryHolder());
             if (effect != null) {
                 return (byte) (effect.getAmplifier() + 1);
             }

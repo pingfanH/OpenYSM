@@ -5,11 +5,9 @@ import com.elfmcys.yesstevemodel.config.ExtraPlayerRenderConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.neoforged.neoforge.client.gui.overlay.ForgeGui;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 
-public class LoadingStateOverlay implements IGuiOverlay {
-    public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
+public class LoadingStateOverlay {
+    public void render(GuiGraphics guiGraphics, int screenWidth, int screenHeight) {
         Minecraft minecraft;
         LocalPlayer localPlayer;
         if (ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER.get() || (localPlayer = (minecraft = Minecraft.getInstance()).player) == null || (minecraft.screen instanceof ExtraPlayerRenderScreen)) {

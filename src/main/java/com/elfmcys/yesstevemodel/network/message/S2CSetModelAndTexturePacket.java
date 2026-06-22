@@ -1,6 +1,6 @@
 package com.elfmcys.yesstevemodel.network.message;
 
-import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import com.elfmcys.yesstevemodel.capability.PlayerCapability;
 import com.elfmcys.yesstevemodel.event.EntityJoinCallbackEvent;
 import net.minecraft.network.FriendlyByteBuf;

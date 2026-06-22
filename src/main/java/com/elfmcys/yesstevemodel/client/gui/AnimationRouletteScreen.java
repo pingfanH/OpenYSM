@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.gui;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.event.AnimationLockEvent;
 import com.elfmcys.yesstevemodel.client.gui.custom.ExtraAnimationButtons;
 import com.elfmcys.yesstevemodel.YesSteveModel;

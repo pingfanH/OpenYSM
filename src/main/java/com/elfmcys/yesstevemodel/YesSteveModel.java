@@ -15,7 +15,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.ModLoadingWarning;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -69,8 +68,10 @@ public class YesSteveModel {
                 oldConfig.delete();
             }
         }
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, GeneralConfig.buildSpec());
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.buildSpec());
+        // FIXME: ModLoadingContext.registerConfig removed in NeoForge 1.21.1
+        // ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, GeneralConfig.buildSpec());
+        // FIXME: ModLoadingContext.registerConfig removed in NeoForge 1.21.1
+        // ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.buildSpec());
         if (FMLEnvironment.dist == Dist.CLIENT) {
             ModSoundEvents.REGISTER.register(ModLoadingContext.get().getActiveContainer().getEventBus());
         }
@@ -93,7 +94,7 @@ public class YesSteveModel {
         }
     }
 
-    public static ModLoadingWarning getLoadingWarning() {
+    public static Component getLoadingWarning() {
         return NativeLibLoader.createLoadingWarning();
     }
 

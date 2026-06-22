@@ -8,9 +8,7 @@ import net.minecraft.world.entity.Entity;
 public class ConditionChair {
 
     private static final String EMPTY = "";
-
     private final ObjectOpenHashSet<String> idTest = new ObjectOpenHashSet<>();
-
     private final String idPre;
 
     public ConditionChair() {
@@ -23,7 +21,7 @@ public class ConditionChair {
             return;
         }
         String strSubstring = name.substring(preSize);
-        if (name.startsWith(this.idPre) && ResourceLocation.isValidResourceLocation(strSubstring)) {
+        if (name.startsWith(this.idPre) && ResourceLocation.isValidPath(strSubstring)) {
             this.idTest.add(strSubstring);
         }
     }

@@ -5,11 +5,13 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.LivingEnt
 import com.elfmcys.yesstevemodel.geckolib3.util.MolangUtils;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.tags.ITagManager;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.apache.commons.lang3.StringUtils;
 
 public class Armor extends LivingEntityFunction {
@@ -26,7 +28,6 @@ public class Armor extends LivingEntityFunction {
 
     @Override
     public Object eval(ExecutionContext<IContext<LivingEntity>> context, ArgumentCollection arguments) {
-        ITagManager iTagManagerTags;
         EquipmentSlot slotType = MolangUtils.parseSlotType(context.entity(), arguments.getAsString(context, 0));
         if (slotType == null || !slotType.isArmor()) {
             return null;
@@ -42,14 +43,15 @@ public class Armor extends LivingEntityFunction {
         }
         String strSubstring = id.substring(1);
         if (id.startsWith(PREFIX_ITEM_ID)) {
-            ResourceLocation key = ForgeRegistries.ITEMS.getKey(itemBySlot.getItem());
+            ResourceLocation key = BuiltInRegistries.ITEM.getKey(itemBySlot.getItem());
             if (key == null) {
                 return 0;
             }
             return strSubstring.equals(key.toString()) ? 1 : 0;
         }
-        if (id.startsWith(PREFIX_ITEM_TAG) && (iTagManagerTags = ForgeRegistries.ITEMS.tags()) != null) {
-            return itemBySlot.is(iTagManagerTags.createTagKey(ResourceLocation.parse(strSubstring))) ? 1 : 0;
+        if (id.startsWith(PREFIX_ITEM_TAG)) {
+            TagKey<Item> tagKey = TagKey.create(Registries.ITEM, ResourceLocation.parse(strSubstring));
+            return itemBySlot.is(tagKey) ? 1 : 0;
         }
         return 0;
     }

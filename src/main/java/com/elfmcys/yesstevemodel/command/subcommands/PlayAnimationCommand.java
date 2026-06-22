@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.command.subcommands;
 
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+
 import com.elfmcys.yesstevemodel.event.CommandRegistry;
 import com.elfmcys.yesstevemodel.util.YSMMessageFormatter;
 import com.mojang.brigadier.Command;

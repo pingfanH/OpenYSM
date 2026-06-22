@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import java.util.Optional;
 
 import com.elfmcys.yesstevemodel.client.compat.oculus.OculusCompat;
@@ -15,8 +17,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ToolActions;
-import org.spongepowered.asm.mixin.Unique;
+
+import java.util.Optional;
 
 public class CustomFishingHookRenderer {
     public static boolean tryRenderCustomHook(FishingHook fishingHook, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
@@ -39,9 +41,6 @@ public class CustomFishingHookRenderer {
 
     private static void renderFishingLine(FishingHook fishingHook, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, Player player) {
         int hand = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
-        if (!player.getMainHandItem().canPerformAction(ToolActions.FISHING_ROD_CAST)) {
-            hand = -hand;
-        }
         float swingProgressSqrt = Mth.sin(Mth.sqrt(player.getAttackAnim(partialTick)) * 3.1415927f);
         float yawOffset = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot) * 0.017453292f;
         double dSin = Mth.sin(yawOffset);
@@ -79,17 +78,14 @@ public class CustomFishingHookRenderer {
         }
     }
 
-    @Unique
     private static float[] lineColor(FishingHook fishingHook) {
         return new float[]{0.0f, 0.0f, 0.0f};
     }
 
-    @Unique
     private static float fraction(int i) {
         return i / 16.0f;
     }
 
-    @Unique
     private static void stringVertex(float x, float y, float z, VertexConsumer vertexConsumer, PoseStack.Pose pose, float startFrac, float endFrac, float red, float green, float blue) {
         float vx = x * startFrac;
         float vy = (y * ((startFrac * startFrac) + startFrac) * 0.5f) + 0.25f;

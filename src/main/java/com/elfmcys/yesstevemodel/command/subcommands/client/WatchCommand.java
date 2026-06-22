@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.command.subcommands.client;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.client.animation.molang.MolangWatchRegistry;
 import com.elfmcys.yesstevemodel.client.renderer.AnimationDebugOverlay;
 import com.elfmcys.yesstevemodel.command.RootClientCommand;

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+
 import com.google.common.collect.Sets;
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import net.minecraft.client.Minecraft;

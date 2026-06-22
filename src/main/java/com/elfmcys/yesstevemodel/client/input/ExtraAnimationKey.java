@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.client.input;
 
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.resource.models.ModelProperties;
 import com.elfmcys.yesstevemodel.client.event.AnimationLockEvent;
