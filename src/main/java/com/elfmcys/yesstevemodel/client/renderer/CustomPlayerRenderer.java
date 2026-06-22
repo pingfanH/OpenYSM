@@ -101,10 +101,10 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         double dDistanceToSqr = this.entityRenderDispatcher.distanceToSqr(player);
         poseStack.pushPose();
         if (dDistanceToSqr < 100.0d && (displayObjective = (scoreboard = player.getScoreboard()).getDisplayObjective(net.minecraft.world.scores.DisplaySlot.SIDEBAR)) != null) {
-            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player, displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), poseStack, multiBufferSource, i);
+            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player, displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), poseStack, multiBufferSource, i, 1.0f);
             poseStack.translate(0.0d, 0.25875d, 0.0d);
         }
-        super.renderNameTag(player, component, poseStack, multiBufferSource, i);
+        super.renderNameTag(player, component, poseStack, multiBufferSource, i, 1.0f);
         poseStack.popPose();
     }
 
