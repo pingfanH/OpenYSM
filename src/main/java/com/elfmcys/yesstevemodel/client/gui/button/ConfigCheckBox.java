@@ -4,7 +4,7 @@ import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.gui.ISpecialWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.StateSwitchingButton;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -13,7 +13,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
-public class ConfigCheckBox extends StateSwitchingButton implements ISpecialWidget {
+public class ConfigCheckBox extends Checkbox implements ISpecialWidget {
 
     private static final ResourceLocation location = ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "texture/roulette.png");
 
@@ -22,10 +22,9 @@ public class ConfigCheckBox extends StateSwitchingButton implements ISpecialWidg
     private final Component component2;
 
     public ConfigCheckBox(int x, int y, int width, Component component, Consumer<Boolean> consumer) {
-        super(x, y, width, 12, false);
+        super(x, y, width, 12, component, false, false);
         this.component2 = component;
         this.consumer2 = consumer;
-        initTextureValues(0, 0, 128, 12, location);
     }
 
     public ConfigCheckBox(int x, int y, Component component, Consumer<Boolean> consumer) {
