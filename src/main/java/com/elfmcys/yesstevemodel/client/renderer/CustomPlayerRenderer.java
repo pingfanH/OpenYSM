@@ -102,7 +102,7 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         double dDistanceToSqr = this.entityRenderDispatcher.distanceToSqr(player);
         guiGraphics.pose().pushPose();
         if (dDistanceToSqr < 100.0d && (displayObjective = (scoreboard = player.getScoreboard()).getDisplayObjective(net.minecraft.world.scores.DisplaySlot.SIDEBAR)) != null) {
-            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), guiGraphics, multiBufferSource, i);
+            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player, displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), guiGraphics, multiBufferSource, i);
             guiGraphics.pose().translate(0.0d, 0.25875d, 0.0d);
         }
         super.renderNameTag(player, component, guiGraphics, multiBufferSource, i);
@@ -110,8 +110,8 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
     }
 
     @Override
-    public void setupRotations(Player player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.setupRotations(player, poseStack, ageInTicks, rotationYaw, partialTicks);
+    public void setupRotations(Player player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+        super.setupRotations(player, poseStack, ageInTicks, rotationYaw, partialTicks, scale);
         Entity vehicle = player.getVehicle();
         if (TouhouLittleMaidCompat.isSimplePlanesEntity(vehicle) || TouhouLittleMaidCompat.isImmersiveAircraftEntity(vehicle)) {
             poseStack.translate(0.0d, 0.5d, 0.0d);
