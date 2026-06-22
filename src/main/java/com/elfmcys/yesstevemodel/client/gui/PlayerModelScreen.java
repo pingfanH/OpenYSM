@@ -531,7 +531,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             RenderSystem.enableScissor((int) ((this.guiLeft + 5) * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - ((this.guiTop + 200) * guiScale)), (int) (125.0d * guiScale), (int) (171.0d * guiScale));
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0.0f, 0.0f, 100.0f);
-            InventoryScreen.renderEntityInInventory(guiGraphics, (float)(this.guiLeft + 67), (float)(this.guiTop + 190), 70.0f, (float)((this.guiLeft + 67) - mouseX), (float)(((this.guiTop + 180) - 95) - mouseY), localPlayer);
+            InventoryScreen.renderEntityInInventory(guiGraphics, this.guiLeft + 67, this.guiTop + 190, 70, (float)((this.guiLeft + 67) - mouseX), (float)(((this.guiTop + 180) - 95) - mouseY), localPlayer);
             guiGraphics.pose().popPose();
             RenderSystem.disableScissor();
             Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
