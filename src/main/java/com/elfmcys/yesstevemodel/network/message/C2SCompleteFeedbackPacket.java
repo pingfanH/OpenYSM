@@ -1,35 +1,41 @@
 package com.elfmcys.yesstevemodel.network.message;
 
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.VehicleModelCapabilityProvider;
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouMaidCompat;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public record C2SCompleteFeedbackPacket(FeedbackData feedbackData) {
+public record C2SCompleteFeedbackPacket(FeedbackData feedbackData) implements CustomPacketPayload {
 
-    public static void encode(C2SCompleteFeedbackPacket message, FriendlyByteBuf buf) {
-        FeedbackData.writeToBuf(message.feedbackData, buf);
+    public static final Type<C2SCompleteFeedbackPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "complete_feedback"));
+
+    public static final StreamCodec<FriendlyByteBuf, C2SCompleteFeedbackPacket> STREAM_CODEC =
+            StreamCodec.ofMember(C2SCompleteFeedbackPacket::encode, C2SCompleteFeedbackPacket::decode);
+
+    public void encode(FriendlyByteBuf buf) {
+        FeedbackData.writeToBuf(this.feedbackData, buf);
     }
 
     public static C2SCompleteFeedbackPacket decode(FriendlyByteBuf buf) {
         return new C2SCompleteFeedbackPacket(FeedbackData.readFromBuf(buf, false));
     }
 
-    public static void handle(C2SCompleteFeedbackPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer() && context.getSender() != null) {
-            ServerPlayer sender = context.getSender();
+    public static void handle(C2SCompleteFeedbackPacket message, IPayloadContext context) {
+        if (context.flow().isServerbound() && context.player() != null) {
+            ServerPlayer sender = (ServerPlayer) context.player();
             context.enqueueWork(() -> {
                 handleOnServer(message, sender.serverLevel());
             });
         }
-        context.setPacketHandled(true);
     }
 
     public static void handleOnServer(C2SCompleteFeedbackPacket message, ServerLevel serverLevel) {
@@ -37,14 +43,19 @@ public record C2SCompleteFeedbackPacket(FeedbackData feedbackData) {
         if (TouhouMaidCompat.isMaidEntity(entity)) {
             TouhouMaidCompat.applyFeedback(entity, message.feedbackData);
         } else if (entity instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+            Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
                 cap.applyFeedback(serverPlayer, message.feedbackData);
                 if (serverPlayer.getVehicle() != null && serverPlayer.getVehicle().getFirstPassenger() == serverPlayer) {
-                    serverPlayer.getVehicle().getCapability(VehicleModelCapabilityProvider.VEHICLE_MODEL_CAP).ifPresent(vehicleCap -> {
+                    Optional.ofNullable(serverPlayer.getVehicle().getData(Capabilities.VEHICLE_MODEL.get())).ifPresent(vehicleCap -> {
                         cap.getMolangVars().ifPresent(map -> vehicleCap.setModel(cap.getModelId(), map));
                     });
                 }
             });
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

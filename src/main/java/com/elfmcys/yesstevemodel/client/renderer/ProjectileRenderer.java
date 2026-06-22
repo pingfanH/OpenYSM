@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
-import com.elfmcys.yesstevemodel.capability.ProjectileCapabilityProvider;
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.client.entity.GeckoProjectileEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -20,7 +21,7 @@ public class ProjectileRenderer extends AbstractProjectileRenderer<Projectile, G
         if (Minecraft.getInstance().player == null || projectile.isInvisibleTo(Minecraft.getInstance().player)) {
             return;
         }
-        projectile.getCapability(ProjectileCapabilityProvider.PROJECTILE_CAP).ifPresent(cap -> {
+        Optional.ofNullable(projectile.getData(ClientCapabilities.PROJECTILE_CAP.get())).ifPresent(cap -> {
             cap.tickModel();
             render(cap, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         });
@@ -28,6 +29,6 @@ public class ProjectileRenderer extends AbstractProjectileRenderer<Projectile, G
 
     @NotNull
     public ResourceLocation getTextureLocation(Projectile projectile) {
-        return projectile.getCapability(ProjectileCapabilityProvider.PROJECTILE_CAP).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
+        return Optional.ofNullable(projectile.getData(ClientCapabilities.PROJECTILE_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
     }
 }

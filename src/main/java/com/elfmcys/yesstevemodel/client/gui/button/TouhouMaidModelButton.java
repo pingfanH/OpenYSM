@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.gui.button;
 
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.util.ComponentUtil;
@@ -24,9 +25,9 @@ public class TouhouMaidModelButton extends ModelButton {
             return;
         }
         Component component = ComponentUtil.getDisplayName(this.renderContext, this.modelIdHolder.getModelId());
-        this.maid.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> {
+        Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             cap.setYsmModel(this.modelIdHolder.getModelId(), this.modelIdHolder.getCurrentTextureName());
-            NetworkHandler.CHANNEL.sendToServer(new YsmMaidModelMessage(this.maid.getId(), this.modelIdHolder.getModelId(), this.modelIdHolder.getCurrentTextureName(), component));
+            NetworkHandler.sendToServer(new YsmMaidModelMessage(this.maid.getId(), this.modelIdHolder.getModelId(), this.modelIdHolder.getCurrentTextureName(), component));
         });
     }
 }

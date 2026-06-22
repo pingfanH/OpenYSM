@@ -1,18 +1,18 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.client.ClientModelManager;
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.upload.UploadManager;
 import com.elfmcys.yesstevemodel.audio.ObjectPool;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber({Dist.CLIENT})
+@EventBusSubscriber({Dist.CLIENT})
 public class ClientTickEvent {
 
     private static int tickCount;
@@ -20,8 +20,8 @@ public class ClientTickEvent {
     private static int refreshRate = 60;
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (!YesSteveModel.isAvailable() || event.phase == TickEvent.Phase.END) {
+    public static void onClientTick(net.neoforged.neoforge.event.tick.ClientTickEvent.Pre event) {
+        if (!YesSteveModel.isAvailable()) {
             return;
         }
         tickCount++;
@@ -31,7 +31,7 @@ public class ClientTickEvent {
         refreshRate = Minecraft.getInstance().getWindow().getRefreshRate();
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent((v0) -> {
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent((v0) -> {
                 v0.tickAnimations();
             });
         }

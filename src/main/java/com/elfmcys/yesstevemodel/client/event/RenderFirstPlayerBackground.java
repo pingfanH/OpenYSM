@@ -1,8 +1,9 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.geckolib3.geo.NativeModelRenderer;
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.client.renderer.CustomEntityTranslucentRenderType;
 import com.elfmcys.yesstevemodel.client.renderer.CustomPlayerRenderer;
@@ -18,14 +19,15 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber({Dist.CLIENT})
+@EventBusSubscriber({Dist.CLIENT})
 public class RenderFirstPlayerBackground {
     // 因为RenderHandEvent可有几率会渲染多次，所以为了避免多次渲染，这样设计
     private static boolean currentFrameRendered = false;
@@ -53,7 +55,7 @@ public class RenderFirstPlayerBackground {
             return;
         }
         currentFrameRendered = true;
-        player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             if (!cap.isModelActive()) {
                 return;
             }
@@ -65,7 +67,7 @@ public class RenderFirstPlayerBackground {
             CustomPlayerRenderer instance = RendererManager.getPlayerRenderer();
             PoseStack poseStack = event.getPoseStack();
             MultiBufferSource multiBufferSource = event.getMultiBufferSource();
-            if (MinecraftForge.EVENT_BUS.post(new SpecialPlayerRenderEvent(player, cap,  modelId))) {
+            if (NeoForge.EVENT_BUS.post(new SpecialPlayerRenderEvent(player, cap,  modelId))) {
                 return;
             }
             ResourceLocation resourceLocationB_ = cap.getTextureLocation();

@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid;
 
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.event.ClientDistChecker;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.event.MaidCapabilityEvent;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.event.MaidClientTickEvent;
@@ -15,9 +16,11 @@ import com.github.tartaricacid.touhoulittlemaid.item.ItemHakureiGohei;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForge;
+
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class MaidEventHandler {
@@ -25,10 +28,10 @@ public class MaidEventHandler {
     private static MaidEntityRenderer maidRenderer;
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new MaidScreenEvent());
-        MinecraftForge.EVENT_BUS.register(new MaidCapabilityEvent());
-        MinecraftForge.EVENT_BUS.register(new MaidClientTickEvent());
-        MinecraftForge.EVENT_BUS.register(new ClientDistChecker());
+        NeoForge.EVENT_BUS.register(new MaidScreenEvent());
+        NeoForge.EVENT_BUS.register(new MaidCapabilityEvent());
+        NeoForge.EVENT_BUS.register(new MaidClientTickEvent());
+        NeoForge.EVENT_BUS.register(new ClientDistChecker());
     }
 
     public static void registerMaidRenderer() {
@@ -46,7 +49,7 @@ public class MaidEventHandler {
         if (!(entity instanceof EntityMaid entityMaid)) {
             return false;
         }
-        return entityMaid.getCapability(MaidCapabilityProvider.MAID_CAP).isPresent() && entityMaid.isYsmModel();
+        return Optional.ofNullable(entityMaid.getData(MaidCapabilities.MAID_CAP.get())).isPresent() && entityMaid.isYsmModel();
     }
 
     public static boolean isChair(Entity entity) {
@@ -69,7 +72,7 @@ public class MaidEventHandler {
     }
 
     public static void setExtraRenderFlag(LivingEntity livingEntity) {
-        livingEntity.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> {
+        Optional.ofNullable(livingEntity.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             cap.setExtraRenderFlag(true);
         });
     }

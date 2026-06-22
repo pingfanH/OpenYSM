@@ -1,6 +1,5 @@
 package com.elfmcys.yesstevemodel.command.subcommands.client;
 
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.animation.molang.MolangWatchRegistry;
 import com.elfmcys.yesstevemodel.client.renderer.AnimationDebugOverlay;
 import com.elfmcys.yesstevemodel.command.RootClientCommand;
@@ -18,6 +17,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
+import java.util.Optional;
 
 public class WatchCommand {
 
@@ -55,7 +55,7 @@ public class WatchCommand {
         try {
             IValue value = GeckoLibCache.parseSimpleExpression(string);
             minecraft.execute(() -> {
-                minecraft.player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Optional.ofNullable(minecraft.player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     AnimationDebugOverlay.getMolangWatch().addWatch(MolangWatchRegistry.EvaluationPhase.POST_ANIMATION, string, value);
                     if (!AnimationDebugOverlay.isDebugActive()) {
                         AnimationDebugOverlay.tryUpdateFromLocalPlayer();
@@ -75,7 +75,7 @@ public class WatchCommand {
         }
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.execute(() -> {
-            minecraft.player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> AnimationDebugOverlay.getMolangWatch().clearAll());
+            Optional.ofNullable(minecraft.player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> AnimationDebugOverlay.getMolangWatch().clearAll());
         });
         AnimationDebugOverlay.clearDebugLines();
         return Command.SINGLE_SUCCESS;

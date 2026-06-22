@@ -1,7 +1,7 @@
 package com.elfmcys.yesstevemodel.config;
 
 import com.google.common.collect.Lists;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ForgeConfigSpec;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.elfmcys.yesstevemodel.command.subcommands;
 
 import com.elfmcys.yesstevemodel.event.CommandRegistry;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.elfmcys.yesstevemodel.util.YSMMessageFormatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -14,6 +13,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class PlayAnimationCommand {
 
@@ -34,7 +34,7 @@ public class PlayAnimationCommand {
     private static int playAnimation(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Collection<ServerPlayer> players = EntityArgument.getPlayers(context, TARGETS_NAME);
         String animation = StringArgumentType.getString(context, ANIMATION_NAME);
-        players.forEach(player -> player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+        players.forEach(player -> Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
             if (STOP.equals(animation)) {
                 cap.stopAnimation(player);
             } else {

@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel.capability;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.client.animation.molang.struct.RoamingStruct;
 import com.elfmcys.yesstevemodel.client.animation.molang.struct.RoamingSyncBatch;
 import com.elfmcys.yesstevemodel.client.compat.bettercombat.BetterCombatCompat;
@@ -27,8 +29,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayFIFOQueue;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -153,7 +155,7 @@ public final class PlayerCapability extends CustomPlayerEntity {
 
     private void applyMolangDelta(int i, Int2FloatMap int2FloatMap) {
         if (i == this.currentModelHashId && this.entity.getVehicle() != null && this.entity.getVehicle().getFirstPassenger() == this.entity) {
-            this.entity.getVehicle().getCapability(VehicleCapabilityProvider.VEHICLE_CAP).ifPresent(cap -> {
+            Optional.ofNullable(this.entity.getVehicle().getData(ClientCapabilities.VEHICLE_CAP.get())).ifPresent(cap -> {
                 cap.updateFloatMap(int2FloatMap);
             });
         }

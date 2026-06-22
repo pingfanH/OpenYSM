@@ -49,9 +49,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -153,12 +153,12 @@ public class YSMBinding extends ContextBinding {
         playerEntityVar("movement_speed", ctx -> ctx.entity().getAttributeValue(Attributes.MOVEMENT_SPEED));
         playerEntityVar("knockback_resistance", ctx -> ctx.entity().getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
         playerEntityVar("luck", ctx -> ctx.entity().getAttributeValue(Attributes.LUCK));
-        playerEntityVar("block_reach", ctx -> ctx.entity().getAttributeValue(ForgeMod.BLOCK_REACH.get()));
-        playerEntityVar("entity_reach", ctx -> ctx.entity().getAttributeValue(ForgeMod.ENTITY_REACH.get()));
-        playerEntityVar("swim_speed", ctx -> ctx.entity().getAttributeValue(ForgeMod.SWIM_SPEED.get()));
-        playerEntityVar("entity_gravity", ctx -> ctx.entity().getAttributeValue(ForgeMod.ENTITY_GRAVITY.get()));
-        playerEntityVar("step_height_addition", ctx -> ctx.entity().getAttributeValue(ForgeMod.STEP_HEIGHT_ADDITION.get()));
-        playerEntityVar("nametag_distance", ctx -> ctx.entity().getAttributeValue(ForgeMod.NAMETAG_DISTANCE.get()));
+        playerEntityVar("block_reach", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.BLOCK_REACH.get()));
+        playerEntityVar("entity_reach", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.ENTITY_REACH.get()));
+        playerEntityVar("swim_speed", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.SWIM_SPEED.get()));
+        playerEntityVar("entity_gravity", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.ENTITY_GRAVITY.get()));
+        playerEntityVar("step_height_addition", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.STEP_HEIGHT_ADDITION.get()));
+        playerEntityVar("nametag_distance", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.NAMETAG_DISTANCE.get()));
         playerEntityVar("in_shield_block_cooldown", YSMBinding::isInShieldBlockCooldown);
 
         clientPlayerEntityVar("elytra_rot_x", ctx -> Math.toDegrees(ctx.entity().elytraRotX));

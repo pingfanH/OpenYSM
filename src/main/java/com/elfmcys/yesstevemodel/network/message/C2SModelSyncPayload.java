@@ -1,13 +1,23 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.model.ServerModelManager;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.nio.ByteBuffer;
-import java.util.function.Supplier;
 
-public class C2SModelSyncPayload {
+public class C2SModelSyncPayload implements CustomPacketPayload {
+
+    public static final Type<C2SModelSyncPayload> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "model_sync"));
+
+    public static final StreamCodec<FriendlyByteBuf, C2SModelSyncPayload> STREAM_CODEC =
+            StreamCodec.ofMember(C2SModelSyncPayload::encode, C2SModelSyncPayload::decode);
 
     private final ByteBuffer data;
 
@@ -15,8 +25,8 @@ public class C2SModelSyncPayload {
         this.data = data;
     }
 
-    public static void encode(C2SModelSyncPayload message, FriendlyByteBuf buf) {
-        buf.writeBytes(message.data);
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeBytes(this.data);
     }
 
     public static C2SModelSyncPayload decode(FriendlyByteBuf buf) {
@@ -25,11 +35,14 @@ public class C2SModelSyncPayload {
         return new C2SModelSyncPayload(data);
     }
 
-    public static void handle(C2SModelSyncPayload message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer() && context.getSender() != null) {
-            ServerModelManager.nativeSendModelData(context.getSender().getUUID(), message.data);
+    public static void handle(C2SModelSyncPayload message, IPayloadContext context) {
+        if (context.flow().isServerbound() && context.player() != null) {
+            ServerModelManager.nativeSendModelData(((ServerPlayer) context.player()).getUUID(), message.data);
         }
-        context.setPacketHandled(true);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

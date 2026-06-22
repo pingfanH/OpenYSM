@@ -1,8 +1,8 @@
 package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid;
 
-import com.elfmcys.yesstevemodel.capability.VehicleCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapability;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.geckolib3.geo.GeoReplacedEntityRenderer;
 import com.elfmcys.yesstevemodel.geckolib3.core.event.predicate.AnimationEvent;
 import com.elfmcys.yesstevemodel.geckolib3.model.provider.data.EntityModelData;
@@ -23,7 +23,9 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.Optional;
 
 public class MaidEntityRenderer extends GeoReplacedEntityRenderer<EntityMaid, MaidCapability> implements IGeoEntityRenderer<EntityMaid> {
     private static final Set<EntityType> CUSTOM_RIDERS = Set.of(EntityType.MINECART, EntityType.BOAT, InitEntities.BROOM.get());
@@ -35,7 +37,7 @@ public class MaidEntityRenderer extends GeoReplacedEntityRenderer<EntityMaid, Ma
     }
 
     public MaidCapability getMaidCapability(EntityMaid maid) {
-        return maid.getCapability(MaidCapabilityProvider.MAID_CAP).map(cap -> cap).orElseGet(() -> new MaidCapability(maid, true));
+        return Optional.ofNullable(maid.getData(MaidCapabilities.MAID_CAP.get())).map(cap -> cap).orElseGet(() -> new MaidCapability(maid, true));
     }
 
     public IGeoEntity getGeoEntity(EntityMaid maid) {
@@ -48,12 +50,12 @@ public class MaidEntityRenderer extends GeoReplacedEntityRenderer<EntityMaid, Ma
     }
 
     public void geoRender(EntityMaid entityMaid, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        entityMaid.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> renderEntity(cap, entityYaw, partialTick, poseStack, bufferSource, packedLight));
+        Optional.ofNullable(entityMaid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> renderEntity(cap, entityYaw, partialTick, poseStack, bufferSource, packedLight));
     }
 
     @NotNull
     public ResourceLocation getTextureLocation(EntityMaid maid) {
-        return maid.getCapability(MaidCapabilityProvider.MAID_CAP).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
+        return Optional.ofNullable(maid.getData(MaidCapabilities.MAID_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
     }
 
     public void render(MaidCapability entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn, AnimationEvent<?> event, EntityModelData modelData) {
@@ -73,7 +75,7 @@ public class MaidEntityRenderer extends GeoReplacedEntityRenderer<EntityMaid, Ma
         Entity entity = maid.getVehicle();
         if (entity instanceof Player) {
             poseStack.translate(-0.05d, 0.19d, 0.24d);
-        } else if (entity != null && CUSTOM_RIDERS.contains(entity.getType()) && !entity.getCapability(VehicleCapabilityProvider.VEHICLE_CAP).isPresent()) {
+        } else if (entity != null && CUSTOM_RIDERS.contains(entity.getType()) && !Optional.ofNullable(entity.getData(ClientCapabilities.VEHICLE_CAP.get())).isPresent()) {
             poseStack.translate(0.0d, -0.5d, 0.0d);
         }
     }

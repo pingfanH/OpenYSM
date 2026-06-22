@@ -1,8 +1,8 @@
 package com.elfmcys.yesstevemodel.client.gui.button;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.StarModelsCapabilityProvider;
 import com.elfmcys.yesstevemodel.network.NetworkHandler;
 import com.elfmcys.yesstevemodel.network.message.C2SSetStarModelPacket;
 import net.minecraft.client.Minecraft;
@@ -27,8 +27,8 @@ public class ModIconButton extends FlatColorButton {
         int iconOffsetY = (this.height - 16) / 2;
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
-                localPlayer.getCapability(StarModelsCapabilityProvider.STAR_MODELS_CAP).ifPresent(cap2 -> {
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(localPlayer.getData(Capabilities.STAR_MODELS.get())).ifPresent(cap2 -> {
                     if (cap2.containsModel(cap.getModelId())) {
                         guiGraphics.blit(ICON_TEXTURE, getX() + iconOffsetX, getY() + iconOffsetY, 16, 16, 16.0f, 0.0f, 16, 16, 256, 256);
                     } else {
@@ -42,8 +42,8 @@ public class ModIconButton extends FlatColorButton {
     public void onPress() {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
-                localPlayer.getCapability(StarModelsCapabilityProvider.STAR_MODELS_CAP).ifPresent(cap2 -> {
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(localPlayer.getData(Capabilities.STAR_MODELS.get())).ifPresent(cap2 -> {
                     String str = cap.getModelId();
                     if (cap2.containsModel(str)) {
                         cap2.removeModel(str);

@@ -1,7 +1,5 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.VehicleCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.compat.firstperson.FirstPersonCompat;
 import com.elfmcys.yesstevemodel.client.compat.oculus.OculusCompat;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
@@ -32,7 +30,9 @@ import net.minecraft.world.level.block.Blocks;
 import org.joml.Quaternionf;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.Optional;
 
 public final class ModelPreviewRenderer {
 
@@ -74,7 +74,7 @@ public final class ModelPreviewRenderer {
     public static void renderVehicleModel(Entity entity, PoseStack poseStack, float partialTick) {
         Entity vehicle = entity.getVehicle();
         if (vehicle != null) {
-            vehicle.getCapability(VehicleCapabilityProvider.VEHICLE_CAP).ifPresent(cap -> {
+            Optional.ofNullable(vehicle.getData(ClientCapabilities.VEHICLE_CAP.get())).ifPresent(cap -> {
                 int index;
                 AnimatedGeoModel model;
                 List<IBone> list;
@@ -86,7 +86,7 @@ public final class ModelPreviewRenderer {
                 RenderUtils.prepMatrixForLocator(poseStack, list);
                 poseStack.mulPose(com.mojang.math.Axis.YN.rotationDegrees(180.0f - bodyRotation));
                 double myRidingOffset = (-vehicle.getPassengersRidingOffset()) - entity.getMyRidingOffset();
-                if (((entity instanceof Player) && entity.getCapability(PlayerCapabilityProvider.PLAYER_CAP).isPresent()) || TouhouLittleMaidCompat.isMaidRideable(entity)) {
+                if (((entity instanceof Player) && Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).isPresent()) || TouhouLittleMaidCompat.isMaidRideable(entity)) {
                     myRidingOffset -= 0.5d;
                 }
                 poseStack.translate(0.0d, myRidingOffset, 0.0d);

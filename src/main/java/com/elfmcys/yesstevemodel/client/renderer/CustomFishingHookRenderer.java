@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
-import com.elfmcys.yesstevemodel.capability.ProjectileCapabilityProvider;
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.client.compat.oculus.OculusCompat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -14,12 +15,12 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ToolActions;
 import org.spongepowered.asm.mixin.Unique;
 
 public class CustomFishingHookRenderer {
     public static boolean tryRenderCustomHook(FishingHook fishingHook, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        return fishingHook.getCapability(ProjectileCapabilityProvider.PROJECTILE_CAP).map(cap -> {
+        return Optional.ofNullable(fishingHook.getData(ClientCapabilities.PROJECTILE_CAP.get())).map(cap -> {
             if (cap.isModelInitialized() && cap.isModelReady()) {
                 fishingHook.setXRot(0.0f);
                 fishingHook.xRotO = 0.0f;

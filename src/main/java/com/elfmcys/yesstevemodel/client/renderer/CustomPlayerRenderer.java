@@ -1,7 +1,9 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.capability.PlayerCapability;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
+import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
 import com.elfmcys.yesstevemodel.client.compat.gun.swarfare.SWarfareCompat;
 import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
@@ -25,7 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, CustomPlayerEntity> {
@@ -42,13 +44,13 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
 
     public void render(Player player, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         PlayerCapability capability;
-        if (SWarfareCompat.isPlayerAiming(player) || (capability = player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).orElse(null)) == null) {
+        if (SWarfareCompat.isPlayerAiming(player) || (capability = Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).orElse(null)) == null) {
             return;
         }
         capability.tickModel();
         SpecialPlayerRenderEvent renderEvent = new SpecialPlayerRenderEvent(player, capability, capability.getModelId());
         this.currentTexture = renderEvent.getTextureLocation();
-        if (MinecraftForge.EVENT_BUS.post(renderEvent)) {
+        if (NeoForge.EVENT_BUS.post(renderEvent)) {
             return;
         }
         renderEntityWithTexture(capability, renderEvent.getTextureLocation(), entityYaw, partialTick, poseStack, bufferSource, packedLight);
@@ -87,7 +89,7 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
 
     @NotNull
     public ResourceLocation getTextureLocation(Player player) {
-        return this.currentTexture == null ? player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation()) : this.currentTexture;
+        return this.currentTexture == null ? Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation()) : this.currentTexture;
     }
 
     public void renderNameTag(Player player, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {

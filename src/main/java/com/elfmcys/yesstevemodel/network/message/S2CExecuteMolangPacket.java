@@ -1,21 +1,30 @@
 package com.elfmcys.yesstevemodel.network.message;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
+import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouMaidCompat;
 import com.elfmcys.yesstevemodel.geckolib3.resource.GeckoLibCache;
 import com.elfmcys.yesstevemodel.molang.parser.ParseException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class S2CExecuteMolangPacket {
+public class S2CExecuteMolangPacket implements CustomPacketPayload {
+
+    public static final Type<S2CExecuteMolangPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "execute_molang"));
+
+    public static final StreamCodec<FriendlyByteBuf, S2CExecuteMolangPacket> STREAM_CODEC =
+            StreamCodec.ofMember(S2CExecuteMolangPacket::encode, S2CExecuteMolangPacket::decode);
 
     private final int[] entityIds;
 
@@ -31,23 +40,21 @@ public class S2CExecuteMolangPacket {
         this.expression = expression;
     }
 
-    public static void encode(S2CExecuteMolangPacket message, FriendlyByteBuf buf) {
-        buf.writeVarIntArray(message.entityIds);
-        buf.writeUtf(message.expression);
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeVarIntArray(this.entityIds);
+        buf.writeUtf(this.expression);
     }
 
     public static S2CExecuteMolangPacket decode(FriendlyByteBuf buf) {
         return new S2CExecuteMolangPacket(buf.readVarIntArray(), buf.readUtf());
     }
 
-    public static void handle(S2CExecuteMolangPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isClient()) {
+    public static void handle(S2CExecuteMolangPacket message, IPayloadContext context) {
+        if (context.flow().isClientbound()) {
             context.enqueueWork(() -> {
                 handleCapability(message);
             });
         }
-        context.setPacketHandled(true);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -59,7 +66,7 @@ public class S2CExecuteMolangPacket {
         for (int i : message.entityIds) {
             Entity entity = minecraft.level.getEntity(i);
             if (entity instanceof Player) {
-                entity.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     try {
                         cap.executeExpression(GeckoLibCache.parseSimpleExpression(message.expression), true, false, null);
                     } catch (ParseException e) {
@@ -70,5 +77,10 @@ public class S2CExecuteMolangPacket {
                 TouhouMaidCompat.playMaidAnimation(entity, message.expression);
             }
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

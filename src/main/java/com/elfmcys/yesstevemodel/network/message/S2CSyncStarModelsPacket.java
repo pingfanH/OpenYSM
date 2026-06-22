@@ -1,18 +1,27 @@
 package com.elfmcys.yesstevemodel.network.message;
 
-import com.elfmcys.yesstevemodel.capability.StarModelsCapabilityProvider;
 import com.google.common.collect.Sets;
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
-public class S2CSyncStarModelsPacket {
+public class S2CSyncStarModelsPacket implements CustomPacketPayload {
+
+    public static final Type<S2CSyncStarModelsPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "sync_star_models"));
+
+    public static final StreamCodec<FriendlyByteBuf, S2CSyncStarModelsPacket> STREAM_CODEC =
+            StreamCodec.ofMember(S2CSyncStarModelsPacket::encode, S2CSyncStarModelsPacket::decode);
 
     private final Set<String> starModels;
 
@@ -20,9 +29,9 @@ public class S2CSyncStarModelsPacket {
         this.starModels = starModels;
     }
 
-    public static void encode(S2CSyncStarModelsPacket message, FriendlyByteBuf buf) {
-        buf.writeVarInt(message.starModels.size());
-        for (String starModel : message.starModels) {
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeVarInt(this.starModels.size());
+        for (String starModel : this.starModels) {
             buf.writeUtf(starModel);
         }
     }
@@ -36,19 +45,22 @@ public class S2CSyncStarModelsPacket {
         return new S2CSyncStarModelsPacket(tmp);
     }
 
-    public static void handle(S2CSyncStarModelsPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isClient()) {
+    public static void handle(S2CSyncStarModelsPacket message, IPayloadContext context) {
+        if (context.flow().isClientbound()) {
             context.enqueueWork(() -> handleCapability(message));
         }
-        context.setPacketHandled(true);
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void handleCapability(S2CSyncStarModelsPacket message) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player != null) {
-            minecraft.player.getCapability(StarModelsCapabilityProvider.STAR_MODELS_CAP).ifPresent(cap -> cap.setStarModels(message.starModels));
+            Optional.ofNullable(minecraft.player.getData(Capabilities.STAR_MODELS.get())).ifPresent(cap -> cap.setStarModels(message.starModels));
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

@@ -9,7 +9,7 @@ import com.elfmcys.yesstevemodel.config.LoadingStateConfig;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.gui.widget.ForgeSlider;
+import net.neoforged.neoforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.Nullable;
 
 public class ExtraPlayerConfigScreen extends Screen {

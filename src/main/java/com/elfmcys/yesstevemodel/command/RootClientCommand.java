@@ -2,7 +2,6 @@ package com.elfmcys.yesstevemodel.command;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.animation.molang.struct.RoamingStruct;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.entity.GeoEntity;
 import com.elfmcys.yesstevemodel.command.subcommands.client.CacheCommand;
 import com.elfmcys.yesstevemodel.geckolib3.core.controller.IAnimationController;
@@ -28,8 +27,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -89,7 +88,7 @@ public class RootClientCommand {
         LocalPlayer localPlayer;
         GeoEntity<?> geoEntity = AnimationDebugOverlay.getActiveModel();
         if (geoEntity == null && (localPlayer = Minecraft.getInstance().player) != null) {
-            geoEntity = localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).orElse(null);
+            geoEntity = Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).orElse(null);
         }
         return Optional.ofNullable(geoEntity);
     }

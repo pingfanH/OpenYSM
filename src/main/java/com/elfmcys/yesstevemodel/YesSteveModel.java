@@ -1,5 +1,7 @@
 package com.elfmcys.yesstevemodel;
 
+import com.elfmcys.yesstevemodel.capability.Capabilities;
+import com.elfmcys.yesstevemodel.capability.ClientCapabilities;
 import com.elfmcys.yesstevemodel.config.GeneralConfig;
 import com.elfmcys.yesstevemodel.config.ModSoundEvents;
 import com.elfmcys.yesstevemodel.config.ServerConfig;
@@ -9,15 +11,15 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.ModLoadingWarning;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModLoadingWarning;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,6 +47,15 @@ public class YesSteveModel {
         } else {
             initConfig();
         }
+        Capabilities.ATTACHMENT_TYPES.register(ModLoadingContext.get().getActiveContainer().getEventBus());
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientCapabilities.CLIENT_ATTACHMENT_TYPES.register(ModLoadingContext.get().getActiveContainer().getEventBus());
+            // Register MaidCapabilities if TouhouLittleMaid is loaded
+            if (ModList.get() != null && ModList.get().isLoaded("touhou_little_maid")) {
+                com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities.MAID_ATTACHMENT_TYPES
+                        .register(ModLoadingContext.get().getActiveContainer().getEventBus());
+            }
+        }
     }
 
     @SuppressWarnings({"deprecation", "removal"})
@@ -61,7 +72,7 @@ public class YesSteveModel {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, GeneralConfig.buildSpec());
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.buildSpec());
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            ModSoundEvents.REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+            ModSoundEvents.REGISTER.register(ModLoadingContext.get().getActiveContainer().getEventBus());
         }
     }
 

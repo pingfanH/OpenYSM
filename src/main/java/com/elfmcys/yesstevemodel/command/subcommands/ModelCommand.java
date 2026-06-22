@@ -2,8 +2,6 @@ package com.elfmcys.yesstevemodel.command.subcommands;
 
 import com.elfmcys.yesstevemodel.model.ServerModelManager;
 import com.elfmcys.yesstevemodel.event.CommandRegistry;
-import com.elfmcys.yesstevemodel.capability.AuthModelsCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.elfmcys.yesstevemodel.model.format.ServerModelData;
 import com.elfmcys.yesstevemodel.util.YSMMessageFormatter;
 import com.google.gson.Gson;
@@ -21,14 +19,17 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 public class ModelCommand {
 
@@ -92,15 +93,15 @@ public class ModelCommand {
         }
         String finalTextureName = textureName;
         if (ignoreAuth) {
-            targets.forEach(player -> player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+            targets.forEach(player -> Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
                 cap.setModelAndTexture(modelName, finalTextureName);
                 cap.setMandatory(true);
                 context.getSource().sendSuccess(() -> Component.translatable("message.yes_steve_model.model.set.success", modelName, player.getScoreboardName()), true);
             }));
             return Command.SINGLE_SUCCESS;
         }
-        targets.forEach(player -> player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
-            player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(authCap -> {
+        targets.forEach(player -> Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
+            Optional.ofNullable(player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(authCap -> {
                 if (!ServerModelManager.getAuthModels().contains(modelName) || authCap.containsModel(modelName)) {
                     cap.setModelAndTexture(modelName, finalTextureName);
                     cap.setMandatory(true);
@@ -156,7 +157,7 @@ public class ModelCommand {
             str = "message.yes_steve_model.model.disable.false";
         }
         String str2 = str;
-        targets.forEach(player -> player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+        targets.forEach(player -> Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
             cap.setDisabled(bool);
             context.getSource().sendSuccess(() -> Component.translatable(str2, player.getScoreboardName()), true);
         }));

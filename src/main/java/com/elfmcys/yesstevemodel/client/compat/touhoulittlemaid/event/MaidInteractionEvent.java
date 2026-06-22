@@ -1,7 +1,8 @@
 package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.event;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.github.tartaricacid.touhoulittlemaid.init.InitEntities;
 import com.github.tartaricacid.touhoulittlemaid.item.ItemHakureiGohei;
 import com.github.tartaricacid.touhoulittlemaid.tileentity.TileEntityGarageKit;
@@ -10,8 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
 public class MaidInteractionEvent {
     @SubscribeEvent
@@ -55,7 +56,7 @@ public class MaidInteractionEvent {
     }
 
     private void applyModelToMaid(Player player, CompoundTag compoundTag) {
-        player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+        Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
             String str = cap.getModelId();
             String str2 = cap.getSelectTexture();
             compoundTag.putBoolean("IsYsmModel", true);

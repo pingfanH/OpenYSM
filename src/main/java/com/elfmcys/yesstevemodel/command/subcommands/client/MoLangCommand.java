@@ -1,6 +1,5 @@
 package com.elfmcys.yesstevemodel.command.subcommands.client;
 
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.entity.GeoEntity;
 import com.elfmcys.yesstevemodel.client.animation.molang.MolangWatchRegistry;
 import com.elfmcys.yesstevemodel.client.renderer.AnimationDebugOverlay;
@@ -19,6 +18,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
+import java.util.Optional;
 
 public class MoLangCommand {
 
@@ -66,7 +66,7 @@ public class MoLangCommand {
         try {
             IValue value = GeckoLibCache.parseSimpleExpression(StringArgumentType.getString(context, EXP_NAME));
             Minecraft.getInstance().execute(() -> {
-                Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     AnimationDebugOverlay.getMolangWatch().addWatch(watchRegistry, string, value);
                 });
             });
@@ -83,7 +83,7 @@ public class MoLangCommand {
         }
         String string = StringArgumentType.getString(context, EXP_NAME_NAME);
         Minecraft.getInstance().execute(() -> {
-            Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+            Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                 AnimationDebugOverlay.getMolangWatch().removeWatch(string);
             });
         });
@@ -95,7 +95,7 @@ public class MoLangCommand {
             return Command.SINGLE_SUCCESS;
         }
         Minecraft.getInstance().execute(() -> {
-            Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+            Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                 AnimationDebugOverlay.getMolangWatch().clearAll();
             });
         });
@@ -110,7 +110,7 @@ public class MoLangCommand {
             IValue value = GeckoLibCache.parseSimpleExpression(StringArgumentType.getString(context, EXP_NAME));
             GeoEntity<?> geoEntity = AnimationDebugOverlay.getActiveModel();
             if (geoEntity == null) {
-                geoEntity = Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).orElse(null);
+                geoEntity = Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).orElse(null);
             }
             if (geoEntity != null) {
                 geoEntity.executeExpression(value, true, false, str -> Minecraft.getInstance().player.sendSystemMessage(Component.translatable("message.yes_steve_model.model.debug_animation.result", str)));

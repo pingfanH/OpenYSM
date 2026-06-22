@@ -1,13 +1,14 @@
 package com.elfmcys.yesstevemodel.client.compat.gun.tacz.event;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
 import com.tacz.guns.api.event.common.GunFireEvent;
 import com.tacz.guns.api.event.common.GunMeleeEvent;
 import com.tacz.guns.api.event.common.GunReloadEvent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
 public class GunFireReloadEvent {
     @SubscribeEvent
@@ -16,7 +17,7 @@ public class GunFireReloadEvent {
             return;
         }
         LivingEntity shooter = event.getShooter();
-        shooter.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(shooter.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             cap.setExtraRenderFlag(true);
         });
         TouhouLittleMaidCompat.syncMaidState(shooter);
@@ -28,7 +29,7 @@ public class GunFireReloadEvent {
             return;
         }
         LivingEntity shooter = event.getShooter();
-        shooter.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(shooter.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             cap.setExtraRenderFlag(true);
         });
         TouhouLittleMaidCompat.syncMaidState(shooter);
@@ -40,7 +41,7 @@ public class GunFireReloadEvent {
             return;
         }
         LivingEntity entity = event.getEntity();
-        entity.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             cap.setExtraRenderFlag(true);
         });
         TouhouLittleMaidCompat.syncMaidState(entity);

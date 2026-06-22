@@ -1,8 +1,9 @@
 package com.elfmcys.yesstevemodel.client.compat.gun.swarfare.event;
 
+import java.util.Optional;
+
 import com.atsuishio.superbwarfare.api.event.RenderPlayerArmEvent;
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.geckolib3.geo.render.built.GeoModel;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.client.renderer.HandItemRenderer;
@@ -13,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import software.bernie.geckolib.cache.object.GeoBone;
 
 public class GunArmRenderEvent {
@@ -24,7 +25,7 @@ public class GunArmRenderEvent {
             return;
         }
         event.setCanceled(true);
-        player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             HumanoidArm arm = event.getArm();
             ModelAssembly modelAssembly = cap.getModelAssembly();
             if (modelAssembly == null || !hasCustomArmModel(arm, modelAssembly.getAnimationBundle().getArmModel())) {

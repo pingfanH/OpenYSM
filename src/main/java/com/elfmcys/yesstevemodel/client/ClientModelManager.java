@@ -25,7 +25,6 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.message.StringFormattedMessage;
@@ -40,9 +39,13 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.*;
 import java.util.*;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.Optional;
 
 public class ClientModelManager {
     private static int syncStep = 1;
@@ -569,7 +572,7 @@ public class ClientModelManager {
     private static void sendModelFile(ByteBuffer byteBuffer) {
         if (Minecraft.getInstance().player != null) {
             try {
-                NetworkHandler.CHANNEL.sendToServer(new C2SModelSyncPayload(byteBuffer));
+                NetworkHandler.sendToServer(new C2SModelSyncPayload(byteBuffer));
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -581,7 +584,7 @@ public class ClientModelManager {
             return;
         }
         try {
-            connection.send(NetworkHandler.CHANNEL.toVanillaPacket(new C2SModelSyncPayload(byteBuffer), NetworkDirection.PLAY_TO_SERVER));
+            connection.send(new C2SModelSyncPayload(byteBuffer));
         } catch (Exception e2) {
             e2.printStackTrace();
         }

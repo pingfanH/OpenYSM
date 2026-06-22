@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
-import com.elfmcys.yesstevemodel.capability.VehicleCapabilityProvider;
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.client.entity.GeckoVehicleEntity;
 import com.elfmcys.yesstevemodel.geckolib3.geo.GeoEntityRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,7 +22,7 @@ public class VehicleRenderer extends GeoEntityRenderer<Entity, GeckoVehicleEntit
         if (Minecraft.getInstance().player == null || entity.isInvisibleTo(Minecraft.getInstance().player)) {
             return;
         }
-        entity.getCapability(VehicleCapabilityProvider.VEHICLE_CAP).ifPresent(cap -> {
+        Optional.ofNullable(entity.getData(ClientCapabilities.VEHICLE_CAP.get())).ifPresent(cap -> {
             cap.tickModel();
             renderEntity(cap, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         });
@@ -29,6 +30,6 @@ public class VehicleRenderer extends GeoEntityRenderer<Entity, GeckoVehicleEntit
 
     @NotNull
     public ResourceLocation getTextureLocation(Entity entity) {
-        return entity.getCapability(VehicleCapabilityProvider.VEHICLE_CAP).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
+        return Optional.ofNullable(entity.getData(ClientCapabilities.VEHICLE_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation());
     }
 }

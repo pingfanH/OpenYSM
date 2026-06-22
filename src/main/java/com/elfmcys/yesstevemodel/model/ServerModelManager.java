@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.model;
 
 import com.elfmcys.yesstevemodel.capability.ModelInfoCapability;
+import com.elfmcys.yesstevemodel.capabilities.Capabilities;
 import com.elfmcys.yesstevemodel.client.ExportResult;
 import com.elfmcys.yesstevemodel.model.format.*;
 import com.elfmcys.yesstevemodel.resource.YSMBinaryDeserializer;
@@ -12,8 +13,6 @@ import net.minecraft.network.chat.Component;
 import rip.ysm.security.YsmCrypt;
 import rip.ysm.security.YSMByteBuf;
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.AuthModelsCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.elfmcys.yesstevemodel.config.ServerConfig;
 import com.elfmcys.yesstevemodel.network.NetworkHandler;
 import com.elfmcys.yesstevemodel.network.message.S2CSyncAuthModelsPacket;
@@ -29,14 +28,14 @@ import it.unimi.dsi.fastutil.floats.FloatReferencePair;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.network.Connection;
 import net.minecraft.network.PacketSendListener;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.locating.IModFile;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforgespi.locating.IModFile;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,12 +48,19 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.Optional;
 import java.util.regex.PatternSyntaxException;
+import java.util.Optional;
 import java.util.stream.Stream;
+import java.util.Optional;
 
 public final class ServerModelManager {
     /**
@@ -882,7 +888,7 @@ public final class ServerModelManager {
     }
 
     private static String[] collectPlayerModelIds(Collection<ServerPlayer> collection) {
-        return collection.stream().filter(NetworkHandler::isPlayerConnected).map(serverPlayer -> serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).map(ModelInfoCapability::getModelId)).filter(Optional::isPresent).map(Optional::get).distinct().toArray(String[]::new);
+        return collection.stream().filter(NetworkHandler::isPlayerConnected).map(serverPlayer -> Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).map(ModelInfoCapability::getModelId)).filter(Optional::isPresent).map(Optional::get).distinct().toArray(String[]::new);
     }
 
     private static void onModelLoadComplete(ModelLoadResult modelLoadResult, @Nullable Object obj) {
@@ -935,13 +941,13 @@ public final class ServerModelManager {
     private static boolean sendModelData(UUID uuid, ByteBuffer byteBuffer, PendingTransfer pendingTransfer) {
         Connection connection = getPlayerConnection(uuid);
         if (connection != null) {
-            return sendPacketReliably(connection, NetworkHandler.CHANNEL.toVanillaPacket(new S2CModelSyncPayload(byteBuffer), NetworkDirection.PLAY_TO_CLIENT), pendingTransfer);
+            return sendPacketReliably(connection, new S2CModelSyncPayload(byteBuffer), pendingTransfer);
         }
         return false;
     }
 
     private static Object createModelPacket(ByteBuffer byteBuffer) {
-        return NetworkHandler.CHANNEL.toVanillaPacket(new S2CModelSyncPayload(byteBuffer), NetworkDirection.PLAY_TO_CLIENT);
+        return new S2CModelSyncPayload(byteBuffer);
     }
 
     private static boolean sendPacketToPlayer(UUID uuid, Object obj, PendingTransfer pendingTransfer) {
@@ -966,18 +972,33 @@ public final class ServerModelManager {
                 }
             } else {
                 try {
-                    connection.send((Packet<?>) obj, new PacketSendListener() {
-                        public void onSuccess() {
-                            atomicInteger.set(1);
-                            PacketSendListener.super.onSuccess();
-                        }
+                    if (obj instanceof CustomPacketPayload payload) {
+                        connection.send(payload, new PacketSendListener() {
+                            public void onSuccess() {
+                                atomicInteger.set(1);
+                                PacketSendListener.super.onSuccess();
+                            }
 
-                        @Nullable
-                        public Packet<?> onFailure() {
-                            atomicInteger.set(-1);
-                            return null;
-                        }
-                    });
+                            @Nullable
+                            public Packet<?> onFailure() {
+                                atomicInteger.set(-1);
+                                return null;
+                            }
+                        });
+                    } else if (obj instanceof Packet<?> packet) {
+                        connection.send(packet, new PacketSendListener() {
+                            public void onSuccess() {
+                                atomicInteger.set(1);
+                                PacketSendListener.super.onSuccess();
+                            }
+
+                            @Nullable
+                            public Packet<?> onFailure() {
+                                atomicInteger.set(-1);
+                                return null;
+                            }
+                        });
+                    }
                     while (atomicInteger.get() == 0) {
                         if (!YSMThreadPool.awaitTermination(5)) {
                             return false;
@@ -1031,8 +1052,8 @@ public final class ServerModelManager {
 
     public static void validatePlayerModel(ServerPlayer serverPlayer) {
         if (!CACHE_NAME_INFO.isEmpty()) {
-            serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(modelInfoCap -> {
-                serverPlayer.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(authModelsCap -> {
+            Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(modelInfoCap -> {
+                Optional.ofNullable(serverPlayer.getData(Capabilities.AUTH_MODELS.get())).ifPresent(authModelsCap -> {
                     if (authModelsCap.getAuthModels().removeIf(str -> !CACHE_NAME_INFO.containsKey(str))) {
                         NetworkHandler.sendToClientPlayer(new S2CSyncAuthModelsPacket(authModelsCap.getAuthModels()), serverPlayer);
                     }

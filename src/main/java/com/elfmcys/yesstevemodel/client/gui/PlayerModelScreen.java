@@ -4,10 +4,9 @@ import com.elfmcys.yesstevemodel.client.ClientModelManager;
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.event.ModScreenEvent;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.capability.AuthModelsCapability;
-import com.elfmcys.yesstevemodel.capability.AuthModelsCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.StarModelsCapabilityProvider;
+import com.elfmcys.yesstevemodel.capabilities.ClientCapabilities;
+import com.elfmcys.yesstevemodel.capabilities.Capabilities;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.resource.models.AuthorInfo;
 import com.elfmcys.yesstevemodel.resource.models.Metadata;
@@ -43,11 +42,11 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.Optional;
 
 public class PlayerModelScreen extends Screen implements IGuiWidget {
 
@@ -172,7 +171,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             this.filteredPacks = buildFilteredPackMap();
         }
         if (this.category == Category.AUTH) {
-            localPlayer.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(cap -> {
+            Optional.ofNullable(localPlayer.getData(Capabilities.AUTH_MODELS.get())).ifPresent(cap -> {
                 for (Map.Entry<String, ModelAssembly> entry : ClientModelManager.getModelAssemblyMap().entrySet()) {
                     if (cap.containsModel(entry.getKey()) || !entry.getValue().getTextureRegistry().isAuthModel()) {
                         this.filteredModels.put(entry.getKey(), entry.getValue());
@@ -181,7 +180,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             });
         }
         if (this.category == Category.STAR) {
-            localPlayer.getCapability(StarModelsCapabilityProvider.STAR_MODELS_CAP).ifPresent(cap2 -> {
+            Optional.ofNullable(localPlayer.getData(Capabilities.STAR_MODELS.get())).ifPresent(cap2 -> {
                 for (Map.Entry<String, ModelAssembly> entry : ClientModelManager.getModelAssemblyMap().entrySet()) {
                     if (cap2.containsModel(entry.getKey())) {
                         this.filteredModels.put(entry.getKey(), entry.getValue());
@@ -333,7 +332,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         addWidget(this.searchBox);
         addRenderableWidget(new IconButton(this.guiLeft + 5, this.guiTop + 5, 20, 20, 80, 16, button -> {
             if (Minecraft.getInstance().player != null) {
-                Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     ModelAssembly modelAssembly = cap.getModelAssembly();
                     if (modelAssembly.getModelData().getExtraInfo() != null) {
                         Minecraft.getInstance().setScreen(createModelInfoScreen(this, modelAssembly));
@@ -343,7 +342,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         })).setTooltipText("gui.yes_steve_model.model.info");
         addRenderableWidget(new IconButton(this.guiLeft + 28, this.guiTop + 5, 79, 20, 32, 16, button2 -> {
             if (Minecraft.getInstance().player != null) {
-                Minecraft.getInstance().player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     Minecraft.getInstance().setScreen(createTextureScreen(this, cap.getModelId(), cap.getModelAssembly()));
                 });
             }
@@ -408,7 +407,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         if (this.minecraft == null || this.minecraft.player == null) {
             return;
         }
-        LazyOptional<AuthModelsCapability> capability = this.minecraft.player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP);
+        AuthModelsCapability capability = this.minecraft.player.getData(Capabilities.AUTH_MODELS.get());
         for (int i = 0; i < 10; i++) {
             int slotIndex = i + (getCurrentPage() * 10);
             int slotX = this.guiLeft + 143 + (55 * (i % 5));
@@ -428,7 +427,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
                 String str2 = this.sortedModelKeys.get(size);
                 PlayerPreviewEntity previewEntity = previewHolders[i];
                 previewEntity.resetModel();
-                capability.ifPresent(value3 -> {
+                Optional.ofNullable(capability).ifPresent(value3 -> {
                     ModelAssembly modelAssembly2 = this.filteredModels.get(str2);
                     boolean isAuthLocked = modelAssembly2.getTextureRegistry().isAuthModel() && !value3.getAuthModels().contains(str2);
                     previewEntity.initModelWithTexture(str2, modelAssembly2.getAnimationBundle().getDefaultTextureName());
@@ -535,7 +534,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.guiLeft + 67, this.guiTop + 190, 70, (this.guiLeft + 67) - mouseX, ((this.guiTop + 180) - 95) - mouseY, localPlayer);
             guiGraphics.pose().popPose();
             RenderSystem.disableScissor();
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                 List<FormattedCharSequence> listSplit = this.font.split(FormattedText.of(ClientModelManager.getModelContext(cap.getModelId()).map(it -> {
                     Metadata metadata2 = it.getModelData().getExtraInfo();
                     if (metadata2 != null) {

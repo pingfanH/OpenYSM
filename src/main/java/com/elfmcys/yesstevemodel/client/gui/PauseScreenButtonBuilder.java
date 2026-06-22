@@ -1,7 +1,6 @@
 package com.elfmcys.yesstevemodel.client.gui;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.config.GeneralConfig;
 import net.minecraft.client.Minecraft;
@@ -12,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PauseScreenButtonBuilder {
     public static boolean isServerConnected() {
@@ -36,7 +36,7 @@ public class PauseScreenButtonBuilder {
             buttonBuild2.setTooltip(Tooltip.create(Component.translatable("key.yes_steve_model.open_extra_player_render.desc")));
             Button buttonBuild3 = Button.builder(Component.literal("😄"), button3 -> {
                 if (minecraft.player != null) {
-                    minecraft.player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                    Optional.ofNullable(minecraft.player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                         String str = cap.getModelId();
                         ModelAssembly modelAssembly = cap.getModelAssembly();
                         if (modelAssembly != null && !modelAssembly.getModelData().getModelProperties().getExtraAnimation().isEmpty()) {

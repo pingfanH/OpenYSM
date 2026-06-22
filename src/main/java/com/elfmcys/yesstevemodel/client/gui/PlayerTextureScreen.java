@@ -1,6 +1,5 @@
 package com.elfmcys.yesstevemodel.client.gui;
 
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.gui.button.FlatColorButton;
 import com.elfmcys.yesstevemodel.client.gui.button.IconButton;
 import com.elfmcys.yesstevemodel.client.gui.button.TextureButton;
@@ -26,8 +25,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 
 public class PlayerTextureScreen extends Screen {
 
@@ -239,7 +241,7 @@ public class PlayerTextureScreen extends Screen {
 
     public void renderTexturePreview(GuiGraphics guiGraphics, int scissorX, int scissorY, int scissorWidth, int scissorHeight, float partialTick) {
         RenderSystem.enableScissor(scissorX, scissorY, scissorWidth, scissorHeight);
-        this.minecraft.player.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+        Optional.ofNullable(this.minecraft.player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             this.modelHolder.initModelWithTexture(this.modelId, cap.getCurrentTextureName());
             ModelPreviewRenderer.renderEntityPreview(this.guiLeft + 149.5f + 40.0f + this.offsetX, this.guiTop + 117.5f + 80.0f + this.offsetY, this.zoom, this.pitch, this.yaw, partialTick, this.modelHolder, RendererManager.getPlayerRenderer(), this.showGround);
         });

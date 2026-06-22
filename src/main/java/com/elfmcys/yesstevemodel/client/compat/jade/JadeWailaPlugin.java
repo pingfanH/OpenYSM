@@ -1,8 +1,8 @@
 package com.elfmcys.yesstevemodel.client.compat.jade;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.VehicleCapabilityProvider;
 import com.elfmcys.yesstevemodel.util.FileTypeUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,13 +27,13 @@ public class JadeWailaPlugin implements IWailaPlugin {
         public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
             Entity entity = entityAccessor.getEntity();
             if (entity instanceof Player) {
-                entity.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+                Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     if (cap.isModelActive()) {
                         iTooltip.add(Component.translatable("top.yes_steve_model.model_info.id").append(cap.getModelAssembly().getDisplayName(FileTypeUtil.getNameWithoutArchiveExtension(cap.getModelId()))));
                     }
                 });
             } else {
-                entityAccessor.getEntity().getCapability(VehicleCapabilityProvider.VEHICLE_CAP).ifPresent(cap -> {
+                Optional.ofNullable(entityAccessor.getEntity().getData(ClientCapabilities.VEHICLE_CAP.get())).ifPresent(cap -> {
                     if (cap.isModelInitialized() && cap.isModelReady()) {
                         iTooltip.add(Component.translatable("top.yes_steve_model.model_info.id").append(cap.getModelAssembly().getDisplayName(FileTypeUtil.getNameWithoutArchiveExtension(cap.getModelId()))));
                     }

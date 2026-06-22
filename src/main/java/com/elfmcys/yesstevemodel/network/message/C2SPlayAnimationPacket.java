@@ -1,21 +1,30 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.model.ServerModelManager;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.elfmcys.yesstevemodel.resource.models.ModelProperties;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouMaidCompat;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.util.StringPool;
 import com.elfmcys.yesstevemodel.util.data.OrderedStringMap;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Optional;
 
-public class C2SPlayAnimationPacket {
+public class C2SPlayAnimationPacket implements CustomPacketPayload {
+
+    public static final Type<C2SPlayAnimationPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "play_animation"));
+
+    public static final StreamCodec<FriendlyByteBuf, C2SPlayAnimationPacket> STREAM_CODEC =
+            StreamCodec.ofMember(C2SPlayAnimationPacket::encode, C2SPlayAnimationPacket::decode);
 
     private final int animationIndex;
 
@@ -41,28 +50,26 @@ public class C2SPlayAnimationPacket {
         return new C2SPlayAnimationPacket(-1, StringPool.EMPTY, entityId);
     }
 
-    public static void encode(C2SPlayAnimationPacket message, FriendlyByteBuf buf) {
-        buf.writeVarInt(message.animationIndex);
-        buf.writeUtf(message.category);
-        buf.writeVarInt(message.entityId);
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeVarInt(this.animationIndex);
+        buf.writeUtf(this.category);
+        buf.writeVarInt(this.entityId);
     }
 
     public static C2SPlayAnimationPacket decode(FriendlyByteBuf buf) {
         return new C2SPlayAnimationPacket(buf.readVarInt(), buf.readUtf(), buf.readVarInt());
     }
 
-    public static void handle(C2SPlayAnimationPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
+    public static void handle(C2SPlayAnimationPacket message, IPayloadContext context) {
+        if (context.flow().isServerbound()) {
             context.enqueueWork(() -> {
-                ServerPlayer sender = context.getSender();
+                ServerPlayer sender = (ServerPlayer) context.player();
                 if (sender == null) {
                     return;
                 }
                 handleCapability(message, sender);
             });
         }
-        context.setPacketHandled(true);
     }
 
     private static void handleCapability(C2SPlayAnimationPacket message, ServerPlayer sender) {
@@ -75,7 +82,7 @@ public class C2SPlayAnimationPacket {
             return;
         }
 
-        sender.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(modelInfoCap -> {
+        Optional.ofNullable(sender.getData(Capabilities.MODEL_INFO.get())).ifPresent(modelInfoCap -> {
             if (message.animationIndex == -1) {
                 modelInfoCap.stopAnimation(sender);
             } else {
@@ -94,5 +101,10 @@ public class C2SPlayAnimationPacket {
                 });
             }
         });
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

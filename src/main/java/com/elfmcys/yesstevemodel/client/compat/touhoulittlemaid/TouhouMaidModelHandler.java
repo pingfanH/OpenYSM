@@ -3,8 +3,7 @@ package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid;
 import com.elfmcys.yesstevemodel.model.ServerModelManager;
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.ProjectileModelCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.VehicleModelCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.resource.models.ModelProperties;
 import com.elfmcys.yesstevemodel.geckolib3.resource.GeckoLibCache;
 import com.elfmcys.yesstevemodel.molang.parser.ParseException;
@@ -17,11 +16,12 @@ import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class TouhouMaidModelHandler {
     public static boolean isMaidEntity(Entity entity) {
@@ -36,7 +36,7 @@ public class TouhouMaidModelHandler {
         if (!entityMaid.isYsmModel()) {
             return;
         }
-        entityMaid.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> {
+        Optional.ofNullable(entityMaid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             try {
                 cap.executeExpression(GeckoLibCache.parseSimpleExpression(str), true, false, null);
             } catch (ParseException e) {
@@ -50,7 +50,7 @@ public class TouhouMaidModelHandler {
             return;
         }
         if (entityMaid.isYsmModel()) {
-            projectile.getCapability(ProjectileModelCapabilityProvider.PROJECTILE_MODEL).ifPresent(cap -> {
+            Optional.ofNullable(projectile.getData(Capabilities.PROJECTILE_MODEL.get())).ifPresent(cap -> {
                 cap.setModel(entityMaid.getYsmModelId(), new Object2FloatOpenHashMap<>());
                 NetworkHandler.sendToTrackingEntity(new S2CSyncProjectileModelPacket(projectile.getId(), cap), projectile);
             });
@@ -62,7 +62,7 @@ public class TouhouMaidModelHandler {
             return;
         }
         if (entityMaid.isYsmModel() && entity.getFirstPassenger() == entity2) {
-            entity.getCapability(VehicleModelCapabilityProvider.VEHICLE_MODEL_CAP).ifPresent(cap -> {
+            Optional.ofNullable(entity.getData(Capabilities.VEHICLE_MODEL.get())).ifPresent(cap -> {
                 cap.setModel(entityMaid.getYsmModelId(), new Object2FloatOpenHashMap<>());
                 NetworkHandler.sendToTrackingEntity(new S2CSyncVehicleModelPacket(entity.getId(), cap), entity);
             });

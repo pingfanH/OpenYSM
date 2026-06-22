@@ -2,6 +2,7 @@ package com.elfmcys.yesstevemodel.client.gui;
 
 import com.elfmcys.yesstevemodel.client.ClientModelManager;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.resource.models.Metadata;
 import com.elfmcys.yesstevemodel.client.gui.button.ModelButton;
 import com.elfmcys.yesstevemodel.client.gui.button.TouhouMaidModelButton;
@@ -36,14 +37,14 @@ public class TouhouMaidModelScreen extends PlayerModelScreen {
 
     @Override
     public PlayerTextureScreen createTextureScreen(PlayerModelScreen modelScreen, String str, ModelAssembly modelAssembly) {
-        return new TouhouMaidTextureScreen(modelScreen, str, Objects.requireNonNullElse(this.maid.getCapability(MaidCapabilityProvider.MAID_CAP).map((v0) -> {
+        return new TouhouMaidTextureScreen(modelScreen, str, Objects.requireNonNullElse(Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).map((v0) -> {
             return v0.getModelAssembly();
         }).orElse(null), modelAssembly), this.maid);
     }
 
     @Override
     public ModelInfoScreen createModelInfoScreen(PlayerModelScreen modelScreen, ModelAssembly modelAssembly) {
-        return new ModelInfoScreen(modelScreen, Objects.requireNonNullElse(this.maid.getCapability(MaidCapabilityProvider.MAID_CAP).map((v0) -> {
+        return new ModelInfoScreen(modelScreen, Objects.requireNonNullElse(Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).map((v0) -> {
             return v0.getModelAssembly();
         }).orElse(null), modelAssembly));
     }
@@ -54,7 +55,7 @@ public class TouhouMaidModelScreen extends PlayerModelScreen {
         RenderSystem.enableScissor((int) ((this.guiLeft + 5) * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - ((this.guiTop + 200) * guiScale)), (int) (125.0d * guiScale), (int) (171.0d * guiScale));
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.guiLeft + 67, this.guiTop + 190, 70, (this.guiLeft + 67) - mouseX, ((this.guiTop + 180) - 95) - mouseY, this.maid);
         RenderSystem.disableScissor();
-        this.maid.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> {
+        Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             List<FormattedCharSequence> listSplit = this.font.split(FormattedText.of(ClientModelManager.getModelContext(cap.getModelId()).map(it -> {
                 Metadata metadata2 = it.getModelData().getExtraInfo();
                 if (metadata2 != null) {

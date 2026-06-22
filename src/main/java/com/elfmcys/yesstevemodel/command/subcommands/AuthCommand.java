@@ -2,8 +2,6 @@ package com.elfmcys.yesstevemodel.command.subcommands;
 
 import com.elfmcys.yesstevemodel.model.ServerModelManager;
 import com.elfmcys.yesstevemodel.event.CommandRegistry;
-import com.elfmcys.yesstevemodel.capability.AuthModelsCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import com.elfmcys.yesstevemodel.network.NetworkHandler;
 import com.elfmcys.yesstevemodel.network.message.S2CSyncAuthModelsPacket;
 import com.elfmcys.yesstevemodel.util.YSMMessageFormatter;
@@ -21,8 +19,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.Optional;
 
 public class AuthCommand {
 
@@ -57,7 +58,7 @@ public class AuthCommand {
             return Command.SINGLE_SUCCESS;
         }
         targets.forEach(player -> {
-            player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(ownModelCap -> {
+            Optional.ofNullable(player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(ownModelCap -> {
                 ownModelCap.addModel(string);
                 NetworkHandler.sendToClientPlayer(new S2CSyncAuthModelsPacket(ownModelCap.getAuthModels()), player);
                 context.getSource().sendSuccess(() -> Component.translatable("commands.yes_steve_model.auth_model.add.info", string, player.getScoreboardName()), true);
@@ -67,7 +68,7 @@ public class AuthCommand {
     }
 
     private static int addAllAuthModel(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        EntityArgument.getPlayers(context, TARGETS_NAME).forEach(player -> player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(ownModelCap -> {
+        EntityArgument.getPlayers(context, TARGETS_NAME).forEach(player -> Optional.ofNullable(player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(ownModelCap -> {
             Set<String> setKeySet = ServerModelManager.getServerModelInfo().keySet();
             Objects.requireNonNull(ownModelCap);
             setKeySet.forEach(ownModelCap::addModel);
@@ -80,9 +81,9 @@ public class AuthCommand {
     private static int removeAuthModel(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, TARGETS_NAME);
         String modelName = StringArgumentType.getString(context, MODEL_ID_NAME);
-        targets.forEach(player -> player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(ownModelsCap -> {
+        targets.forEach(player -> Optional.ofNullable(player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(ownModelsCap -> {
             ownModelsCap.removeModel(modelName);
-            player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(modelIdCap -> {
+            Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(modelIdCap -> {
                 if (ServerModelManager.getAuthModels().contains(modelIdCap.getModelId()) && !ownModelsCap.containsModel(modelIdCap.getModelId())) {
                     modelIdCap.resetToDefault();
                 }
@@ -94,9 +95,9 @@ public class AuthCommand {
     }
 
     private static int executeClear(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        EntityArgument.getPlayers(context, TARGETS_NAME).forEach(player -> player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(ownModelCap -> {
+        EntityArgument.getPlayers(context, TARGETS_NAME).forEach(player -> Optional.ofNullable(player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(ownModelCap -> {
             ownModelCap.clear();
-            player.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(modelIdCap -> {
+            Optional.ofNullable(player.getData(Capabilities.MODEL_INFO.get())).ifPresent(modelIdCap -> {
                 if (ServerModelManager.getAuthModels().contains(modelIdCap.getModelId())) {
                     modelIdCap.resetToDefault();
                 }

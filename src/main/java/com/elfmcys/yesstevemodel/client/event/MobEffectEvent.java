@@ -1,18 +1,20 @@
 package com.elfmcys.yesstevemodel.client.event;
 
+import java.util.Optional;
+
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.ModelInfoCapabilityProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class MobEffectEvent {
     @SubscribeEvent
-    public static void onEffectAdded(net.minecraftforge.event.entity.living.MobEffectEvent.Added event) {
+    public static void onEffectAdded(net.neoforged.neoforge.event.entity.living.MobEffectEvent.Added event) {
         if (!YesSteveModel.isAvailable() || event.getEntity().level().isClientSide()) {
             return;
         }
@@ -20,7 +22,7 @@ public class MobEffectEvent {
         if (entity instanceof ServerPlayer serverPlayer) {
             if (event.getEffectInstance().getEffect() != null) {
                 MobEffectInstance effectInstance = event.getEffectInstance();
-                serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+                Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
                     cap.getAnimSync().syncEffectAdded(serverPlayer, effectInstance.getEffect(), effectInstance.getAmplifier() + 1);
                 });
             }
@@ -28,14 +30,14 @@ public class MobEffectEvent {
     }
 
     @SubscribeEvent
-    public static void onEffectRemoved(net.minecraftforge.event.entity.living.MobEffectEvent.Remove event) {
+    public static void onEffectRemoved(net.neoforged.neoforge.event.entity.living.MobEffectEvent.Remove event) {
         if (!YesSteveModel.isAvailable() || event.getEntity().level().isClientSide()) {
             return;
         }
         Entity entity = event.getEntity();
         if (entity instanceof ServerPlayer serverPlayer) {
             if (event.getEffect() != null) {
-                serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+                Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
                     cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffect());
                 });
             }
@@ -43,14 +45,14 @@ public class MobEffectEvent {
     }
 
     @SubscribeEvent
-    public static void onEffectExpired(net.minecraftforge.event.entity.living.MobEffectEvent.Expired event) {
+    public static void onEffectExpired(net.neoforged.neoforge.event.entity.living.MobEffectEvent.Expired event) {
         if (!YesSteveModel.isAvailable() || event.getEntity().level().isClientSide()) {
             return;
         }
         Entity entity = event.getEntity();
         if (entity instanceof ServerPlayer serverPlayer) {
             if (event.getEffectInstance() != null && event.getEffectInstance().getEffect() != null) {
-                serverPlayer.getCapability(ModelInfoCapabilityProvider.MODEL_INFO_CAP).ifPresent(cap -> {
+                Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
                     cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffectInstance().getEffect());
                 });
             }

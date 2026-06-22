@@ -3,7 +3,6 @@ package com.elfmcys.yesstevemodel.client.gui;
 import com.elfmcys.yesstevemodel.client.event.AnimationLockEvent;
 import com.elfmcys.yesstevemodel.client.gui.custom.ExtraAnimationButtons;
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
 import com.elfmcys.yesstevemodel.resource.models.ModelProperties;
 import com.elfmcys.yesstevemodel.client.gui.button.AnimationSlider;
 import com.elfmcys.yesstevemodel.client.gui.button.ConfigCheckBox;
@@ -57,7 +56,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.util.*;
+import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.Optional;
 
 public class AnimationRouletteScreen extends Screen {
 
@@ -515,12 +516,12 @@ public class AnimationRouletteScreen extends Screen {
             }
             Entity entity = this.animatableModel.getEntity();
             if (entity instanceof Player) {
-                NetworkHandler.CHANNEL.sendToServer(new C2SPlayAnimationPacket(this.hoveredIndex, str2));
+                NetworkHandler.sendToServer(new C2SPlayAnimationPacket(this.hoveredIndex, str2));
             } else {
-                NetworkHandler.CHANNEL.sendToServer(new C2SPlayAnimationPacket(this.hoveredIndex, str2, entity.getId()));
+                NetworkHandler.sendToServer(new C2SPlayAnimationPacket(this.hoveredIndex, str2, entity.getId()));
             }
         } else if (localPlayer != null) {
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent(cap -> {
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                 cap.requestModelSwitch(str);
             });
         }

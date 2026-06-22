@@ -1,6 +1,7 @@
 package com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid;
 
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.client.gui.AnimationRouletteScreen;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
@@ -37,7 +38,7 @@ public class MaidAnimationRoulette {
         }
         Entity entity = ((EntityHitResult) hitResult).getEntity();
         if (entity instanceof EntityMaid) {
-            entity.getCapability(MaidCapabilityProvider.MAID_CAP).ifPresent(cap -> {
+            Optional.ofNullable(entity.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
                 ModelAssembly modelAssembly = cap.getModelAssembly();
                 if (modelAssembly != null && !modelAssembly.getModelData().getModelProperties().getExtraAnimation().isEmpty()) {
                     if (Minecraft.getInstance().screen == null) {

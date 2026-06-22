@@ -1,13 +1,21 @@
 package com.elfmcys.yesstevemodel.network.message;
 
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.client.ClientModelManager;
 import com.elfmcys.yesstevemodel.network.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.function.Supplier;
+public class S2CVersionCheckPacket implements CustomPacketPayload {
 
-public class S2CVersionCheckPacket {
+    public static final Type<S2CVersionCheckPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "s2c_version_check"));
+
+    public static final StreamCodec<FriendlyByteBuf, S2CVersionCheckPacket> STREAM_CODEC =
+            StreamCodec.ofMember(S2CVersionCheckPacket::encode, S2CVersionCheckPacket::decode);
 
     private final String version;
 
@@ -23,16 +31,19 @@ public class S2CVersionCheckPacket {
         return new S2CVersionCheckPacket(buf.readUtf());
     }
 
-    public static void encode(S2CVersionCheckPacket message, FriendlyByteBuf buf) {
-        buf.writeUtf(message.version);
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeUtf(this.version);
     }
 
-    public static void handle(S2CVersionCheckPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (NetworkHandler.setChannelVersion(context.getNetworkManager(), message.version)) {
+    public static void handle(S2CVersionCheckPacket message, IPayloadContext context) {
+        if (NetworkHandler.setChannelVersion(context.connection(), message.version)) {
             context.enqueueWork(() -> ClientModelManager.onSyncConnected());
         }
-        NetworkHandler.CHANNEL.reply(new C2SVersionCheckPacket(), context);
-        context.setPacketHandled(true);
+        NetworkHandler.sendToServer(new C2SVersionCheckPacket());
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

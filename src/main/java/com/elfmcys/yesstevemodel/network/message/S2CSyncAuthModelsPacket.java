@@ -1,18 +1,27 @@
 package com.elfmcys.yesstevemodel.network.message;
 
-import com.elfmcys.yesstevemodel.capability.AuthModelsCapabilityProvider;
 import com.google.common.collect.Sets;
+import com.elfmcys.yesstevemodel.YesSteveModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
-public class S2CSyncAuthModelsPacket {
+public class S2CSyncAuthModelsPacket implements CustomPacketPayload {
+
+    public static final Type<S2CSyncAuthModelsPacket> TYPE =
+            new Type<>(ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "sync_auth_models"));
+
+    public static final StreamCodec<FriendlyByteBuf, S2CSyncAuthModelsPacket> STREAM_CODEC =
+            StreamCodec.ofMember(S2CSyncAuthModelsPacket::encode, S2CSyncAuthModelsPacket::decode);
 
     private final Set<String> authModels;
 
@@ -20,9 +29,9 @@ public class S2CSyncAuthModelsPacket {
         this.authModels = authModels;
     }
 
-    public static void encode(S2CSyncAuthModelsPacket message, FriendlyByteBuf buf) {
-        buf.writeVarInt(message.authModels.size());
-        for (String modelId : message.authModels) {
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeVarInt(this.authModels.size());
+        for (String modelId : this.authModels) {
             buf.writeUtf(modelId);
         }
     }
@@ -36,23 +45,26 @@ public class S2CSyncAuthModelsPacket {
         return new S2CSyncAuthModelsPacket(tmp);
     }
 
-    public static void handle(S2CSyncAuthModelsPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
-        NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isClient()) {
+    public static void handle(S2CSyncAuthModelsPacket message, IPayloadContext context) {
+        if (context.flow().isClientbound()) {
             context.enqueueWork(() -> {
                 handleCapability(message);
             });
         }
-        context.setPacketHandled(true);
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void handleCapability(S2CSyncAuthModelsPacket message) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player != null) {
-            minecraft.player.getCapability(AuthModelsCapabilityProvider.AUTH_MODELS_CAP).ifPresent(cap -> {
+            Optional.ofNullable(minecraft.player.getData(Capabilities.AUTH_MODELS.get())).ifPresent(cap -> {
                 cap.setAuthModels(message.authModels);
             });
         }
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

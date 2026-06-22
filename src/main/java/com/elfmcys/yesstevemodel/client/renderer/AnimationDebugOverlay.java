@@ -1,10 +1,8 @@
 package com.elfmcys.yesstevemodel.client.renderer;
 
-import com.elfmcys.yesstevemodel.capability.PlayerCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.VehicleCapabilityProvider;
 import com.elfmcys.yesstevemodel.client.animation.molang.MolangWatchRegistry;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilityProvider;
-import com.elfmcys.yesstevemodel.capability.ProjectileCapabilityProvider;
+import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.capability.MaidCapabilities;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
 import com.elfmcys.yesstevemodel.geckolib3.core.controller.IAnimationController;
 import com.elfmcys.yesstevemodel.client.entity.GeoEntity;
@@ -20,13 +18,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.client.gui.overlay.ForgeGui;
+import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
+import java.util.Optional;
 
 public class AnimationDebugOverlay {
 
@@ -59,7 +57,7 @@ public class AnimationDebugOverlay {
     public static boolean tryUpdateFromLocalPlayer() {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         if (localPlayer != null) {
-            localPlayer.getCapability(PlayerCapabilityProvider.PLAYER_CAP).ifPresent((cap) -> setActiveModel(cap));
+            Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent((cap) -> setActiveModel(cap));
             return true;
         }
         clearActiveModel();
@@ -67,23 +65,23 @@ public class AnimationDebugOverlay {
     }
 
     public static boolean tryUpdateFromEntity(Entity entity) {
-        LazyOptional<?> capability;
+        GeoEntity<?> capability;
         if (entity instanceof Player) {
-            capability = entity.getCapability(PlayerCapabilityProvider.PLAYER_CAP);
+            capability = entity.getData(ClientCapabilities.PLAYER_CAP.get());
         } else if (TouhouLittleMaidCompat.isMaidEntity(entity)) {
-            capability = entity.getCapability(MaidCapabilityProvider.MAID_CAP);
+            capability = entity.getData(MaidCapabilities.MAID_CAP.get());
         } else if (entity instanceof Projectile) {
-            capability = entity.getCapability(ProjectileCapabilityProvider.PROJECTILE_CAP);
+            capability = entity.getData(ClientCapabilities.PROJECTILE_CAP.get());
         } else {
-            capability = entity.getCapability(VehicleCapabilityProvider.VEHICLE_CAP);
+            capability = entity.getData(ClientCapabilities.VEHICLE_CAP.get());
         }
-        return capability.map(cap -> {
-            setActiveModel((GeoEntity<?>) cap);
+        if (capability != null) {
+            setActiveModel(capability);
             return true;
-        }).orElseGet(() -> {
+        } else {
             clearActiveModel();
             return false;
-        });
+        }
     }
 
     public static void setActiveModel(GeoEntity<?> geoEntity) {
