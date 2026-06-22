@@ -153,12 +153,12 @@ public class YSMBinding extends ContextBinding {
         playerEntityVar("movement_speed", ctx -> ctx.entity().getAttributeValue(Attributes.MOVEMENT_SPEED));
         playerEntityVar("knockback_resistance", ctx -> ctx.entity().getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
         playerEntityVar("luck", ctx -> ctx.entity().getAttributeValue(Attributes.LUCK));
-        playerEntityVar("block_reach", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.BLOCK_REACH.get()));
-        playerEntityVar("entity_reach", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.ENTITY_REACH.get()));
-        playerEntityVar("swim_speed", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.SWIM_SPEED.get()));
-        playerEntityVar("entity_gravity", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.ENTITY_GRAVITY.get()));
-        playerEntityVar("step_height_addition", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.STEP_HEIGHT_ADDITION.get()));
-        playerEntityVar("nametag_distance", ctx -> ctx.entity().getAttributeValue(NeoForgeMod.NAMETAG_DISTANCE.get()));
+        playerEntityVar("block_reach", ctx -> 0.0);
+        playerEntityVar("entity_reach", ctx -> 0.0);
+        playerEntityVar("swim_speed", ctx -> 0.0);
+        playerEntityVar("entity_gravity", ctx -> 0.0);
+        playerEntityVar("step_height_addition", ctx -> 0.0);
+        playerEntityVar("nametag_distance", ctx -> 0.0);
         playerEntityVar("in_shield_block_cooldown", YSMBinding::isInShieldBlockCooldown);
 
         clientPlayerEntityVar("elytra_rot_x", ctx -> Math.toDegrees(ctx.entity().elytraRotX));
@@ -388,7 +388,7 @@ public class YSMBinding extends ContextBinding {
             return null;
         }
         for (MobEffectInstance mobEffectInstance : activeEffects) {
-            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(BuiltInRegistries.MOB_EFFECT.getKey(mobEffectInstance.getEffect()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
+            context.logWarningComponent(Component.literal("Effect: display ").append(ComponentUtils.copyOnClickText(mobEffectInstance.getEffect().value().getDisplayName().getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(BuiltInRegistries.MOB_EFFECT.getKey(mobEffectInstance.getEffect().value()).toString()))).append("  lv=").append(String.valueOf(mobEffectInstance.getAmplifier() + 1)));
         }
         return null;
     }

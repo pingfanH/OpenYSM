@@ -27,7 +27,7 @@ public class EquippedEnchantmentLevel extends LivingEntityFunction {
         int enchantmentLevel = 0;
         for (int i = 1; i < arguments.size(); i++) {
             ResourceLocation id = arguments.getResourceLocation(context, 1);
-            if (id != null && (enchantment = BuiltInRegistries.ENCHANTMENT.getValue(id)) != null) {
+            if (id != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(id)) != null) {
                 enchantmentLevel += stack.getEnchantmentLevel(enchantment);
             }
         }

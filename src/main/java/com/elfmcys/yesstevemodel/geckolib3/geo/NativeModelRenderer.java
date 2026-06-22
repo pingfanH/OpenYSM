@@ -253,7 +253,8 @@ public class NativeModelRenderer {
             BufferBuilder builder = (BufferBuilder) vertexConsumer;
             outBuffer.position(0);
             outBuffer.limit(vertexCount * 36);
-            builder.putBulkData(outBuffer);
+            // FIXME: putBulkData signature changed in MC 1.21.1
+            // builder.putBulkData(outBuffer);
             outBuffer.clear();
         } else {
             long address = MemoryUtil.memAddress(mesh.vertexOutBuffer);
