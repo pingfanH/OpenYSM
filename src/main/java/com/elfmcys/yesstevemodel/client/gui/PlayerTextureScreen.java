@@ -266,7 +266,7 @@ public class PlayerTextureScreen extends Screen {
         return true;
     }
 
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         if (this.minecraft == null) {
             return false;
         }

@@ -33,7 +33,7 @@ public class EffectLevel extends ContextFunction<Entity> {
                         effects += cap.getPositionTracker().getEffectAmplifier(mobEffect);
                     } else if (((IContext<?>)context.entity()).entity() instanceof LivingEntity) {
                         MobEffectInstance mobEffectInstance = ((LivingEntity)((IContext<?>)context.entity()).entity())
-                                .getEffect(mobEffect);
+                                .getEffect(Holder.direct(mobEffect));
                         if (mobEffectInstance != null) {
                             effects += mobEffectInstance.getAmplifier() + 1;
                         }

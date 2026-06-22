@@ -4,6 +4,7 @@ import javax.sound.sampled.AudioFormat;
 import java.nio.ByteBuffer;
 import java.io.IOException;
 public class OggVorbisAudioStream implements IAudioStreamSupport, AudioStream {
+    public OggVorbisAudioStream() {}
     public AudioFormat getFormat() { return new AudioFormat(44100f, 16, 2, true, false); }
     public ByteBuffer read(int size) { return ByteBuffer.allocate(0); }
     public void close() {}

@@ -1,5 +1,6 @@
 package com.elfmcys.yesstevemodel.geckolib3.core.molang.builtin.query;
 
+import net.minecraft.core.registries.Registries;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.context.IContext;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.EntityFunction;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;

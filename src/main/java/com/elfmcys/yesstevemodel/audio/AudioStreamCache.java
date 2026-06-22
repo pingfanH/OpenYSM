@@ -65,7 +65,7 @@ public class AudioStreamCache {
                 cacheBuilder = null;
             }
             return switch (trackData.getCodec()) {
-                case VORBIS -> new OggVorbisAudioStream(trackData.getData(), cacheBuilder);
+                case VORBIS -> new OggVorbisAudioStream();
                 case OPUS -> new OggOpusAudioStream(trackData.getData(), cacheBuilder);
                 default -> throw new UnsupportedAudioFileException();
             };
