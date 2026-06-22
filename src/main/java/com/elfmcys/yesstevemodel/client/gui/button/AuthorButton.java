@@ -113,7 +113,7 @@ public class AuthorButton extends Button {
             }
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
     }
 
     private void renderTooltip(boolean copied) {

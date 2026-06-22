@@ -282,7 +282,7 @@ public class PlayerTextureScreen extends Screen {
                 return scrollTexturePage(delta);
             }
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
     }
 
     private boolean scrollTexturePage(double delta) {
