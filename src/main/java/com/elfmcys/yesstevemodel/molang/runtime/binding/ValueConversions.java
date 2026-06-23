@@ -13,7 +13,7 @@ public final class ValueConversions {
             return (Boolean)obj;
         }
         if (obj instanceof Number) {
-            float f = ((Number) obj);
+            float f = ((Number) obj).floatValue();
             return !Float.isNaN(f) && f != 0.0f;
         }
         return true;
@@ -24,7 +24,7 @@ public final class ValueConversions {
             return 0;
         }
         if (obj instanceof Number) {
-            float f = ((Number)obj);
+            float f = ((Number)obj).floatValue();
             if (!Float.isNaN(f)) {
                 return f;
             }
@@ -54,11 +54,11 @@ public final class ValueConversions {
             return 0;
         }
         if (obj instanceof Number) {
-            double d = ((Number) obj);
+            double d = ((Number) obj).doubleValue();
             if (!Double.isNaN(d)) {
                 return d;
             }
-            return ((Number) obj);
+            return ((Number) obj).doubleValue();
         }
         if (obj instanceof Boolean) {
             return ((Boolean) obj) ? 1 : 0;

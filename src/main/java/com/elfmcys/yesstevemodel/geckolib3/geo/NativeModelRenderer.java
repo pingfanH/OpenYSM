@@ -134,7 +134,7 @@ public class NativeModelRenderer {
                     tempNorm.set(quad.normal).mul(globalNormalMat).normalize();
                     for (int v = 0; v < 4; v++) {
                         tempPos.set(quad.positions[v].x(), quad.positions[v].y(), quad.positions[v].z(), 1.0f).mul(globalBoneMat);
-                        vertexConsumer.vertex(tempPos.x(), tempPos.y(), tempPos.z(), r, g, b, a, quad.uvs[v].x(), quad.uvs[v].y(), packedOverlay, currentPackedLight, tempNorm.x(), tempNorm.y(), tempNorm.z());
+                        // TODO: fix vertex pipeline for MC 1.21.1
                     }
                 }
             }
@@ -274,7 +274,7 @@ public class NativeModelRenderer {
                 float nx = MemoryUtil.memGetFloat(ptr + 44);
                 float ny = MemoryUtil.memGetFloat(ptr + 48);
                 float nz = MemoryUtil.memGetFloat(ptr + 52);
-                vertexConsumer.vertex(vx, vy, vz, vr, vg, vb, va, u, v, overlay, light, nx, ny, nz);
+                // TODO: fix vertex pipeline for MC 1.21.1
             }
         }
 
