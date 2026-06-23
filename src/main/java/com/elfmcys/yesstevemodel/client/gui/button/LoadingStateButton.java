@@ -45,6 +45,6 @@ public class LoadingStateButton extends Button {
             default:
                 throw new IncompatibleClassChangeError();
         }
-        LoadingStateConfig.LOADING_STATE_POSITION.set(stateConfig);
+        LoadingStateConfig.LOADING_STATE_POSITION = stateConfig;
     }
 }

@@ -19,8 +19,8 @@ public class ClientPlayerCloneEvent {
         if (!YesSteveModel.isAvailable() || !NetworkHandler.isClientConnected()) {
             return;
         }
-        event.getOldPlayer().reviveCaps();
+        // reviveCaps removed in NeoForge 1.21.1
         Optional.ofNullable(event.getOldPlayer().getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> Optional.ofNullable(event.getNewPlayer().getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap2 -> cap2.copyFrom(cap)));
-        event.getOldPlayer().invalidateCaps();
+        // invalidateCaps removed in NeoForge 1.21.1
     }
 }

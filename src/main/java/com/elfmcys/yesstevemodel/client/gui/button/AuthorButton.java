@@ -97,7 +97,7 @@ public class AuthorButton extends Button {
     }
 
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
-        if (delta > 0.0d) {
+        if (deltaY > 0.0d) {
             if (this.selectedContactIndex > 0) {
                 this.selectedContactIndex--;
                 renderTooltip(false);
@@ -105,7 +105,7 @@ public class AuthorButton extends Button {
             }
             return true;
         }
-        if (delta < 0.0d) {
+        if (deltaY < 0.0d) {
             if (this.selectedContactIndex < this.componentList.size() - 2) {
                 this.selectedContactIndex++;
                 renderTooltip(false);
