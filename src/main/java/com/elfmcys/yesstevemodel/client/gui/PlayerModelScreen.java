@@ -332,7 +332,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         addWidget(this.searchBox);
         addRenderableWidget(new IconButton(this.guiLeft + 5, this.guiTop + 5, 20, 20, 80, 16, button -> {
             if (Minecraft.getInstance().player != null) {
-                Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(((net.minecraft.client.player.LocalPlayer)Minecraft.getInstance().player).getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     ModelAssembly modelAssembly = cap.getModelAssembly();
                     if (modelAssembly.getModelData().getExtraInfo() != null) {
                         Minecraft.getInstance().setScreen(createModelInfoScreen(this, modelAssembly));
@@ -342,7 +342,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         })).setTooltipText("gui.yes_steve_model.model.info");
         addRenderableWidget(new IconButton(this.guiLeft + 28, this.guiTop + 5, 79, 20, 32, 16, button2 -> {
             if (Minecraft.getInstance().player != null) {
-                Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                Optional.ofNullable(((net.minecraft.client.player.LocalPlayer)Minecraft.getInstance().player).getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                     Minecraft.getInstance().setScreen(createTextureScreen(this, cap.getModelId(), cap.getModelAssembly()));
                 });
             }
@@ -356,7 +356,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         addRenderableWidget(new Checkbox(this.guiLeft + 5, this.guiTop - 22, 20, 20, Component.translatable("gui.yes_steve_model.show_model_id_first"), GeneralConfig.SHOW_MODEL_ID_FIRST.get(), true, false) {
             public void onPress() {
                 super.onPress();
-                GeneralConfig.SHOW_MODEL_ID_FIRST = selected();
+                GeneralConfig.SHOW_MODEL_ID_FIRST = true;
             }
         });
         addRenderableWidget(new IconButton(this.guiLeft + 328, this.guiTop + 5, 18, 18, 32, 0, button4 -> {
@@ -443,7 +443,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         guiGraphics.fillGradient(this.guiLeft + 138, this.guiTop, this.guiLeft + 420, this.guiTop + 235, -14540254, -14540254);
         guiGraphics.fillGradient(this.guiLeft + 351, this.guiTop + 7, this.guiLeft + 352, this.guiTop + 21, -790560, -790560);
         this.searchBox.render(guiGraphics, mouseX, mouseY, partialTick);
-        renderModelPreview(guiGraphics, mouseX, mouseY, this.minecraft.getPartialTick());
+        renderModelPreview(guiGraphics, mouseX, mouseY, this.minecraft.getTimer().getGameTimeDeltaPartialTick(true));
         if (this.searchBox.getValue().isEmpty() && !this.searchBox.isFocused()) {
             guiGraphics.drawString(this.font, Component.translatable("gui.yes_steve_model.search").withStyle(ChatFormatting.ITALIC), this.guiLeft + 148, this.guiTop + 10, 7829367);
         }
@@ -559,7 +559,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
     }
 
     public void tick() {
-        this.searchBox.tick();
+        // this.searchBox.tick();
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

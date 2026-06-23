@@ -224,7 +224,7 @@ public class PlayerTextureScreen extends Screen {
         if (!this.modelHolder.getAnimationStateMachine().isCurrentAnimation(this.currentAnimation)) {
             this.modelHolder.getAnimationStateMachine().setCurrentAnimation(this.currentAnimation);
         }
-        renderTexturePreview(guiGraphics, scissorX, height, scissorWidth, scissorHeight, this.minecraft.getPartialTick());
+        renderTexturePreview(guiGraphics, scissorX, height, scissorWidth, scissorHeight, this.minecraft.getTimer().getGameTimeDeltaPartialTick(true));
         String str = String.format("%d/%d", this.textureCurrentPage + 1, this.textureMaxPage + 1);
         Font font = this.font;
         int iWidth = this.guiLeft + 302 + ((118 - this.font.width(str)) / 2);
@@ -270,16 +270,16 @@ public class PlayerTextureScreen extends Screen {
         if (this.minecraft == null) {
             return false;
         }
-        if (delta != 0.0d) {
+        if (deltaY != 0.0d) {
             if (isInPreviewArea(mouseX, mouseY)) {
-                adjustZoom(((float) delta) * 0.07f);
+                adjustZoom(((float) deltaY) * 0.07f);
                 return true;
             }
             if (isInAnimationArea(mouseX, mouseY)) {
-                return scrollAnimationPage(delta);
+                return scrollAnimationPage(deltaY);
             }
             if (isInTextureArea(mouseX, mouseY)) {
-                return scrollTexturePage(delta);
+                return scrollTexturePage(deltaY);
             }
         }
         return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
