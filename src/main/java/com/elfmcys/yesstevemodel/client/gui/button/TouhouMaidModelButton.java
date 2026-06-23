@@ -6,9 +6,10 @@ import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.util.ComponentUtil;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import com.github.tartaricacid.touhoulittlemaid.network.NetworkHandler;
-import com.github.tartaricacid.touhoulittlemaid.network.message.YsmMaidModelMessage;
+import immersive_aircraft.cobalt.network.NetworkHandler;
 import net.minecraft.network.chat.Component;
+
+import java.util.Optional;
 
 public class TouhouMaidModelButton extends ModelButton {
 
@@ -27,7 +28,7 @@ public class TouhouMaidModelButton extends ModelButton {
         Component component = ComponentUtil.getDisplayName(this.renderContext, this.modelIdHolder.getModelId());
         Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             cap.setYsmModel(this.modelIdHolder.getModelId(), this.modelIdHolder.getCurrentTextureName());
-            NetworkHandler.sendToServer(new YsmMaidModelMessage(this.maid.getId(), this.modelIdHolder.getModelId(), this.modelIdHolder.getCurrentTextureName(), component));
+            NetworkHandler.sendToServer(null);
         });
     }
 }

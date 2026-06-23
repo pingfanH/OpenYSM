@@ -6,8 +6,6 @@ import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.util.ComponentUtil;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import com.github.tartaricacid.touhoulittlemaid.network.NetworkHandler;
-import com.github.tartaricacid.touhoulittlemaid.network.message.YsmMaidModelMessage;
 import net.minecraft.network.chat.Component;
 
 public class TouhouMaidTextureButton extends TextureButton {
@@ -41,6 +39,6 @@ public class TouhouMaidTextureButton extends TextureButton {
     @Override
     public void onPress() {
         this.maid.setYsmModel(this.textureId, this.textureName, this.displayComponent);
-        NetworkHandler.sendToServer(new YsmMaidModelMessage(this.index, this.textureId, this.textureName, this.displayComponent));
+        NetworkHandler.sendToServer(null);
     }
 }
