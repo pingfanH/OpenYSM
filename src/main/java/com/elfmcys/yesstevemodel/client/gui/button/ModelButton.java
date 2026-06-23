@@ -180,7 +180,7 @@ public class ModelButton extends Button {
         }
         double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
         RenderSystem.enableScissor((int) (x * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - (((y + this.height) - 20) * guiScale)), (int) (this.width * guiScale), (int) ((this.height - 20) * guiScale));
-        ModelPreviewRenderer.renderLivingEntityPreview(x + (this.width / 2.0f), y + (this.height / 2.0f) + 20.0f, 30.0f, minecraft.getFrameTime(), this.modelIdHolder, RendererManager.getPlayerRenderer(), this.disablePreviewRotation, true);
+        ModelPreviewRenderer.renderLivingEntityPreview(x + (this.width / 2.0f), y + (this.height / 2.0f) + 20.0f, 30.0f, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true), this.modelIdHolder, RendererManager.getPlayerRenderer(), this.disablePreviewRotation, true);
         RenderSystem.disableScissor();
         int starZ = 3500;
         if (this.foregroundTexture != null) {

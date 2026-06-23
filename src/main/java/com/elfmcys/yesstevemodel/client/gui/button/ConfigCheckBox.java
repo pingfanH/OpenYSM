@@ -43,6 +43,12 @@ public class ConfigCheckBox extends AbstractButton implements ISpecialWidget {
     }
 
     @Override
+    @Override
+    public void updateWidgetNarration(net.minecraft.client.gui.narration.NarrationElementOutput narrationElementOutput) {
+        this.defaultButtonNarrationText(narrationElementOutput);
+    }
+
+    @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.drawString(this.font, this.component2, getX() + 14, getY() + 2, -1, false);

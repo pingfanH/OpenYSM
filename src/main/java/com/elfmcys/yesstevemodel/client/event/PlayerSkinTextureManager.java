@@ -34,7 +34,7 @@ public class PlayerSkinTextureManager {
         Player player = event.getPlayer();
         if (isDefaultSkin(event.getModelId()) && (player instanceof AbstractClientPlayer abstractClientPlayer)) {
             Minecraft minecraft = Minecraft.getInstance();
-            Map insecureSkinInformation = minecraft.getSkinManager().getInsecureSkinInformation(abstractClientPlayer.getGameProfile());
+            Map insecureSkinInformation = ((java.util.Map)minecraft.getSkinManager().getSkins(abstractClientPlayer.getGameProfile()));
             if (insecureSkinInformation.containsKey(MinecraftProfileTexture.Type.SKIN)) {
                 location = minecraft.getSkinManager().registerTexture((MinecraftProfileTexture) insecureSkinInformation.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
             } else {
