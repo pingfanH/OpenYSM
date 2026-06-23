@@ -36,7 +36,7 @@ public class AnimationRouletteKey {
                 if (TouhouLittleMaidCompat.isMaidChatAvailable()) {
                     TouhouLittleMaidCompat.openMaidChat();
                 } else if (Minecraft.getInstance().player != null) {
-                    Minecraft.getInstance().Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                    Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                         String modelId = cap.getModelId();
                         ModelAssembly modelAssembly = cap.getModelAssembly();
                         if (modelAssembly != null && !modelAssembly.getModelData().getModelProperties().getExtraAnimation().isEmpty()) {
