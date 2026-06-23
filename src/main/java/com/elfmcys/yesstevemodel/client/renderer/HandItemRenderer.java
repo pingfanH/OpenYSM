@@ -30,9 +30,7 @@ public class HandItemRenderer {
             return;
         }
         SpecialPlayerRenderEvent event = new SpecialPlayerRenderEvent(localPlayer, capability, capability.getModelId());
-        if (NeoForge.EVENT_BUS.post(event)) {
-            return;
-        }
+        NeoForge.EVENT_BUS.post(event);
         ResourceLocation resourceLocation = event.getTextureLocation() == null ? capability.getTextureLocation() : event.getTextureLocation();
         int textureIndex = event.getTextureLocation() == null ? capability.getTextureIndex() : 0;
         VertexConsumer buffer = bufferSource.getBuffer(CustomEntityTranslucentRenderType.get(resourceLocation));

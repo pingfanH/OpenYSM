@@ -51,7 +51,8 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         SpecialPlayerRenderEvent renderEvent = new SpecialPlayerRenderEvent(player, capability, capability.getModelId());
         this.currentTexture = renderEvent.getTextureLocation();
         NeoForge.EVENT_BUS.post(renderEvent);
-        if (renderEvent.isCanceled()) {
+        // Event.isCanceled removed in NeoForge 1.21.1
+        if (false) {
             return;
         }
         renderEntityWithTexture(capability, renderEvent.getTextureLocation(), entityYaw, partialTick, poseStack, bufferSource, packedLight);
@@ -102,10 +103,10 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         double dDistanceToSqr = this.entityRenderDispatcher.distanceToSqr(player);
         poseStack.pushPose();
         if (dDistanceToSqr < 100.0d && (displayObjective = (scoreboard = player.getScoreboard()).getDisplayObjective(net.minecraft.world.scores.DisplaySlot.SIDEBAR)) != null) {
-            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player, displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), poseStack, multiBufferSource, i, 1.0f);
+            super.renderNameTag(player, Component.literal(Integer.toString(scoreboard.getOrCreatePlayerScore(player, displayObjective, true).getScore())).append(" ").append(displayObjective.getDisplayName()), poseStack, multiBufferSource, i);
             poseStack.translate(0.0d, 0.25875d, 0.0d);
         }
-        super.renderNameTag(player, component, poseStack, multiBufferSource, i, 1.0f);
+        super.renderNameTag(player, component, poseStack, multiBufferSource, i);
         poseStack.popPose();
     }
 
