@@ -28,12 +28,12 @@ public class ExtraPlayerConfigScreen extends Screen {
         addRenderableWidget(new FlatColorButton(guiLeft + 5, guiTop + 2, 80, 18, Component.translatable("gui.yes_steve_model.model.return"), button -> {
             getMinecraft().setScreen(this.parentScreen);
         }));
-        addRenderableWidget(new AbstractSliderButton(guiLeft + 5, guiTop + 24, 320, 18, Component.translatable("gui.yes_steve_model.config.sound_volume"), GeneralConfig.SOUND_VOLUME.get().doubleValue() / 100.0d) {
+        addRenderableWidget(new AbstractSliderButton(guiLeft + 5, guiTop + 24, 320, 18, Component.translatable("gui.yes_steve_model.config.sound_volume"), GeneralConfig.SOUND_VOLUME / 100.0d) {
             protected void updateMessage() {
                 setMessage(Component.translatable("gui.yes_steve_model.config.sound_volume").append(Component.literal(": " + (int)(this.value * 100) + "%")));
             }
             protected void applyValue() {
-                GeneralConfig.SOUND_VOLUME.set(this.value * 100.0d);
+                GeneralConfig.SOUND_VOLUME = this.value * 100.0d;
             }
         });
         addRenderableWidget(new ConfigCheckBoxForge(guiLeft + 5, guiTop + 45, "disable_self_model", GeneralConfig.DISABLE_SELF_MODEL));

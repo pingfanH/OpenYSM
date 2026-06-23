@@ -6,6 +6,7 @@ import com.elfmcys.yesstevemodel.geckolib3.util.MolangUtils;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.EntityFunction;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.registries.BuiltInRegistries;

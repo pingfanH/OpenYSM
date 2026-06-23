@@ -357,7 +357,6 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             public void onPress() {
                 super.onPress();
                 GeneralConfig.SHOW_MODEL_ID_FIRST.set(selected());
-                GeneralConfig.SHOW_MODEL_ID_FIRST.save();
             }
         });
         addRenderableWidget(new IconButton(this.guiLeft + 328, this.guiTop + 5, 18, 18, 32, 0, button4 -> {

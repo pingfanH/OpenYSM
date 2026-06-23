@@ -44,7 +44,7 @@ public class C2SRequestSwitchModelPacket implements CustomPacketPayload {
         if (context.flow().isServerbound()) {
             context.enqueueWork(() -> {
                 ServerPlayer sender = (ServerPlayer) context.player();
-                if (sender != null && ServerConfig.CAN_SWITCH_MODEL.get()) {
+                if (sender != null && ServerConfig.CAN_SWITCH_MODEL) {
                     handleCapability(message, sender);
                 }
             });

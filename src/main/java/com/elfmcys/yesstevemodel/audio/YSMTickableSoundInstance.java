@@ -24,7 +24,7 @@ public class YSMTickableSoundInstance extends AbstractTickableSoundInstance impl
     }
 
     public void tick() {
-        this.volume = (this.targetVolume * GeneralConfig.SOUND_VOLUME.get().floatValue()) / 100.0f;
+        this.volume = (float)(this.targetVolume * GeneralConfig.SOUND_VOLUME) / 100.0f;
         if (this.entity.isRemoved()) {
             stop();
             return;

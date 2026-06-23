@@ -127,7 +127,7 @@ public class ModelButton extends Button {
     }
 
     public Component getMessage() {
-        if (GeneralConfig.SHOW_MODEL_ID_FIRST.get().booleanValue()) {
+        if (GeneralConfig.SHOW_MODEL_ID_FIRST) {
             return this.displayName;
         }
         return super.getMessage();

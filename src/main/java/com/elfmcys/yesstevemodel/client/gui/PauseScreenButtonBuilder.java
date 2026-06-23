@@ -25,7 +25,7 @@ public class PauseScreenButtonBuilder {
         if (isServerConnected()) {
             Minecraft minecraft = Minecraft.getInstance();
             Button buttonBuild = Button.builder(Component.translatable("gui.yes_steve_model.skin"), button -> {
-                if (GeneralConfig.DISCLAIMER_SHOW.get()) {
+                if (GeneralConfig.DISCLAIMER_SHOW) {
                     minecraft.setScreen(new DisclaimerScreen());
                 } else {
                     minecraft.setScreen(new PlayerModelScreen());

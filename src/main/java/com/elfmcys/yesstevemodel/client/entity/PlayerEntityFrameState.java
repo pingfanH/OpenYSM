@@ -3,6 +3,7 @@ package com.elfmcys.yesstevemodel.client.entity;
 import com.elfmcys.yesstevemodel.network.message.S2CSyncPlayerStatePacket;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 

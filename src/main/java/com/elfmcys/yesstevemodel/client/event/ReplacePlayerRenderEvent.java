@@ -29,15 +29,15 @@ public class ReplacePlayerRenderEvent {
         }
         Player entity = event.getEntity();
         LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if (entity.equals(localPlayer) && GeneralConfig.DISABLE_SELF_MODEL.get().booleanValue()) {
+        if (entity.equals(localPlayer) && GeneralConfig.DISABLE_SELF_MODEL) {
             return;
         }
-        if ((!entity.equals(localPlayer) && GeneralConfig.DISABLE_OTHER_MODEL.get().booleanValue()) || event.getEntity().isSpectator()) {
+        if ((!entity.equals(localPlayer) && GeneralConfig.DISABLE_OTHER_MODEL) || event.getEntity().isSpectator()) {
             return;
         }
         Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
             if (cap.isModelActive()) {
-                if (!CameraUtil.isFirstPerson(cap) || FirstPersonCompat.isFirstPersonActive() || RealCameraCompat.isActive() || GeneralConfig.DISABLE_EXTERNAL_FP_ANIM.get().booleanValue() || !PlayerAnimatorCompat.isPlayerAnimated(localPlayer)) {
+                if (!CameraUtil.isFirstPerson(cap) || FirstPersonCompat.isFirstPersonActive() || RealCameraCompat.isActive() || GeneralConfig.DISABLE_EXTERNAL_FP_ANIM || !PlayerAnimatorCompat.isPlayerAnimated(localPlayer)) {
                     event.setCanceled(true);
                     RendererManager.getPlayerRenderer().render(event.getEntity(), event.getEntity().getYRot(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
                 }

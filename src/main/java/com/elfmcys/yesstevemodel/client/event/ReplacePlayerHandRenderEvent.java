@@ -23,7 +23,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 public class ReplacePlayerHandRenderEvent {
     @SubscribeEvent
     public static void onRenderArm(RenderArmEvent event) {
-        if (!YesSteveModel.isAvailable() || GeneralConfig.DISABLE_SELF_MODEL.get() || GeneralConfig.DISABLE_SELF_HANDS.get()) {
+        if (!YesSteveModel.isAvailable() || GeneralConfig.DISABLE_SELF_MODEL || GeneralConfig.DISABLE_SELF_HANDS) {
             return;
         }
         Player player = event.getPlayer();

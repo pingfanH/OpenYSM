@@ -132,7 +132,7 @@ public final class CapabilityEvent {
     public static void onServerTick(ServerTickEvent.Post serverTickEvent) {
         if (YesSteveModel.isAvailable()) {
             List<ServerPlayer> players = serverTickEvent.getServer().getPlayerList().getPlayers();
-            Boolean bool = ServerConfig.LOW_BANDWIDTH_USAGE.get();
+            Boolean bool = ServerConfig.LOW_BANDWIDTH_USAGE;
             for (ServerPlayer serverPlayer : players) {
                 ModelInfoCapability modelInfoCap = serverPlayer.getData(Capabilities.MODEL_INFO.get());
                 if (modelInfoCap == null) continue;

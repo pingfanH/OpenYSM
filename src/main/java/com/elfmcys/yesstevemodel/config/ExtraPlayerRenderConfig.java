@@ -1,31 +1,16 @@
 package com.elfmcys.yesstevemodel.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
-
 public class ExtraPlayerRenderConfig {
 
-    public static ModConfigSpec.BooleanValue DISABLE_PLAYER_RENDER;
+    public static boolean DISABLE_PLAYER_RENDER = false;
 
-    public static ModConfigSpec.IntValue PLAYER_POS_X;
+    public static int PLAYER_POS_X = 10;
 
-    public static ModConfigSpec.IntValue PLAYER_POS_Y;
+    public static int PLAYER_POS_Y = 10;
 
-    public static ModConfigSpec.DoubleValue PLAYER_SCALE;
+    public static double PLAYER_SCALE = 40.0d;
 
-    public static ModConfigSpec.DoubleValue PLAYER_YAW_OFFSET;
+    public static double PLAYER_YAW_OFFSET = 5.0d;
 
-    public static void define(ModConfigSpec.Builder builder) {
-        builder.push("extra_player_render");
-        builder.comment("Whether to display player");
-        DISABLE_PLAYER_RENDER = builder.define("DisablePlayerRender", false);
-        builder.comment("Player position x in screen");
-        PLAYER_POS_X = builder.defineInRange("PlayerPosX", 10, 0, Integer.MAX_VALUE);
-        builder.comment("Player position y in screen");
-        PLAYER_POS_Y = builder.defineInRange("PlayerPosY", 10, 0, Integer.MAX_VALUE);
-        builder.comment("Player scale in screen");
-        PLAYER_SCALE = builder.defineInRange("PlayerScale", 40.0d, 8.0d, 360.0d);
-        builder.comment("Player yaw offset in screen");
-        PLAYER_YAW_OFFSET = builder.defineInRange("PlayerYawOffset", 5.0d, Double.MIN_VALUE, Double.MAX_VALUE);
-        builder.pop();
-    }
+    public static void define() {}
 }

@@ -297,7 +297,7 @@ public class AnimationRouletteScreen extends Screen {
             int iRound2 = Math.round(110.0f / iMax2);
             ConfigCheckBox configCheckBox = new ConfigCheckBox(this.centerX + 127 + (iRound2 * (idx % iMax2)), this.centerY + rowY, iRound2, mutableComponentLiteral2, bool -> {
                 executeExpression(str4, null);
-                if (!GeckoLibCache.isRoamingVariableAssignment(str4) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE.get().booleanValue()) {
+                if (!GeckoLibCache.isRoamingVariableAssignment(str4) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE) {
                     NetworkHandler.sendToServer(new C2SRequestExecuteMolangPacket(str4, this.animatableModel.getEntity().getId()));
                 }
                 init();
@@ -335,7 +335,7 @@ public class AnimationRouletteScreen extends Screen {
         ConfigCheckBox configCheckBox = new ConfigCheckBox(this.centerX + 125, this.centerY + iArr[0], mutableComponentLiteral, bool -> {
             String str2 = checkboxConfig.getValue() + "=" + (bool.booleanValue() ? "1" : "0");
             executeExpression(str2, null);
-            if (!GeckoLibCache.isRoamingVariableAssignment(str2) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE.get().booleanValue()) {
+            if (!GeckoLibCache.isRoamingVariableAssignment(str2) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE) {
                 NetworkHandler.sendToServer(new C2SRequestExecuteMolangPacket(str2, this.animatableModel.getEntity().getId()));
             }
         }) {
@@ -527,7 +527,7 @@ public class AnimationRouletteScreen extends Screen {
                 cap.requestModelSwitch(str);
             });
         }
-        if (localPlayer != null && GeneralConfig.PRINT_ANIMATION_ROULETTE_MSG.get().booleanValue()) {
+        if (localPlayer != null && GeneralConfig.PRINT_ANIMATION_ROULETTE_MSG) {
             localPlayer.sendSystemMessage(Component.translatable("message.yes_steve_model.model.animation_roulette.play", str));
         }
         getMinecraft().setScreen(null);

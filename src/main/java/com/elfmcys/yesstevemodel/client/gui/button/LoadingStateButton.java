@@ -18,12 +18,12 @@ public class LoadingStateButton extends Button {
     }
 
     public Component getMessage() {
-        return Component.literal(LoadingStateConfig.LOADING_STATE_POSITION.get().name());
+        return Component.literal(LoadingStateConfig.LOADING_STATE_POSITION.name());
     }
 
     public void onPress() {
         LoadingStateConfig.Position stateConfig;
-        switch (LoadingStateConfig.LOADING_STATE_POSITION.get()) {
+        switch (LoadingStateConfig.LOADING_STATE_POSITION) {
             case TOP_LEFT:
                 stateConfig = LoadingStateConfig.Position.TOP_CENTER;
                 break;

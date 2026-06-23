@@ -25,14 +25,14 @@ public class EntityRenderDispatcherMixin {
             return true;
         }
         if (entity instanceof Projectile projectile) {
-            if (!GeneralConfig.DISABLE_PROJECTILE_MODEL.get()) {
+            if (!GeneralConfig.DISABLE_PROJECTILE_MODEL) {
                 if (projectile instanceof FishingHook fishingHook) {
                     return CustomFishingHookRenderer.tryRenderCustomHook(fishingHook, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
                 }
                 return CustomProjectileRenderer.renderProjectile(projectile, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
             }
         }
-        if (!GeneralConfig.DISABLE_VEHICLE_MODEL.get().booleanValue()) {
+        if (!GeneralConfig.DISABLE_VEHICLE_MODEL) {
             ModelPreviewRenderer.renderVehicleModel(entity, poseStack, partialTicks);
             return CustomVehicleRenderer.renderVehicle(entity, entityYaw, partialTicks, poseStack, multiBufferSource, packedLight);
         }

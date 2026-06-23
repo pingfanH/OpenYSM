@@ -32,7 +32,7 @@ public class AnimationRouletteKey {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
         if (YesSteveModel.isAvailable() && InputUtil.isPlayerReady() && event.getAction() == 1 && InputUtil.isKeyPressed(event, KEY_ROULETTE)) {
-            if (!NetworkHandler.isClientConnected() || ServerConfig.CAN_SWITCH_MODEL.get()) {
+            if (!NetworkHandler.isClientConnected() || ServerConfig.CAN_SWITCH_MODEL) {
                 if (TouhouLittleMaidCompat.isMaidChatAvailable()) {
                     TouhouLittleMaidCompat.openMaidChat();
                 } else if (Minecraft.getInstance().player != null) {

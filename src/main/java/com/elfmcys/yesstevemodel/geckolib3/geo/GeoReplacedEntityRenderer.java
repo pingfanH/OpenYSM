@@ -83,7 +83,19 @@ public abstract class GeoReplacedEntityRenderer<TEntity extends LivingEntity, T 
 
     public void renderEntityWithTexture(T t, @Nullable ResourceLocation resourceLocation, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         Direction bedOrientation;
-        if (NeoForge.EVENT_BUS.post(new RenderLivingEvent.Pre(t.getEntity(), this, partialTick, poseStack, multiBufferSource, packedLight))) {
+        RenderLivingEvent.Pre _event =
+                new RenderLivingEvent.Pre(
+                        t.getEntity(),
+                        this,
+                        partialTick,
+                        poseStack,
+                        multiBufferSource,
+                        packedLight
+                );
+
+        NeoForge.EVENT_BUS.post(_event);
+
+        if (_event.isCanceled()) {
             return;
         }
         AnimationEvent<?> event = t.processAnimation(partialTick);

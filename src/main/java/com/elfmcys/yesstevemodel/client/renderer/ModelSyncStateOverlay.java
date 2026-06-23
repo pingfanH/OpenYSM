@@ -16,11 +16,11 @@ public class ModelSyncStateOverlay {
         int barX;
         int barY;
 
-        if (LoadingStateConfig.DISABLE_LOADING_STATE_SCREEN.get().booleanValue()) {
+        if (LoadingStateConfig.DISABLE_LOADING_STATE_SCREEN) {
             return;
         }
 
-        switch (LoadingStateConfig.LOADING_STATE_POSITION.get()) {
+        switch (LoadingStateConfig.LOADING_STATE_POSITION) {
             case TOP_LEFT:
                 textX = 10;
                 textY = 10;
@@ -111,7 +111,7 @@ public class ModelSyncStateOverlay {
         int drawX;
         int textWidth = font.width(textComponent);
 
-        drawX = switch (LoadingStateConfig.LOADING_STATE_POSITION.get()) {
+        drawX = switch (LoadingStateConfig.LOADING_STATE_POSITION) {
             case TOP_LEFT, BOTTOM_LEFT -> baseX;
             case TOP_CENTER, BOTTOM_CENTER -> (screenWidth - textWidth) / 2;
             case TOP_RIGHT, BOTTOM_RIGHT -> baseX - textWidth;

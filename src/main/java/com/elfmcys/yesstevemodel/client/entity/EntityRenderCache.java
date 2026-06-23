@@ -38,20 +38,20 @@ public class EntityRenderCache {
                     Entity entity = geoEntity.getEntity();
                     if (entity instanceof AbstractClientPlayer) {
                         if (entity instanceof LocalPlayer) {
-                            if (!GeneralConfig.DISABLE_SELF_MODEL.get()) {
+                            if (!GeneralConfig.DISABLE_SELF_MODEL) {
                                 geoEntity.submitAsyncUpdate(partialTick);
                                 strongRefs.add(geoEntity);
                             }
-                        } else if (!GeneralConfig.DISABLE_OTHER_MODEL.get()) {
+                        } else if (!GeneralConfig.DISABLE_OTHER_MODEL) {
                             geoEntity.submitAsyncUpdate(partialTick);
                             strongRefs.add(geoEntity);
                         }
                     } else if (entity instanceof Projectile) {
-                        if (!GeneralConfig.DISABLE_PROJECTILE_MODEL.get()) {
+                        if (!GeneralConfig.DISABLE_PROJECTILE_MODEL) {
                             geoEntity.submitAsyncUpdate(partialTick);
                             strongRefs.add(geoEntity);
                         }
-                    } else if (!GeneralConfig.DISABLE_VEHICLE_MODEL.get()) {
+                    } else if (!GeneralConfig.DISABLE_VEHICLE_MODEL) {
                         geoEntity.submitAsyncUpdate(partialTick);
                         strongRefs.add(geoEntity);
                     }

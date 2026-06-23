@@ -31,9 +31,9 @@ public class PlayerModelToggleKey {
                 YesSteveModel.sendUnavailableMessage();
                 return;
             }
-            if (NetworkHandler.isClientConnected() && !ServerConfig.CAN_SWITCH_MODEL.get()) {
+            if (NetworkHandler.isClientConnected() && !ServerConfig.CAN_SWITCH_MODEL) {
                 Minecraft.getInstance().setScreen(new ExtraPlayerConfigScreen(null));
-            } else if (GeneralConfig.DISCLAIMER_SHOW.get()) {
+            } else if (GeneralConfig.DISCLAIMER_SHOW) {
                 Minecraft.getInstance().setScreen(new DisclaimerScreen());
             } else {
                 Minecraft.getInstance().setScreen(new PlayerModelScreen());

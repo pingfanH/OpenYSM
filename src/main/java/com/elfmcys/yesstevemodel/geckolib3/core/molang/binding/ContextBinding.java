@@ -52,7 +52,7 @@ public class ContextBinding implements ObjectBinding {
             return;
         }
         if (obj instanceof Number) {
-            this.bindings.put(name, ((Number) obj).floatValue());
+            this.bindings.put(name, ((Number) obj));
         } else if (obj instanceof Boolean) {
             this.bindings.put(name, (Boolean) obj ? 1.0f : 0.0f);
         } else {

@@ -49,7 +49,7 @@ public class AnimationSlider extends AbstractSliderButton implements ISpecialWid
         try {
             String str = this.controllerName + "=" + getValue();
             this.model.executeExpression(GeckoLibCache.parseSimpleExpression(str), true, false, null);
-            if (!GeckoLibCache.isRoamingVariableAssignment(str) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE.get().booleanValue()) {
+            if (!GeckoLibCache.isRoamingVariableAssignment(str) && NetworkHandler.isClientConnected() && !ServerConfig.LOW_BANDWIDTH_USAGE) {
                 NetworkHandler.sendToServer(new C2SRequestExecuteMolangPacket(str, this.model.getEntity().getId()));
             }
         } catch (ParseException e) {

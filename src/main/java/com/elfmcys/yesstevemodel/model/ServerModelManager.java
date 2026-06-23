@@ -1019,8 +1019,8 @@ public final class ServerModelManager {
     }
 
     public static Pair<String, String> getDefaultModelConfig() {
-        String defaultModelId = ServerConfig.DEFAULT_MODEL_ID.get();
-        String defaultTexture = ServerConfig.DEFAULT_MODEL_TEXTURE.get();
+        String defaultModelId = ServerConfig.DEFAULT_MODEL_ID;
+        String defaultTexture = ServerConfig.DEFAULT_MODEL_TEXTURE;
         if (defaultTexture.toLowerCase().endsWith(".png") && defaultTexture.length() > 4) {
             defaultTexture = defaultTexture.substring(0, defaultTexture.length() - 4);
         }
