@@ -15,7 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 public class EquippedEnchantmentLevel extends LivingEntityFunction {
     @Override
     public Object eval(ExecutionContext<IContext<LivingEntity>> context, ArgumentCollection arguments) {
-        Enchantment enchantment;
+        net.minecraft.core.Holder<Enchantment> enchantment;
         EquipmentSlot slotType = MolangUtils.parseSlotType(context.entity(), arguments.getAsString(context, 0));
         if (slotType == null) {
             return null;
@@ -27,7 +27,7 @@ public class EquippedEnchantmentLevel extends LivingEntityFunction {
         int enchantmentLevel = 0;
         for (int i = 1; i < arguments.size(); i++) {
             ResourceLocation id = arguments.getResourceLocation(context, 1);
-            if (id != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(id).orElse(null).value()) != null) {
+            if (id != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(id).orElse(null)) != null) {
                 enchantmentLevel += stack.getEnchantmentLevel(enchantment);
             }
         }
