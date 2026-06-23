@@ -100,7 +100,7 @@ public class ClientSetupEvent {
             SpellbooksCompat.init();
             SimplePlanesCompat.init();
             ImmersiveAirCraftCompat.init();
-            showInCompatibleMod(SBackpackCompat.getInCompatibleInfo());
+            showInCompatibleMod(Optional.empty());
             showInCompatibleMod(ParcoolCompat.getInCompatibleInfo());
             showInCompatibleMod("epicfight", "Epic Fight");
             checkNativeInitialization();

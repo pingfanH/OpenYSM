@@ -8,4 +8,6 @@ public class CuriosCompat {
     public static boolean hasNoTaggedItemInSlot(Object entity, String type, List<TagKey<Item>> tags) { return false; }
     public static boolean hasTaggedItemInSlot(Object entity, String type, List<TagKey<Item>> tags) { return false; }
     public static int getCuriosCount(Object entity, String type) { return 0; }
+
+    public static void registerCuriosItems(Object binding) {}
 }

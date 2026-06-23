@@ -27,7 +27,7 @@ public class ParcoolCompat {
     private static boolean INCOMPATIBLE_VERSION;
 
     public static void init() {
-        if (GeneralConfig.PARCOOL != null && !GeneralConfig.PARCOOL) {
+        if (GeneralConfig.PARCOOL && !GeneralConfig.PARCOOL) {
             IS_LOADED = false;
             return;
         }

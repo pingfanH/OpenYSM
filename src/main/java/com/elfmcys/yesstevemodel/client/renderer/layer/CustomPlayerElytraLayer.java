@@ -39,7 +39,7 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
             if (net.minecraft.client.resources.PlayerSkin.isElytraLoaded(((net.minecraft.client.player.AbstractClientPlayer) entity).getSkin())) {
                 cloakTextureLocation = ((net.minecraft.client.player.AbstractClientPlayer) entity).getElytraTextureLocation();
             } else {
-                cloakTextureLocation = WINGS_LOCATION;
+                cloakTextureLocation = ResourceLocation.parse("minecraft:missing");
             }
             poseStack.pushPose();
             renderElytra(poseStack, animatedGeoModel);

@@ -418,7 +418,7 @@ public class AnimationRouletteScreen extends Screen {
     }
 
     public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
-        if (delta < 0.0d) {
+        if (deltaY < 0.0d) {
             if (mouseX < this.centerX + 110) {
                 nextPage();
                 return true;
@@ -426,7 +426,7 @@ public class AnimationRouletteScreen extends Screen {
             scrollConfigDown(20);
             return true;
         }
-        if (delta <= 0.0d) {
+        if (deltaY <= 0.0d) {
             return false;
         }
         if (mouseX < this.centerX + 110) {

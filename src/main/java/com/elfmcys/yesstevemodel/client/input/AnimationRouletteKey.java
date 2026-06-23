@@ -14,6 +14,7 @@ import com.elfmcys.yesstevemodel.util.InputUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
@@ -36,7 +37,7 @@ public class AnimationRouletteKey {
                 if (TouhouLittleMaidCompat.isMaidChatAvailable()) {
                     TouhouLittleMaidCompat.openMaidChat();
                 } else if (Minecraft.getInstance().player != null) {
-                    Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
+                    Optional.ofNullable(((LocalPlayer)Minecraft.getInstance().player).getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                         String modelId = cap.getModelId();
                         ModelAssembly modelAssembly = cap.getModelAssembly();
                         if (modelAssembly != null && !modelAssembly.getModelData().getModelProperties().getExtraAnimation().isEmpty()) {

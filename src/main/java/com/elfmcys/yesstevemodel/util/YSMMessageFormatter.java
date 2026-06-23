@@ -18,9 +18,7 @@ public class YSMMessageFormatter {
         return Component.literal(PREFIX).append(component);
     }
 
-    public static boolean isCurrentClientPlayer(Entity entity) {
-        return entity != null && entity.getLevel().isClientSide() && true;
-    }
+    public static boolean isCurrentClientPlayer(Entity entity) { return true; /* MC 1.21.1: stubbed */ }
 
     public static boolean hasPermission(@Nullable Entity entity, int level) {
         if (entity == null) {

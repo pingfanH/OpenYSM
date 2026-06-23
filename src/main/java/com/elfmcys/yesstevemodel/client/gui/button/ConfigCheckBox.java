@@ -13,7 +13,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
-public class ConfigCheckBox extends Checkbox implements ISpecialWidget {
+public class ConfigCheckBox implements ISpecialWidget {
 
     private static final ResourceLocation location = ResourceLocation.fromNamespaceAndPath(YesSteveModel.MOD_ID, "texture/roulette.png");
 
@@ -22,8 +22,14 @@ public class ConfigCheckBox extends Checkbox implements ISpecialWidget {
     private final Component component2;
 
     public ConfigCheckBox(int x, int y, int width, Component component, Consumer<Boolean> consumer) {
-        super(x, y, width, 12, component, false, false);
-        this.component2 = component;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = 12;
+        this.active = true;
+        this.visible = true;
+        this.isStateTriggered = false;
+this.component2 = component;
         this.consumer2 = consumer;
     }
 

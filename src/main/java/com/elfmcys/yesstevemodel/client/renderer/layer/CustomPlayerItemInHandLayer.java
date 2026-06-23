@@ -39,7 +39,7 @@ public class CustomPlayerItemInHandLayer extends GeoLayerRenderer<CustomPlayerEn
             boolean useExtraPlayer = entityLivingBaseIn.isRenderLayersFirst();
             if (!animatedGeoModel.rightHandBones().isEmpty()) {
                 if (false) { // SlashBlade compat stubbed
-                    SlashBladeRenderer.renderOnEntity(entity, animatedGeoModel, poseStack, bufferSource, packedLightIn, mainHandItem, partialTick);
+                    // SlashBlade stubbed /*entity, animatedGeoModel, poseStack, bufferSource, packedLightIn, mainHandItem, partialTick);
                 } else {
                     TacCompat.handleGunSound(entity, mainHandItem);
                     renderItem(animatedGeoModel, entity, mainHandItem, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, poseStack, bufferSource, packedLightIn);
@@ -51,7 +51,7 @@ public class CustomPlayerItemInHandLayer extends GeoLayerRenderer<CustomPlayerEn
             }
             if (!animatedGeoModel.leftHandBones().isEmpty()) {
                 if (false) { // SlashBlade compat stubbed
-                    SlashBladeRenderer.renderRightWaist(animatedGeoModel, poseStack, bufferSource, packedLightIn, offhandItem);
+                    // SlashBlade stubbed /*animatedGeoModel, poseStack, bufferSource, packedLightIn, offhandItem);
                 } else {
                     if (!SWarfareCompat.isGunItem(offhandItem)) {
                         renderItem(animatedGeoModel, entity, offhandItem, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, poseStack, bufferSource, packedLightIn);
