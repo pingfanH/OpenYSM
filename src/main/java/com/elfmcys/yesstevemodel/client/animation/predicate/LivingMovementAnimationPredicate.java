@@ -37,7 +37,7 @@ public class LivingMovementAnimationPredicate implements IAnimationPredicate<Liv
         if (player == null || (event.getAnimatable() instanceof IPreviewAnimatable) || (vehicle = player.getVehicle()) == null || !vehicle.isAlive()) {
             return null;
         }
-        String str = /*SWEMCompat.*/getHorseGaitName(player);
+        String str = getHorseGaitName(player);
         if (StringUtils.isNoneBlank(str)) {
             return IAnimationPredicate.playAnimationWithLoop(event, str, ILoopType.EDefaultLoopTypes.LOOP);
         }

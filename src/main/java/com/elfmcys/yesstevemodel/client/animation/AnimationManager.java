@@ -55,7 +55,7 @@ public class AnimationManager implements IAnimationPredicate<CustomPlayerEntity>
                 if (animationState.getPredicate().test(player, event)) {
                     String name = animationState.getAnimationName();
                     ILoopType loopType = animationState.getLoopType();
-                    PlayState slashBladePlayState = /*SlashBladeCompat.*/handleSlashBladeAnim(player, event, name, loopType);
+                    PlayState slashBladePlayState = handleSlashBladeAnim(player, event, name, loopType);
                     if (slashBladePlayState != null) {
                         return slashBladePlayState;
                     }

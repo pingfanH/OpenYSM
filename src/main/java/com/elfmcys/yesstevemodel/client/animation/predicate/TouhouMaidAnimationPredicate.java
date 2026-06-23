@@ -52,7 +52,7 @@ public class TouhouMaidAnimationPredicate implements IAnimationPredicate<MaidCap
                 if (animationState.getPredicate().test(entity, event)) {
                     String str = animationState.getAnimationName();
                     ILoopType loopType = animationState.getLoopType();
-                    PlayState playState = /*SlashBladeCompat.*/handleSlashBladeAnim(entity, event, str, loopType);
+                    PlayState playState = handleSlashBladeAnim(entity, event, str, loopType);
                     if (playState != null) {
                         return playState;
                     }
