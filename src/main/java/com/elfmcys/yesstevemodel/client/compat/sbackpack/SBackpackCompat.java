@@ -6,4 +6,10 @@ public class SBackpackCompat {
     public static void setupRenderLayers() {}
     public static ItemStack getBackpackItem(Object context) { return null; }
     public static Object getInCompatibleInfo() { return java.util.Optional.empty(); }
+
+    public static void registerControllerFunctions(Object binding) {}
+
+    public static void registerSittingAnimations(Object binding) {}
+
+    public static void registerSimpleAnimations(Object binding) {}
 }

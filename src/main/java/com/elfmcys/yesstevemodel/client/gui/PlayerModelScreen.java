@@ -95,7 +95,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         this.filteredPacks = Maps.newHashMap();
         this.category = Category.ALL;
         if (NetworkHandler.isClientConnected()) {
-            this.hiddenModels.addAll(ServerConfig.CLIENT_NOT_DISPLAY_MODELS.get());
+            this.hiddenModels.addAll(ServerConfig.CLIENT_NOT_DISPLAY_MODELS);
         }
         ClientModelManager.registerGuiWidget(this);
         this.modelPackMap = new Object2ReferenceOpenHashMap<>(ClientModelManager.getModelPackMap());
@@ -353,10 +353,10 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
                 navigateUp();
             }).setTooltipText("gui.back"));
         }
-        addRenderableWidget(new Checkbox(this.guiLeft + 5, this.guiTop - 22, 20, 20, Component, false.translatable("gui.yes_steve_model.show_model_id_first"), GeneralConfig.SHOW_MODEL_ID_FIRST.get(), true, false) {
+        addRenderableWidget(new Checkbox(this.guiLeft + 5, this.guiTop - 22, 20, 20, Component.translatable("gui.yes_steve_model.show_model_id_first"), GeneralConfig.SHOW_MODEL_ID_FIRST.get(), true, false) {
             public void onPress() {
                 super.onPress();
-                GeneralConfig.SHOW_MODEL_ID_FIRST.set(selected());
+                GeneralConfig.SHOW_MODEL_ID_FIRST = selected();
             }
         });
         addRenderableWidget(new IconButton(this.guiLeft + 328, this.guiTop + 5, 18, 18, 32, 0, button4 -> {
@@ -443,7 +443,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         guiGraphics.fillGradient(this.guiLeft + 138, this.guiTop, this.guiLeft + 420, this.guiTop + 235, -14540254, -14540254);
         guiGraphics.fillGradient(this.guiLeft + 351, this.guiTop + 7, this.guiLeft + 352, this.guiTop + 21, -790560, -790560);
         this.searchBox.render(guiGraphics, mouseX, mouseY, partialTick);
-        renderModelPreview(guiGraphics, mouseX, mouseY, this.minecraft.getFrameTime());
+        renderModelPreview(guiGraphics, mouseX, mouseY, this.minecraft.getPartialTick());
         if (this.searchBox.getValue().isEmpty() && !this.searchBox.isFocused()) {
             guiGraphics.drawString(this.font, Component.translatable("gui.yes_steve_model.search").withStyle(ChatFormatting.ITALIC), this.guiLeft + 148, this.guiTop + 10, 7829367);
         }

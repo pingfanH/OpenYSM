@@ -38,8 +38,8 @@ public class ExtraPlayerRenderScreen extends Screen {
         this.offsetY = 1;
         this.mouseStartX = ExtraPlayerRenderConfig.PLAYER_POS_X;
         this.mouseStartY = ExtraPlayerRenderConfig.PLAYER_POS_Y;
-        this.rotationX = ExtraPlayerRenderConfig.PLAYER_SCALE;
-        this.rotationY = ExtraPlayerRenderConfig.PLAYER_YAW_OFFSET;
+        this.rotationX = (int) ExtraPlayerRenderConfig.PLAYER_SCALE;
+        this.rotationY = (int) ExtraPlayerRenderConfig.PLAYER_YAW_OFFSET;
         if (PauseScreenButtonBuilder.isServerConnected()) {
             this.offsetX = 16;
             this.offsetY = 0;
@@ -60,7 +60,7 @@ public class ExtraPlayerRenderScreen extends Screen {
         addRenderableWidget(new Checkbox((this.width - iWidth) / 2, this.height + i, iWidth, 20, mutableComponentTranslatable, ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER, true) {
             public void onPress() {
                 super.onPress();
-                ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER.set(Boolean.valueOf(selected()));
+                ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER = selected();
             }
         });
     }
@@ -92,7 +92,7 @@ public class ExtraPlayerRenderScreen extends Screen {
         }
         guiGraphics.pose().popPose();
         if (getMinecraft().player != null && !ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER) {
-            ModelPreviewRenderer.renderPlayerOverlay(guiGraphics, getMinecraft().player, this.mouseStartX, this.mouseStartY, this.rotationX, this.rotationY, -500, this.minecraft.getFrameTime());
+            ModelPreviewRenderer.renderPlayerOverlay(guiGraphics, getMinecraft().player, this.mouseStartX, this.mouseStartY, this.rotationX, this.rotationY, -500, this.minecraft.getPartialTick());
         }
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }

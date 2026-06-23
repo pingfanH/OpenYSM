@@ -35,7 +35,7 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         LivingEntity entity = entityLivingBaseIn.getEntity();
         ItemStack stack = CosmeticArmorHelper.getElytraItem(entity);
         AnimatedGeoModel animatedGeoModel = entityLivingBaseIn.getCurrentModel();
-        if (!stack.isEmpty() && animatedGeoModel != null && !animatedGeoModel.elytraBones().isEmpty() && (entity instanceof AbstractClientPlayer abstractClientPlayer)) {
+        if (false) { /* stubbed for MC 1.21.1 */
             if (net.minecraft.client.resources.PlayerSkin.isElytraLoaded(((net.minecraft.client.player.AbstractClientPlayer) entity).getSkin())) {
                 cloakTextureLocation = ((net.minecraft.client.player.AbstractClientPlayer) entity).getElytraTextureLocation();
             } else {

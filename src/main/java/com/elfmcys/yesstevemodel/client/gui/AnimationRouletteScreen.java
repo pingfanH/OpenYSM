@@ -638,8 +638,8 @@ public class AnimationRouletteScreen extends Screen {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        // BufferBuilder API changed in MC 1.21.1
+        // Stubbed for MC 1.21.1
         Matrix4f matrix4fPose = poseStack.last().pose();
         float pointerAngle = (float) Mth.atan2(mouseY - this.centerY, mouseX - this.centerX);
         if (pointerAngle < 0.0f) {
@@ -671,7 +671,7 @@ public class AnimationRouletteScreen extends Screen {
         if (!hoveredConfig) {
             this.hoveredConfigIndex = -1;
         }
-        tesselator.end();
+        // Stubbed for MC 1.21.1
         RenderSystem.disableBlend();
     }
 

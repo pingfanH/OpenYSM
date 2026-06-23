@@ -40,4 +40,7 @@ public class ConfigCheckBox extends Checkbox implements ISpecialWidget {
         this.isStateTriggered = !this.isStateTriggered;
         this.consumer2.accept(Boolean.valueOf(this.isStateTriggered));
     }
+
+    public void setStateTriggered(boolean state) { this.isStateTriggered = state; }
+    public boolean isStateTriggered() { return this.isStateTriggered; }
 }

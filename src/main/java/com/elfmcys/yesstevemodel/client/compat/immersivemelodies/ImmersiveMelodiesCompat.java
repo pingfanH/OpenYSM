@@ -1,2 +1,6 @@
 package com.elfmcys.yesstevemodel.client.compat.immersivemelodies;
-public class ImmersiveMelodiesCompat { public static void init() {} public static boolean isLoaded() { return false; } }
+public class ImmersiveMelodiesCompat { public static void init() {} public static boolean isLoaded() { return false; } 
+    public static void registerBindings(Object binding) {}
+
+    public static void registerControllerFunctions(Object binding) {  }
+}

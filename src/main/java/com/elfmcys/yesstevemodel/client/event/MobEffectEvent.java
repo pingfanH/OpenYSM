@@ -22,10 +22,10 @@ public class MobEffectEvent {
         }
         LivingEntity entity = event.getEntity();
         if (entity instanceof ServerPlayer serverPlayer) {
-            if (event.getEffectInstance().getEffect() != null) {
+            if (event.getEffectInstance().getEffect().value() != null) {
                 MobEffectInstance effectInstance = event.getEffectInstance();
                 Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
-                    cap.getAnimSync().syncEffectAdded(serverPlayer, effectInstance.getEffect(), effectInstance.getAmplifier() + 1);
+                    cap.getAnimSync().syncEffectAdded(serverPlayer, effectInstance.getEffect().value(), effectInstance.getAmplifier() + 1);
                 });
             }
         }
@@ -38,9 +38,9 @@ public class MobEffectEvent {
         }
         Entity entity = event.getEntity();
         if (entity instanceof ServerPlayer serverPlayer) {
-            if (event.getEffect() != null) {
+            if (event.getEffect().value() != null) {
                 Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
-                    cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffect());
+                    cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffect().value());
                 });
             }
         }
@@ -53,9 +53,9 @@ public class MobEffectEvent {
         }
         Entity entity = event.getEntity();
         if (entity instanceof ServerPlayer serverPlayer) {
-            if (event.getEffectInstance() != null && event.getEffectInstance().getEffect() != null) {
+            if (event.getEffectInstance() != null && event.getEffectInstance().getEffect().value() != null) {
                 Optional.ofNullable(serverPlayer.getData(Capabilities.MODEL_INFO.get())).ifPresent(cap -> {
-                    cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffectInstance().getEffect());
+                    cap.getAnimSync().syncEffectRemoved(serverPlayer, event.getEffectInstance().getEffect().value());
                 });
             }
         }
