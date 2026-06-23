@@ -51,7 +51,7 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         SpecialPlayerRenderEvent renderEvent = new SpecialPlayerRenderEvent(player, capability, capability.getModelId());
         this.currentTexture = renderEvent.getTextureLocation();
         NeoForge.EVENT_BUS.post(renderEvent);
-        if (renderEvent.getResult() == net.neoforged.bus.api.Event.Result.DENY) {
+        if (renderEvent.isCanceled()) {
             return;
         }
         renderEntityWithTexture(capability, renderEvent.getTextureLocation(), entityYaw, partialTick, poseStack, bufferSource, packedLight);
