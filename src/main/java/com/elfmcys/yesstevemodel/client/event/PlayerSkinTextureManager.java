@@ -36,7 +36,7 @@ public class PlayerSkinTextureManager {
             Minecraft minecraft = Minecraft.getInstance();
             java.util.Map insecureSkinInformation = java.util.Collections.emptyMap(); // stubbed
             if (insecureSkinInformation.containsKey(MinecraftProfileTexture.Type.SKIN)) {
-                location = minecraft.getSkinManager().registerTexture((MinecraftProfileTexture) insecureSkinInformation.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
+location = null; // registerTexture stubbed
             } else {
                 location = getSkinTexture(event.getModelId());
             }

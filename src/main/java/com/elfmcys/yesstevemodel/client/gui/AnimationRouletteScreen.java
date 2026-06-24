@@ -637,7 +637,7 @@ public class AnimationRouletteScreen extends Screen {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tesselator tesselator = Tesselator.getInstance();
+//         Tesselator tesselator = Tesselator.getInstance();
         // BufferBuilder API changed in MC 1.21.1
         // Stubbed for MC 1.21.1
         Matrix4f matrix4fPose = poseStack.last().pose();
@@ -653,8 +653,8 @@ public class AnimationRouletteScreen extends Screen {
             float endAngle = ((6.2831855f / 8) * (i + 1)) - 0.034906585f;
             int iIntValue = i + (this.currentNavEntry.getRight().intValue() * 8);
             boolean zStartsWith = this.currentProperties.getValueAt(iIntValue).startsWith(SUBMENU_PREFIX);
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//             Tesselator tesselator = Tesselator.getInstance();
+//             BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             hoveredAny = checkRadialHover(startAngle, pointerAngle, endAngle, pointerRadius, hoveredAny, zStartsWith, i, builder, matrix4fPose);
             boolean isConfigSliceHovered = startAngle < pointerAngle && pointerAngle < endAngle && 20.0f < pointerRadius && pointerRadius < 50.0f;
             if (zStartsWith) {
@@ -685,20 +685,20 @@ public class AnimationRouletteScreen extends Screen {
         }
         if (isHovered && index < this.currentProperties.size()) {
             if (isSubmenu) {
-                Tesselator tesselator = Tesselator.getInstance();
-                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//                 Tesselator tesselator = Tesselator.getInstance();
+//                 BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 50.0f, 115.0f, startAngle, endAngle, -251678464);
-                Tesselator tesselator = Tesselator.getInstance();
-                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//                 Tesselator tesselator = Tesselator.getInstance();
+//                 BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 50.0f, startAngle, endAngle, -1879048192);
             } else {
-                Tesselator tesselator = Tesselator.getInstance();
-                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//                 Tesselator tesselator = Tesselator.getInstance();
+//                 BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 115.0f, startAngle, endAngle, -251678464);
             }
         } else {
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//             Tesselator tesselator = Tesselator.getInstance();
+//             BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 105.0f, startAngle, endAngle, -1879048192);
         }
         return alreadyHovered;

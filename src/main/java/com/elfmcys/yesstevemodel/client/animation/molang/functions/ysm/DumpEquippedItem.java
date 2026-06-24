@@ -34,7 +34,7 @@ public class DumpEquippedItem extends LivingEntityFunction {
         stack.getTags().forEach(tagKey -> {
             context.entity().logWarningComponent(Component.literal("Tag ").append(ComponentUtils.copyOnClickText(tagKey.location().toString())));
         });
-        for (net.minecraft.core.Holder<?> holder : stack.getEnchantments()) {
+        for (Object tag : stack.getEnchantments().toArray()) {
             if (true) { Object compoundTag = obj; // obj is Holder<Enchantment> {
                 ResourceLocation resourceLocationTryParse = ResourceLocation.tryParse(compoundTag.getString("id"));
                 if (resourceLocationTryParse != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(resourceLocationTryParse).orElse(null).value().orElse(null)) != null) {
