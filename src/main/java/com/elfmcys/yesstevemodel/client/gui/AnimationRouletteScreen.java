@@ -659,14 +659,10 @@ public class AnimationRouletteScreen extends Screen {
             boolean isConfigSliceHovered = startAngle < pointerAngle && pointerAngle < endAngle && 20.0f < pointerRadius && pointerRadius < 50.0f;
             if (zStartsWith) {
                 if (isConfigSliceHovered) {
-                    Tesselator tesselator = Tesselator.getInstance();
-                    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                     drawRadialSegment(builder, matrix4fPose, 15.0f, 50.0f, startAngle, endAngle, -268382465);
                     hoveredConfig = true;
                     this.hoveredConfigIndex = iIntValue;
                 } else {
-                    Tesselator tesselator = Tesselator.getInstance();
-                    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                     drawRadialSegment(builder, matrix4fPose, 25.0f, 50.0f, startAngle, endAngle, 1879101183);
                 }
             }
