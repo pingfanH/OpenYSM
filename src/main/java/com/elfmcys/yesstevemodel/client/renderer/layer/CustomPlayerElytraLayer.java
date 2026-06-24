@@ -35,22 +35,7 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         LivingEntity entity = entityLivingBaseIn.getEntity();
         ItemStack stack = CosmeticArmorHelper.getElytraItem(entity);
         AnimatedGeoModel animatedGeoModel = entityLivingBaseIn.getCurrentModel();
-        if (false) { /* stubbed for MC 1.21.1 */
-            if (net.minecraft.client.resources.PlayerSkin.isElytraLoaded(((net.minecraft.client.player.AbstractClientPlayer) entity).getSkin())) {
-                cloakTextureLocation = ((net.minecraft.client.player.AbstractClientPlayer) entity).getElytraTextureLocation();
-            } else {
-                cloakTextureLocation = ResourceLocation.parse("minecraft:missing");
-            }
-            poseStack.pushPose();
-            renderElytra(poseStack, animatedGeoModel);
-            poseStack.translate(0.0d, 1.5d, 0.0d);
-            poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180.0f));
-            poseStack.scale(2.0f, 2.0f, 2.0f);
-            this.elytraModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            // Stubbed for MC 1.21.1
-        // this.elytraModel.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.armorCutoutNoCull(cloakTextureLocation)), packedLightIn, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
-            poseStack.popPose();
-        }
+// Elytra rendering stubbed for MC 1.21.1
     }
 
     public void renderElytra(PoseStack poseStack, AnimatedGeoModel model) {

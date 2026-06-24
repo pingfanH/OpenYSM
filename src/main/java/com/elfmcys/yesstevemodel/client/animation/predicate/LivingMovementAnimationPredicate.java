@@ -37,7 +37,7 @@ public class LivingMovementAnimationPredicate implements IAnimationPredicate<Liv
         if (player == null || (event.getAnimatable() instanceof IPreviewAnimatable) || (vehicle = player.getVehicle()) == null || !vehicle.isAlive()) {
             return null;
         }
-        String str = getHorseGaitName(player);
+        String str = ""; // player);
         if (StringUtils.isNoneBlank(str)) {
             return IAnimationPredicate.playAnimationWithLoop(event, str, ILoopType.EDefaultLoopTypes.LOOP);
         }
@@ -69,7 +69,7 @@ public class LivingMovementAnimationPredicate implements IAnimationPredicate<Liv
         if (isCarrying || isMaidPiggyback) {
             return IAnimationPredicate.playAnimationWithLoop(event, "carryon:princess", ILoopType.EDefaultLoopTypes.LOOP);
         }
-        PlayState playState = TouhouLittleMaidCompat.handleMaidInteraction(event, player, vehicle);
+        PlayState playState = null; // TouhouLittleMaidCompat.handleMaidInteraction(event, player, vehicle);
         if (playState != null) {
             return playState;
         }

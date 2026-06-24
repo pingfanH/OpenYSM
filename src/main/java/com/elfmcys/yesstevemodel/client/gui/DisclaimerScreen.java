@@ -32,7 +32,7 @@ public class DisclaimerScreen extends Screen {
         this.textHeight = (this.height - i) / 2;
         MutableComponent mutableComponentTranslatable = Component.translatable("gui.yes_steve_model.disclaimer.read");
         int iWidth = this.font.width(mutableComponentTranslatable);
-        this.checkbox = new Checkbox((this.width - iWidth) / 2, (this.textHeight + i) - 50, iWidth, 20, mutableComponentTranslatable, !GeneralConfig.DISCLAIMER_SHOW, false);
+        this.checkbox = new Checkbox(20, this.font, (this.width - iWidth) / 2, (this.textHeight + i) - 50, iWidth, 20, mutableComponentTranslatable, !GeneralConfig.DISCLAIMER_SHOW, false, (this.width - iWidth) / 2, (this.textHeight + i) - 50, iWidth, mutableComponentTranslatable, !GeneralConfig.DISCLAIMER_SHOW);
         addRenderableWidget(this.checkbox);
         addRenderableWidget(new Button.Builder(Component.translatable("gui.yes_steve_model.disclaimer.close"), button -> {
             if (this.checkbox.selected()) {

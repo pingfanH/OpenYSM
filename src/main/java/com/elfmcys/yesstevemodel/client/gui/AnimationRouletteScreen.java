@@ -653,14 +653,20 @@ public class AnimationRouletteScreen extends Screen {
             float endAngle = ((6.2831855f / 8) * (i + 1)) - 0.034906585f;
             int iIntValue = i + (this.currentNavEntry.getRight().intValue() * 8);
             boolean zStartsWith = this.currentProperties.getValueAt(iIntValue).startsWith(SUBMENU_PREFIX);
+            Tesselator tesselator = Tesselator.getInstance();
+            BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             hoveredAny = checkRadialHover(startAngle, pointerAngle, endAngle, pointerRadius, hoveredAny, zStartsWith, i, builder, matrix4fPose);
             boolean isConfigSliceHovered = startAngle < pointerAngle && pointerAngle < endAngle && 20.0f < pointerRadius && pointerRadius < 50.0f;
             if (zStartsWith) {
                 if (isConfigSliceHovered) {
+                    Tesselator tesselator = Tesselator.getInstance();
+                    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                     drawRadialSegment(builder, matrix4fPose, 15.0f, 50.0f, startAngle, endAngle, -268382465);
                     hoveredConfig = true;
                     this.hoveredConfigIndex = iIntValue;
                 } else {
+                    Tesselator tesselator = Tesselator.getInstance();
+                    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                     drawRadialSegment(builder, matrix4fPose, 25.0f, 50.0f, startAngle, endAngle, 1879101183);
                 }
             }
@@ -675,6 +681,8 @@ public class AnimationRouletteScreen extends Screen {
         RenderSystem.disableBlend();
     }
 
+    Tesselator tesselator = Tesselator.getInstance();
+    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     private boolean checkRadialHover(float startAngle, float pointerAngle, float endAngle, float pointerRadius, boolean alreadyHovered, boolean isSubmenu, int index, BufferBuilder bufferBuilder, Matrix4f matrix4f) {
         boolean isHovered = startAngle < pointerAngle && pointerAngle < endAngle && 50.0f < pointerRadius && pointerRadius < 100.0f;
         if (isHovered) {
@@ -683,17 +691,27 @@ public class AnimationRouletteScreen extends Screen {
         }
         if (isHovered && index < this.currentProperties.size()) {
             if (isSubmenu) {
+                Tesselator tesselator = Tesselator.getInstance();
+                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 50.0f, 115.0f, startAngle, endAngle, -251678464);
+                Tesselator tesselator = Tesselator.getInstance();
+                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 50.0f, startAngle, endAngle, -1879048192);
             } else {
+                Tesselator tesselator = Tesselator.getInstance();
+                BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
                 drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 115.0f, startAngle, endAngle, -251678464);
             }
         } else {
+            Tesselator tesselator = Tesselator.getInstance();
+            BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
             drawRadialSegment(bufferBuilder, matrix4f, 25.0f, 105.0f, startAngle, endAngle, -1879048192);
         }
         return alreadyHovered;
     }
 
+    Tesselator tesselator = Tesselator.getInstance();
+    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     private void drawRadialSegment(BufferBuilder bufferBuilder, Matrix4f matrix4f, float innerRadius, float outerRadius, float startAngle, float endAngle, int color) {
         float alpha = ((color >> 24) & 255) / 255.0f;
         float red = ((color >> 16) & 255) / 255.0f;
