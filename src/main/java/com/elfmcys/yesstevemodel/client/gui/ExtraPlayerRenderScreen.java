@@ -57,12 +57,8 @@ public class ExtraPlayerRenderScreen extends Screen {
         }
         MutableComponent mutableComponentTranslatable = Component.translatable("gui.yes_steve_model.hide_or_show");
         int iWidth = this.font.width(mutableComponentTranslatable) + 24;
-        addRenderableWidget(new Checkbox(mutableComponentTranslatable, this.font, (this.width - iWidth) / 2, this.height + i, iWidth, 20, ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER, true) {
-            public void onPress() {
-                super.onPress();
-                ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER = selected();
-            }
-        });
+        Checkbox checkbox = new Checkbox((this.width - iWidth) / 2, this.height + i, iWidth, 20, mutableComponentTranslatable, ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER);
+        addRenderableWidget(checkbox);
     }
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
