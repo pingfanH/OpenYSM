@@ -39,7 +39,7 @@ public class S2CVersionCheckPacket implements CustomPacketPayload {
         if (NetworkHandler.setChannelVersion(context.connection(), message.version)) {
             context.enqueueWork(() -> ClientModelManager.onSyncConnected());
         }
-        NetworkHandler.sendToServer(new C2SVersionCheckPacket());
+        context.reply(new C2SVersionCheckPacket());
     }
 
     @Override

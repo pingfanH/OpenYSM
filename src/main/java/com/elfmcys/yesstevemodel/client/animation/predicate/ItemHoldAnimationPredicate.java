@@ -27,11 +27,11 @@ public class ItemHoldAnimationPredicate implements IAnimationPredicate<LivingAni
             return playState;
         }
         int i = event.getAnimatable().getModelAssembly().getModelData().getFormatVersion();
-        if (!livingEntity.isSleeping() && isSlashBladeItem(livingEntity.getItemInHand(InteractionHand.MAIN_HAND))) {
+        if (!livingEntity.isSleeping() && false) {
             if (event.getController().isPlaying()) {
                 event.getController().stopTransition();
             }
-            String str = getComboAnimName(event);
+            String str = null;
             if (StringUtils.isNoneBlank(str)) {
                 if (event.getAnimatable().getAnimation(str) != null) {
                     return IAnimationPredicate.playAnimationWithValid(event, str, ILoopType.EDefaultLoopTypes.PLAY_ONCE, i);

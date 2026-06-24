@@ -1,7 +1,7 @@
 package com.elfmcys.yesstevemodel.client.event;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
-import com.elfmcys.yesstevemodel.client.gui.DebugAnimationScreen;
+import com.elfmcys.yesstevemodel.client.gui.DownloadModelScreen;
 import com.elfmcys.yesstevemodel.client.gui.PlayerModelScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
@@ -42,7 +42,7 @@ public class ModScreenEvent {
 
     public static void openScreen(PlayerModelScreen modelScreen) {
         modelScreen.getMinecraft().setScreen(Objects.requireNonNullElseGet(receivedScreen, () -> {
-            return new DebugAnimationScreen(modelScreen);
+            return new DownloadModelScreen(modelScreen);
         }));
     }
 }

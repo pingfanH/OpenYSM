@@ -31,7 +31,7 @@ public class ReplacePlayerHandRenderEvent {
             return;
         }
         Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
-            if (!cap.isModelActive()) {
+            if (!cap.isModelActive() || !cap.isModelReady()) {
                 return;
             }
             HumanoidArm arm = event.getArm();

@@ -25,12 +25,13 @@ public class S2CModelSyncPayload implements CustomPacketPayload {
     }
 
     public void encode(FriendlyByteBuf buf) {
-        buf.writeBytes(this.data);
+        buf.writeBytes(this.data.asReadOnlyBuffer());
     }
 
     public static S2CModelSyncPayload decode(FriendlyByteBuf buf) {
         ByteBuffer data = ByteBuffer.allocateDirect(buf.readableBytes());
         buf.readBytes(data);
+        data.flip();
         return new S2CModelSyncPayload(data);
     }
 

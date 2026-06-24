@@ -29,6 +29,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import org.joml.Matrix4fStack;
 import org.joml.Quaternionf;
 
 import java.util.List;
@@ -100,11 +101,11 @@ public final class ModelPreviewRenderer {
     public static void renderEntityPreview(float x, float y, float scale, float pitch, float yaw, float partialTick, AnimatableEntity animatableEntity, GeoReplacedEntityRenderer renderer, boolean renderGround) {
         setPreviewMode(true);
         LivingEntity livingEntity = (LivingEntity) animatableEntity.getEntity();
-        PoseStack modelViewStack = new PoseStack();
-        modelViewStack.pushPose();
-        modelViewStack.translate(x, y, 1250.0d);
+        Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+        modelViewStack.pushMatrix();
+        modelViewStack.translate(x, y, 1250.0f);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        // RenderSystem.applyModelViewMatrix();
+        RenderSystem.applyModelViewMatrix();
 
         PoseStack poseStack = new PoseStack();
         poseStack.translate(0.0d, 0.0d, 1000.0d);
@@ -193,8 +194,8 @@ public final class ModelPreviewRenderer {
         livingEntity.yHeadRot = oldHeadRot;
         livingEntity.setPose(oldPose);
 
-        modelViewStack.popPose();
-        // RenderSystem.applyModelViewMatrix();
+        modelViewStack.popMatrix();
+        RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setPreviewMode(false);
     }
@@ -262,11 +263,11 @@ public final class ModelPreviewRenderer {
         ItemStack[] savedEquipment;
         setPreviewMode(true);
         LivingEntity livingEntity = animatable.getEntity();
-        PoseStack modelViewStack = new PoseStack();
-        modelViewStack.pushPose();
-        modelViewStack.translate(x, y, 1050.0d);
+        Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+        modelViewStack.pushMatrix();
+        modelViewStack.translate(x, y, 1050.0f);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        // RenderSystem.applyModelViewMatrix();
+        RenderSystem.applyModelViewMatrix();
 
         PoseStack poseStack = new PoseStack();
         poseStack.translate(0.0d, disablePreviewRotation ? 5.5d : 0.0d, 1000.0d);
@@ -363,8 +364,8 @@ public final class ModelPreviewRenderer {
             }
         }
 
-        modelViewStack.popPose();
-        // RenderSystem.applyModelViewMatrix();
+        modelViewStack.popMatrix();
+        RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setPreviewMode(false);
     }
@@ -372,11 +373,11 @@ public final class ModelPreviewRenderer {
     // 纸娃娃
     public static void renderPlayerOverlay(GuiGraphics guiGraphics, LocalPlayer localPlayer, double x, double y, float scale, float yawOffset, int zDepth, float partialTick) {
         setExtraPlayerMode(true);
-        PoseStack modelViewStack = new PoseStack();
-        modelViewStack.pushPose();
-        modelViewStack.translate(x + (scale * 0.5d), y + (scale * 2.0f), 0.0d);
+        Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+        modelViewStack.pushMatrix();
+        modelViewStack.translate((float) (x + (scale * 0.5d)), (float) (y + (scale * 2.0f)), 0.0f);
         modelViewStack.scale(1.0f, 1.0f, -1.0f);
-        // RenderSystem.applyModelViewMatrix();
+        RenderSystem.applyModelViewMatrix();
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0.0f, 0.0f, -zDepth);
@@ -400,8 +401,8 @@ public final class ModelPreviewRenderer {
         guiGraphics.flush();
         entityRenderDispatcher.setRenderShadow(true);
         guiGraphics.pose().popPose();
-        modelViewStack.popPose();
-        // RenderSystem.applyModelViewMatrix();
+        modelViewStack.popMatrix();
+        RenderSystem.applyModelViewMatrix();
         Lighting.setupFor3DItems();
         setExtraPlayerMode(false);
     }

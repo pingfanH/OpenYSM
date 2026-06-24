@@ -42,6 +42,7 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -376,12 +377,13 @@ public class YSMBinding extends ContextBinding {
     }
 
     private static Object dumpEffects(IContext<Entity> context) {
-        Collection<MobEffectInstance> activeEffects;
+        Iterable<MobEffectInstance> activeEffects;
         if (!context.isDebugMode()) {
             return null;
         }
         if (context.entity() instanceof Arrow) {
-            activeEffects = ((ArrowEntityAccessor) context.entity()).getEffects();
+            PotionContents potionContents = ((ArrowEntityAccessor) context.entity()).yesSteveModel$getPotionContents();
+            activeEffects = potionContents.getAllEffects();
         } else if (context.entity() instanceof LivingEntity) {
             activeEffects = ((LivingEntity) context.entity()).getActiveEffects();
         } else {

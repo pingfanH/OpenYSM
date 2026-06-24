@@ -23,7 +23,6 @@ import com.elfmcys.yesstevemodel.client.compat.simplehats.SimpleHatsHelper;
 import com.elfmcys.yesstevemodel.client.compat.slashblade.SlashBladeCompat;
 import com.elfmcys.yesstevemodel.client.compat.swem.SWEMCompat;
 import com.elfmcys.yesstevemodel.client.compat.touhoulittlemaid.TouhouLittleMaidCompat;
-import com.elfmcys.yesstevemodel.client.input.ExtraAnimationKey;
 import com.elfmcys.yesstevemodel.client.input.*;
 import com.elfmcys.yesstevemodel.client.compat.sbackpack.SBackpackCompat;
 import com.elfmcys.yesstevemodel.client.renderer.*;
@@ -123,7 +122,6 @@ public class ClientSetupEvent {
         event.register(AnimationRouletteKey.KEY_LOCK);
         event.register(DebugAnimationKey.KEY_MAPPING);
         event.register(ExtraPlayerRenderKey.KEY_MAPPING);
-        ExtraAnimationKey.registerKeyMappings(event);
     }
 
     private static void checkNativeInitialization() {

@@ -57,7 +57,12 @@ public class ExtraPlayerRenderScreen extends Screen {
         }
         MutableComponent mutableComponentTranslatable = Component.translatable("gui.yes_steve_model.hide_or_show");
         int iWidth = this.font.width(mutableComponentTranslatable) + 24;
-        Checkbox checkbox = new Checkbox((this.width - iWidth) / 2, this.height + i, iWidth, 20, mutableComponentTranslatable, ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER);
+        Checkbox checkbox = Checkbox.builder(mutableComponentTranslatable, this.font)
+                .pos((this.width - iWidth) / 2, this.height + i)
+                .maxWidth(iWidth)
+                .selected(ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER)
+                .onValueChange((checkboxWidget, selected) -> ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER = selected)
+                .build();
         addRenderableWidget(checkbox);
     }
 
@@ -88,7 +93,7 @@ public class ExtraPlayerRenderScreen extends Screen {
         }
         guiGraphics.pose().popPose();
         if (getMinecraft().player != null && !ExtraPlayerRenderConfig.DISABLE_PLAYER_RENDER) {
-            ModelPreviewRenderer.renderPlayerOverlay(guiGraphics, getMinecraft().player, this.mouseStartX, this.mouseStartY, this.rotationX, this.rotationY, -500, this.minecraft.getPartialTick());
+            ModelPreviewRenderer.renderPlayerOverlay(guiGraphics, getMinecraft().player, this.mouseStartX, this.mouseStartY, this.rotationX, this.rotationY, -500, this.minecraft.getTimer().getGameTimeDeltaPartialTick(false));
         }
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }

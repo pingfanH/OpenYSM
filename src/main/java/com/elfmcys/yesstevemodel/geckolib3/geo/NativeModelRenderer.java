@@ -134,7 +134,12 @@ public class NativeModelRenderer {
                     tempNorm.set(quad.normal).mul(globalNormalMat).normalize();
                     for (int v = 0; v < 4; v++) {
                         tempPos.set(quad.positions[v].x(), quad.positions[v].y(), quad.positions[v].z(), 1.0f).mul(globalBoneMat);
-                        // TODO: fix vertex pipeline for MC 1.21.1
+                        vertexConsumer.addVertex(tempPos.x(), tempPos.y(), tempPos.z())
+                                .setColor(r, g, b, a)
+                                .setUv(quad.uvs[v].x(), quad.uvs[v].y())
+                                .setOverlay(packedOverlay)
+                                .setLight(currentPackedLight)
+                                .setNormal(tempNorm.x(), tempNorm.y(), tempNorm.z());
                     }
                 }
             }

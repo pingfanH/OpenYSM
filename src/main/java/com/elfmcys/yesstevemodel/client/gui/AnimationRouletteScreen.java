@@ -655,15 +655,15 @@ public class AnimationRouletteScreen extends Screen {
             boolean zStartsWith = this.currentProperties.getValueAt(iIntValue).startsWith(SUBMENU_PREFIX);
 //             Tesselator tesselator = Tesselator.getInstance();
 //             BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-            hoveredAny = checkRadialHover(startAngle, pointerAngle, endAngle, pointerRadius, hoveredAny, zStartsWith, i, builder, matrix4fPose);
+            hoveredAny = checkRadialHover(startAngle, pointerAngle, endAngle, pointerRadius, hoveredAny, zStartsWith, i, null, matrix4fPose);
             boolean isConfigSliceHovered = startAngle < pointerAngle && pointerAngle < endAngle && 20.0f < pointerRadius && pointerRadius < 50.0f;
             if (zStartsWith) {
                 if (isConfigSliceHovered) {
-                    drawRadialSegment(builder, matrix4fPose, 15.0f, 50.0f, startAngle, endAngle, -268382465);
+                    drawRadialSegment(null, matrix4fPose, 15.0f, 50.0f, startAngle, endAngle, -268382465);
                     hoveredConfig = true;
                     this.hoveredConfigIndex = iIntValue;
                 } else {
-                    drawRadialSegment(builder, matrix4fPose, 25.0f, 50.0f, startAngle, endAngle, 1879101183);
+                    drawRadialSegment(null, matrix4fPose, 25.0f, 50.0f, startAngle, endAngle, 1879101183);
                 }
             }
         }
@@ -705,13 +705,16 @@ public class AnimationRouletteScreen extends Screen {
     }
 
     private void drawRadialSegment(BufferBuilder bufferBuilder, Matrix4f matrix4f, float innerRadius, float outerRadius, float startAngle, float endAngle, int color) {
+        if (bufferBuilder == null) {
+            return;
+        }
         float alpha = ((color >> 24) & 255) / 255.0f;
         float red = ((color >> 16) & 255) / 255.0f;
         float green = ((color >> 8) & 255) / 255.0f;
         float blue = (color & 255) / 255.0f;
-        bufferBuilder.addVertex(matrix4f, this.centerX + (outerRadius * Mth.cos(startAngle)), this.centerY + (outerRadius * Mth.sin(startAngle)), 0.0f).color(red, green, blue, alpha).endVertex();
-        bufferBuilder.addVertex(matrix4f, this.centerX + (innerRadius * Mth.cos(startAngle)), this.centerY + (innerRadius * Mth.sin(startAngle)), 0.0f).color(red, green, blue, alpha).endVertex();
-        bufferBuilder.addVertex(matrix4f, this.centerX + (innerRadius * Mth.cos(endAngle)), this.centerY + (innerRadius * Mth.sin(endAngle)), 0.0f).color(red, green, blue, alpha).endVertex();
-        bufferBuilder.addVertex(matrix4f, this.centerX + (outerRadius * Mth.cos(endAngle)), this.centerY + (outerRadius * Mth.sin(endAngle)), 0.0f).color(red, green, blue, alpha).endVertex();
+        bufferBuilder.addVertex(matrix4f, this.centerX + (outerRadius * Mth.cos(startAngle)), this.centerY + (outerRadius * Mth.sin(startAngle)), 0.0f).setColor(red, green, blue, alpha);
+        bufferBuilder.addVertex(matrix4f, this.centerX + (innerRadius * Mth.cos(startAngle)), this.centerY + (innerRadius * Mth.sin(startAngle)), 0.0f).setColor(red, green, blue, alpha);
+        bufferBuilder.addVertex(matrix4f, this.centerX + (innerRadius * Mth.cos(endAngle)), this.centerY + (innerRadius * Mth.sin(endAngle)), 0.0f).setColor(red, green, blue, alpha);
+        bufferBuilder.addVertex(matrix4f, this.centerX + (outerRadius * Mth.cos(endAngle)), this.centerY + (outerRadius * Mth.sin(endAngle)), 0.0f).setColor(red, green, blue, alpha);
     }
 }

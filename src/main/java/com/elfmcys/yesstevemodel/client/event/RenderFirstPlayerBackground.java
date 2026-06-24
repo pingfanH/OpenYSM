@@ -58,7 +58,7 @@ public class RenderFirstPlayerBackground {
         }
         currentFrameRendered = true;
         Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
-            if (!cap.isModelActive()) {
+            if (!cap.isModelActive() || !cap.isModelReady()) {
                 return;
             }
             String modelId = cap.getModelId();
@@ -69,7 +69,7 @@ public class RenderFirstPlayerBackground {
             CustomPlayerRenderer instance = RendererManager.getPlayerRenderer();
             PoseStack poseStack = event.getPoseStack();
             MultiBufferSource multiBufferSource = event.getMultiBufferSource();
-            if (NeoForge.EVENT_BUS.post(new SpecialPlayerRenderEvent(player, cap,  modelId))) {
+            if (NeoForge.EVENT_BUS.post(new SpecialPlayerRenderEvent(player, cap,  modelId)).isCanceled()) {
                 return;
             }
             ResourceLocation resourceLocationB_ = cap.getTextureLocation();

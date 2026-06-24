@@ -89,15 +89,19 @@ dependencies {
     compileOnly 'libs:SlashBladeResharped:1.20.1-0.1.4'
     compileOnly 'libs:SlashBlade:1.20.1-0.1.2'
     compileOnly 'libs:oculus:mc1.20.1-1.8.0'
-    implementation 'libs:oculus_legacy:mc1.20.1-1.6.13'
+    compileOnly 'libs:oculus_legacy:mc1.20.1-1.6.13'
     compileOnly 'libs:geckolib-forge:1.20.1-4.8.3'
     compileOnly 'libs:create:1.20.1-6.0.8'
     compileOnly 'libs:simplehats-forge:1.20.1-0.4.0a'
     compileOnly 'libs:accessories-neoforge:1.0.0-beta.48+1.20.1'
 
-    // ImageStream - embedded library via jarJar
-    implementation("com.github.OpenYSM:ImageStream:-SNAPSHOT")
-    jarJar("com.github.OpenYSM:ImageStream:-SNAPSHOT") {
+    // ImageStream - embedded in release jars and added explicitly for ModDev run configs.
+    def imageStreamDependency = "com.github.OpenYSM:ImageStream:-SNAPSHOT"
+    implementation(imageStreamDependency)
+    clientAdditionalRuntimeClasspath(imageStreamDependency)
+    client2AdditionalRuntimeClasspath(imageStreamDependency)
+    serverAdditionalRuntimeClasspath(imageStreamDependency)
+    jarJar(imageStreamDependency) {
         version {
             prefer '-SNAPSHOT'
         }

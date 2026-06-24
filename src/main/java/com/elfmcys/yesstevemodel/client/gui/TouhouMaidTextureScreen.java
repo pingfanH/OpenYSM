@@ -12,6 +12,8 @@ import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 
+import java.util.Optional;
+
 public class TouhouMaidTextureScreen extends PlayerTextureScreen {
 
     private final EntityMaid maid;

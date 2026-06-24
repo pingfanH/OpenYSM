@@ -15,21 +15,21 @@ description="A mod based on GeckoLib that modifies the player model"
 
 [[dependencies.yes_steve_model]]
 modId="neoforge"
-mandatory=true
+type="required"
 versionRange="[21,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.yes_steve_model]]
 modId="minecraft"
-mandatory=true
+type="required"
 versionRange="[1.21,1.22)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.yes_steve_model]]
 modId="tacz"
-mandatory=false
+type="optional"
 versionRange="[1.0.2,)"
 ordering="NONE"
 side="BOTH"

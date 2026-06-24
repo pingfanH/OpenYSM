@@ -70,8 +70,8 @@ public class AnimationSlider extends AbstractSliderButton implements ISpecialWid
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.drawString(Minecraft.getInstance().font, this.getMessage(), getX(), getY(), -1);
         Minecraft minecraft = Minecraft.getInstance();
-        guiGraphics.blitWithBorder(ROULETTE_TEXTURE, getX(), getY(), 0, getTextureY() + 24, this.width, this.height, 200, 15, 2, 3, 2, 2);
-        guiGraphics.blitWithBorder(ROULETTE_TEXTURE, getX() + ((int) (this.value * (this.width - 8))), getY(), 0, getHandleTextureY() + 24, 8, this.height, 200, 15, 2, 3, 2, 2);
+        guiGraphics.blitWithBorder(ROULETTE_TEXTURE, getX(), getY(), 0, 24, this.width, this.height, 200, 15, 2, 3, 2, 2);
+        guiGraphics.blitWithBorder(ROULETTE_TEXTURE, getX() + ((int) (this.value * (this.width - 8))), getY(), 0, 39, 8, this.height, 200, 15, 2, 3, 2, 2);
         renderScrollingString(guiGraphics, minecraft.font, 2, getFGColor() | (Mth.ceil(this.alpha * 255.0f) << 24));
     }
 }

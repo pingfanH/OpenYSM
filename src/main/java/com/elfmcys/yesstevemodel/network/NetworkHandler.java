@@ -2,6 +2,7 @@ package com.elfmcys.yesstevemodel.network;
 
 import com.elfmcys.yesstevemodel.YesSteveModel;
 import com.elfmcys.yesstevemodel.network.message.*;
+import io.netty.util.AttributeKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.Connection;
@@ -24,21 +25,27 @@ public final class NetworkHandler {
 
     public static final String VERSION = "2.6.0";
 
+    private static final AttributeKey<String> CHANNEL_VERSION_KEY = AttributeKey.valueOf("yes_steve_model_channel_version");
+
     public static boolean setChannelVersion(Connection connection, String str) {
-        return true;
+        return connection != null
+                && connection.channel() != null
+                && connection.channel().attr(CHANNEL_VERSION_KEY).compareAndSet(null, str);
     }
 
     public static boolean isPlayerConnected(ServerPlayer serverPlayer) {
-        return serverPlayer.connection != null;
+        return serverPlayer.connection != null && isConnectionValid(serverPlayer.connection.getConnection());
     }
 
     public static boolean isClientConnected() {
         ClientPacketListener connection = Minecraft.getInstance().getConnection();
-        return connection != null;
+        return connection != null && isConnectionValid(connection.getConnection());
     }
 
     public static boolean isConnectionValid(@Nullable Connection connection) {
-        return connection != null;
+        return connection != null
+                && connection.channel() != null
+                && VERSION.equals(connection.channel().attr(CHANNEL_VERSION_KEY).get());
     }
 
     @SubscribeEvent

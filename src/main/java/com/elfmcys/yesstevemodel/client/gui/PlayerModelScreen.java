@@ -353,12 +353,12 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
                 navigateUp();
             }).setTooltipText("gui.back"));
         }
-        addRenderableWidget(new Checkbox(this.guiLeft + 5, this.guiTop - 22, 20, 20, Component.translatable("gui.yes_steve_model.show_model_id_first"), GeneralConfig.SHOW_MODEL_ID_FIRST.get()) {
-            public void onPress() {
-                super.onPress();
-                GeneralConfig.SHOW_MODEL_ID_FIRST = true;
-            }
-        });
+        addRenderableWidget(Checkbox.builder(Component.translatable("gui.yes_steve_model.show_model_id_first"), this.font)
+                .pos(this.guiLeft + 5, this.guiTop - 22)
+                .maxWidth(160)
+                .selected(GeneralConfig.SHOW_MODEL_ID_FIRST)
+                .onValueChange((checkbox, selected) -> GeneralConfig.SHOW_MODEL_ID_FIRST = selected)
+                .build());
         addRenderableWidget(new IconButton(this.guiLeft + 328, this.guiTop + 5, 18, 18, 32, 0, button4 -> {
             if (this.category != Category.ALL) {
                 this.category = Category.ALL;
@@ -438,7 +438,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
     }
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        renderTransparentBackground(guiGraphics);
         guiGraphics.fillGradient(this.guiLeft, this.guiTop, this.guiLeft + 135, this.guiTop + 235, -14540254, -14540254);
         guiGraphics.fillGradient(this.guiLeft + 138, this.guiTop, this.guiLeft + 420, this.guiTop + 235, -14540254, -14540254);
         guiGraphics.fillGradient(this.guiLeft + 351, this.guiTop + 7, this.guiLeft + 352, this.guiTop + 21, -790560, -790560);
@@ -468,7 +468,9 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
             }
         }
         renderSyncStatus(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        for (net.minecraft.client.gui.components.Renderable renderable : this.renderables) {
+            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
         this.renderables.stream().filter(renderable -> {
             return renderable instanceof IconButton;
         }).forEach(renderable2 -> {
@@ -528,10 +530,7 @@ public class PlayerModelScreen extends Screen implements IGuiWidget {
         if (localPlayer != null) {
             double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
             RenderSystem.enableScissor((int) ((this.guiLeft + 5) * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - ((this.guiTop + 200) * guiScale)), (int) (125.0d * guiScale), (int) (171.0d * guiScale));
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(0.0f, 0.0f, 100.0f);
-            guiGraphics.renderEntityInInventory(localPlayer, this.guiLeft + 67, this.guiTop + 190, 70, (float)(((this.guiLeft + 67) - mouseX)), (float)((((this.guiTop + 180) - 95) - mouseY)));
-            guiGraphics.pose().popPose();
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.guiLeft + 5, this.guiTop + 29, this.guiLeft + 130, this.guiTop + 200, 70, 0.0f, mouseX, mouseY, localPlayer);
             RenderSystem.disableScissor();
             Optional.ofNullable(localPlayer.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
                 List<FormattedCharSequence> listSplit = this.font.split(FormattedText.of(ClientModelManager.getModelContext(cap.getModelId()).map(it -> {

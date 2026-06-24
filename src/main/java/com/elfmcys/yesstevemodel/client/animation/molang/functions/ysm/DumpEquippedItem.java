@@ -5,8 +5,6 @@ import com.elfmcys.yesstevemodel.geckolib3.core.molang.context.IContext;
 import com.elfmcys.yesstevemodel.geckolib3.core.molang.funciton.entity.LivingEntityFunction;
 import com.elfmcys.yesstevemodel.geckolib3.util.MolangUtils;
 import com.elfmcys.yesstevemodel.molang.runtime.ExecutionContext;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.core.registries.BuiltInRegistries;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 
 public class DumpEquippedItem extends LivingEntityFunction {
     @Override
@@ -34,13 +33,11 @@ public class DumpEquippedItem extends LivingEntityFunction {
         stack.getTags().forEach(tagKey -> {
             context.entity().logWarningComponent(Component.literal("Tag ").append(ComponentUtils.copyOnClickText(tagKey.location().toString())));
         });
-        for (Object tag : stack.getEnchantments().toArray()) {
-            if (true) { Object compoundTag = obj; // obj is Holder<Enchantment> {
-                ResourceLocation resourceLocationTryParse = ResourceLocation.tryParse(compoundTag.getString("id"));
-                if (resourceLocationTryParse != null && (enchantment = BuiltInRegistries.ENCHANTMENT.get(resourceLocationTryParse).orElse(null).value().orElse(null)) != null) {
-                    context.entity().logWarningComponent(Component.literal("Enchantment: display ").append(ComponentUtils.copyOnClickText(enchantment.getFullName(compoundTag.getInt("lvl")).getString(99))).append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(resourceLocationTryParse.toString()))));
-                }
-            }
+        for (Object2IntMap.Entry<net.minecraft.core.Holder<Enchantment>> entry : stack.getEnchantments().entrySet()) {
+            String enchantmentName = entry.getKey().getRegisteredName();
+            context.entity().logWarningComponent(Component.literal("Enchantment: display ")
+                    .append(ComponentUtils.copyOnClickText(Enchantment.getFullname(entry.getKey(), entry.getIntValue()).getString(99)))
+                    .append(Component.literal("  name ").append(ComponentUtils.copyOnClickText(enchantmentName))));
         }
         return null;
     }

@@ -6,7 +6,10 @@ import com.elfmcys.yesstevemodel.client.entity.PlayerPreviewEntity;
 import com.elfmcys.yesstevemodel.client.model.ModelAssembly;
 import com.elfmcys.yesstevemodel.util.ComponentUtil;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import immersive_aircraft.cobalt.network.NetworkHandler;
 import net.minecraft.network.chat.Component;
+
+import java.util.Optional;
 
 public class TouhouMaidTextureButton extends TextureButton {
 

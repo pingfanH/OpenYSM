@@ -36,7 +36,7 @@ public class ReplacePlayerRenderEvent {
             return;
         }
         Optional.ofNullable(entity.getData(ClientCapabilities.PLAYER_CAP.get())).ifPresent(cap -> {
-            if (cap.isModelActive()) {
+            if (cap.isModelActive() && cap.isModelReady()) {
                 if (!CameraUtil.isFirstPerson(cap) || FirstPersonCompat.isFirstPersonActive() || RealCameraCompat.isActive() || GeneralConfig.DISABLE_EXTERNAL_FP_ANIM || !PlayerAnimatorCompat.isPlayerAnimated(localPlayer)) {
                     event.setCanceled(true);
                     RendererManager.getPlayerRenderer().render(event.getEntity(), event.getEntity().getYRot(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());

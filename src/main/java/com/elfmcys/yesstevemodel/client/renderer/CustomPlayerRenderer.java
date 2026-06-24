@@ -50,9 +50,7 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         capability.tickModel();
         SpecialPlayerRenderEvent renderEvent = new SpecialPlayerRenderEvent(player, capability, capability.getModelId());
         this.currentTexture = renderEvent.getTextureLocation();
-        NeoForge.EVENT_BUS.post(renderEvent);
-        // Event.isCanceled removed in NeoForge 1.21.1
-        if (false) {
+        if (NeoForge.EVENT_BUS.post(renderEvent).isCanceled()) {
             return;
         }
         renderEntityWithTexture(capability, renderEvent.getTextureLocation(), entityYaw, partialTick, poseStack, bufferSource, packedLight);
@@ -94,7 +92,9 @@ public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, Cust
         return this.currentTexture == null ? Optional.ofNullable(player.getData(ClientCapabilities.PLAYER_CAP.get())).map((cap) -> cap.getTextureLocation()).orElse(MissingTextureAtlasSprite.getLocation()) : this.currentTexture;
     }
 
-    public void renderNameTag(Player player, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) { super.renderNameTag(player, component, poseStack, multiBufferSource, i); }
+    public void renderNameTag(Player player, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, float partialTick) {
+        super.renderNameTag(player, component, poseStack, multiBufferSource, i, partialTick);
+    }
 
     @Override
     public void setupRotations(Player player, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {

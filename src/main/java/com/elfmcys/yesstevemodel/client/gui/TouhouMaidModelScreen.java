@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class TouhouMaidModelScreen extends PlayerModelScreen {
 
@@ -53,7 +54,7 @@ public class TouhouMaidModelScreen extends PlayerModelScreen {
     public void renderModelPreview(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
         RenderSystem.enableScissor((int) ((this.guiLeft + 5) * guiScale), (int) (Minecraft.getInstance().getWindow().getHeight() - ((this.guiTop + 200) * guiScale)), (int) (125.0d * guiScale), (int) (171.0d * guiScale));
-        guiGraphics.renderEntityInInventory(this.maid, this.guiLeft + 67, this.guiTop + 190, 70, (float)((this.guiLeft + 67) - mouseX), (float)(((this.guiTop + 180) - 95) - mouseY));
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.guiLeft + 5, this.guiTop + 29, this.guiLeft + 130, this.guiTop + 200, 70, 0.0f, mouseX, mouseY, this.maid);
         RenderSystem.disableScissor();
         Optional.ofNullable(this.maid.getData(MaidCapabilities.MAID_CAP.get())).ifPresent(cap -> {
             List<FormattedCharSequence> listSplit = this.font.split(FormattedText.of(ClientModelManager.getModelContext(cap.getModelId()).map(it -> {
