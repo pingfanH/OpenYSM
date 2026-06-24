@@ -681,8 +681,6 @@ public class AnimationRouletteScreen extends Screen {
         RenderSystem.disableBlend();
     }
 
-    Tesselator tesselator = Tesselator.getInstance();
-    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     private boolean checkRadialHover(float startAngle, float pointerAngle, float endAngle, float pointerRadius, boolean alreadyHovered, boolean isSubmenu, int index, BufferBuilder bufferBuilder, Matrix4f matrix4f) {
         boolean isHovered = startAngle < pointerAngle && pointerAngle < endAngle && 50.0f < pointerRadius && pointerRadius < 100.0f;
         if (isHovered) {
@@ -710,8 +708,6 @@ public class AnimationRouletteScreen extends Screen {
         return alreadyHovered;
     }
 
-    Tesselator tesselator = Tesselator.getInstance();
-    BufferBuilder builder = (BufferBuilder) tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
     private void drawRadialSegment(BufferBuilder bufferBuilder, Matrix4f matrix4f, float innerRadius, float outerRadius, float startAngle, float endAngle, int color) {
         float alpha = ((color >> 24) & 255) / 255.0f;
         float red = ((color >> 16) & 255) / 255.0f;
